@@ -1,0 +1,32 @@
+{
+  "name": "DUECredits",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "windows": "react-native run-windows"
+  },
+  "dependencies": {
+    "react": "17.0.2",
+    "react-native": "0.68.1",
+    "react-native-windows": "0.68.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/runtime": "^7.17.9",
+    "@react-native-community/eslint-config": "^3.0.1",
+    "babel-jest": "^27.5.1",
+    "eslint": "^8.13.0",
+    "jest": "^27.5.1",
+    "metro-react-native-babel-preset": "^0.70.1",
+    "react-test-renderer": "17.0.2",
+    "metro-config": "^0.67.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
