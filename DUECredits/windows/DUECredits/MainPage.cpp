@@ -9,7 +9,7 @@
 using namespace winrt;
 using namespace xaml;
 
-namespace winrt::DUECredits::implementation
+namespace winrt::duecredits::implementation
 {
     MainPage::MainPage()
     {

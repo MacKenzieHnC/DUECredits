@@ -10,7 +10,7 @@ namespace activation = winrt::Microsoft::UI::Xaml;
 namespace activation = winrt::Windows::ApplicationModel::Activation;
 #endif
 
-namespace winrt::DUECredits::implementation
+namespace winrt::duecredits::implementation
 {
     struct App : AppT<App>
     {
@@ -22,4 +22,4 @@ namespace winrt::DUECredits::implementation
       private:
         using super = AppT<App>;
     };
-} // namespace winrt::DUECredits::implementation
+} // namespace winrt::duecredits::implementation

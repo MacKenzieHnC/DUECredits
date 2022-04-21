@@ -6,9 +6,9 @@
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
-    <ProjectGuid>{d75a8b31-4980-4e20-a4f6-90a3e8d64c6f}</ProjectGuid>
-    <ProjectName>DUECredits</ProjectName>
-    <RootNamespace>DUECredits</RootNamespace>
+    <ProjectGuid>{fcc6ddd9-9fd3-4647-a20f-d574d18b6bc5}</ProjectGuid>
+    <ProjectName>duecredits</ProjectName>
+    <RootNamespace>duecredits</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
