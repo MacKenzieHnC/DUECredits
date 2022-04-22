@@ -17,18 +17,18 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {ItemComponent} from './components/Item';
-import {Item} from './models';
-import {getDBConnection, getItems} from './services/db-service';
+import {ArmorItemComponent} from './components/ArmorItem';
+import {ArmorItem} from './models';
+import {getDBConnection, getArmorItems} from './services/db-service';
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [items, setItems] = useState<Item[]>([]);
+  const [armorItems, setArmorItems] = useState<ArmorItem[]>([]);
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      const storedItems = await getItems(db);
-      if (storedItems.length) {
-        setItems(storedItems);
+      const storedArmorItems = await getArmorItems(db);
+      if (storedArmorItems.length) {
+        setArmorItems(storedArmorItems);
       } else {
         throw Error('List empty!!!!');
       }
@@ -45,11 +45,11 @@ const App = () => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={[styles.appTitleView]}>
-          <Text style={styles.appTitleText}> Item Application </Text>
+          <Text style={styles.appTitleText}> ArmorItem Application </Text>
         </View>
         <View>
-          {items.map(item => (
-            <ItemComponent itemProps={item} />
+          {armorItems.map(item => (
+            <ArmorItemComponent armorItem={item} key={item.key} />
           ))}
         </View>
       </ScrollView>
