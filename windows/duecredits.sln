@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "duecredits", "duecredits\duecredits.vcxproj", "{FCC6DDD9-9FD3-4647-A20F-D574D18B6BC5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "duecredits", "duecredits.vcxproj", "{FCC6DDD9-9FD3-4647-A20F-D574D18B6BC5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F7D32BD0-2749-483E-9A0D-1635EF7E3136} = {F7D32BD0-2749-483E-9A0D-1635EF7E3136}
 	EndProjectSection
@@ -32,6 +32,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mso", "..\node_modules\react-native-windows\Mso\Mso.vcxitems", "{84E05BFA-CBAF-4F0D-BFB6-4CE85742A57E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Include", "..\node_modules\react-native-windows\include\Include.vcxitems", "{EF074BA1-2D54-4D49-A28E-5E040B47CD2E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SQLitePlugin", "..\node_modules\react-native-sqlite-storage\platforms\windows\SQLitePlugin\SQLitePlugin.vcxproj", "{A09B9A47-E2B9-4294-9746-AC55213FC642}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -134,6 +136,18 @@ Global
 		{14B93DC8-FD93-4A6D-81CB-8BC96644501C}.Release|x86.ActiveCfg = Release|Win32
 		{14B93DC8-FD93-4A6D-81CB-8BC96644501C}.Release|x86.Build.0 = Release|Win32
 		{14B93DC8-FD93-4A6D-81CB-8BC96644501C}.Release|x86.Deploy.0 = Release|Win32
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Debug|x64.ActiveCfg = Debug|x64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Debug|x64.Build.0 = Debug|x64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Debug|x86.ActiveCfg = Debug|Win32
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Debug|x86.Build.0 = Debug|Win32
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Debug|ARM64.Build.0 = Debug|ARM64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Release|x64.ActiveCfg = Release|x64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Release|x64.Build.0 = Release|x64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Release|x86.ActiveCfg = Release|Win32
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Release|x86.Build.0 = Release|Win32
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Release|ARM64.ActiveCfg = Release|ARM64
+		{A09B9A47-E2B9-4294-9746-AC55213FC642}.Release|ARM64.Build.0 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
