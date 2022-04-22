@@ -9,15 +9,9 @@
  */
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
-import {ArmorItemComponent} from './components/ArmorItem';
+import { ItemList } from './components/ItemList';
 import {ArmorItem} from './models';
 import {getDBConnection, getArmorItems} from './services/db-service';
 const App = () => {
@@ -41,48 +35,8 @@ const App = () => {
   }, [loadDataCallback]);
 
   return (
-    <SafeAreaView>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View style={[styles.appTitleView]}>
-          <Text style={styles.appTitleText}> ArmorItem Application </Text>
-        </View>
-        <View>
-          {armorItems.map(item => (
-            <ArmorItemComponent itemProps = {item.itemProps} armorItem={item} key={item.key} />
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ItemList items={armorItems} itemType = {'ARMOR'}/>
   );
 };
-
-const styles = StyleSheet.create({
-  appTitleView: {
-    marginTop: 20,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  appTitleText: {
-    fontSize: 24,
-    fontWeight: '800',
-  },
-  textInputContainer: {
-    marginTop: 30,
-    marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-    justifyContent: 'flex-end',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderRadius: 5,
-    height: 30,
-    margin: 10,
-    backgroundColor: 'pink',
-  },
-});
 
 export default App;
