@@ -49,7 +49,7 @@ const App = () => {
         </View>
         <View>
           {armorItems.map(item => (
-            <ArmorItemComponent armorItem={item} key={item.key} />
+            <ArmorItemComponent itemProps = {item.itemProps} armorItem={item} key={item.key} />
           ))}
         </View>
       </ScrollView>

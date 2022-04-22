@@ -1,20 +1,42 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
-import { ArmorItem } from '../models';
-import { ItemComponent } from './Item';
+import {StyleSheet, View, Text} from 'react-native';
+import {ArmorItem, Item} from '../models';
+import {ItemComponent} from './Item';
 export const ArmorItemComponent: React.FC<{
   armorItem: ArmorItem;
+  itemProps: Item;
   key: number;
-}> = ({armorItem: {itemProps}}) => {
+}> = ({itemProps, armorItem}) => {
   return (
-    <View style={styles.armorItemContainer}>
-      <View style={styles.armorItemTextContainer}>
-        <ItemComponent itemProps={itemProps} />
-      </View>
-    </View>
+    <ItemComponent
+      itemProps={itemProps}
+      childProps={
+        <View>
+          <View style={styles.armorItemTextContainer}>
+            <Text>
+              {'Def: '}
+              {armorItem.defense}
+            </Text>
+            <View style={styles.spacer} />
+            <Text>
+              {'Soak: '}
+              {armorItem.soak}
+            </Text>
+          </View>
+          <View style={styles.armorItemTextContainer}>
+            <Text>
+              {'HP: '}
+              {armorItem.hardpoints}
+            </Text>
+            <View style={styles.spacer} />
+            <Text>
+              {'Encum.: '}
+              {armorItem.encumbrance}
+            </Text>
+          </View>
+        </View>
+      }
+    />
   );
 };
 const styles = StyleSheet.create({
@@ -29,11 +51,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   armorItemTextContainer: {
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexDirection: 'row',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '400',
+  },
+  spacer: {
+    marginLeft: 20,
+    marginRight: 20,
   },
 });

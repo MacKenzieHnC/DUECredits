@@ -1,32 +1,43 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { Item } from '../models';
+import {StyleSheet, Text, View} from 'react-native';
+import {Item} from '../models';
 export const ItemComponent: React.FC<{
   itemProps: Item;
-}> = ({itemProps}) => {
+  childProps: React.ReactElement;
+}> = ({itemProps, childProps}) => {
+  var notes = itemProps.notes !== '' ? 'Notes: ' + itemProps.notes : '';
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.itemTextContainer}>
-        <Text>
+      <View style={styles.primaryContainer}>
+        <Text style={styles.sectionTitle}>
+          {itemProps.restricted.toString().toLowerCase() === 'true'
+            ? '(R) '
+            : ''}
           {itemProps.name}
-          {'\t'}
-          {itemProps.restricted}
         </Text>
+        <View>{childProps}</View>
+        {itemProps.notes !== '' &&
+        <View style={styles.itemTextContainer}>
+          <Text>{'Notes: '}{notes}</Text>
+        </View>
+        }
       </View>
-      <View style={styles.itemTextContainer}>
-        <Text>
-          {itemProps.price}
-        </Text>
+      <View style={styles.spacer} />
+      <View style={styles.priceContainer}>
+        <View style={styles.itemTextContainer}>
+          <Text>
+            {'Price: '}
+            {itemProps.price}
+          </Text>
+        </View>
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   itemContainer: {
+    display: 'flex',
+    flexDirection: 'row',
     marginTop: 10,
     paddingHorizontal: 24,
     backgroundColor: 'deepskyblue',
@@ -36,12 +47,26 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
   },
+  primaryContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 10000,
+    marginRight: 40,
+  },
+  priceContainer: {
+    justifyContent: 'center',
+  },
+  spacer: {
+    display: 'flex',
+    flex: 60,
+  },
   itemTextContainer: {
     justifyContent: 'center',
     flexDirection: 'row',
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '400',
+    fontWeight: 'bold',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
   },
 });
