@@ -20,7 +20,7 @@ const App = () => {
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      const storedArmorItems = await getArmorItems(db);
+      const storedArmorItems = await getArmorItems(db, 'Items');
       if (storedArmorItems.length) {
         setArmorItems(storedArmorItems);
       } else {

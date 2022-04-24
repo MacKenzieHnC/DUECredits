@@ -2,7 +2,7 @@ import {Item, ArmorItem} from '../models';
 import SQLite from 'react-native-sqlite-storage';
 
 export const getDBConnection = async () => {
-  return SQLite.openDatabase({name: 'SWRPG.db', createFromLocation : '~www/SWRPG.db'});
+  return SQLite.openDatabase({name: 'SWRPG.db', createFromLocation : 1});
 };
 
 SQLite.enablePromise(true);
@@ -11,11 +11,13 @@ const getItems = async (db: SQLite.SQLiteDatabase, tableName:String): Promise<It
   try {
     const items: Item[] = [];
     const results = await db.executeSql(
-        `SELECT restricted as restricted,
+        `SELECT item_type as item_type,
+          restricted as restricted,
           name as name,
           price as price,
           rarity as rarity,
-          notes as notes
+          notes as notes,
+          is_unique as is_unique
       FROM ${tableName}`);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
@@ -30,9 +32,8 @@ const getItems = async (db: SQLite.SQLiteDatabase, tableName:String): Promise<It
 };
 
 
-export const getArmorItems = async (db: SQLite.SQLiteDatabase): Promise<ArmorItem[]> => {
+export const getArmorItems = async (db: SQLite.SQLiteDatabase, tableName: String): Promise<ArmorItem[]> => {
   try {
-    const tableName = 'ARMOR';
     const itemProps = await getItems(db, tableName);
     const items: ArmorItem[] = [];
     const results = await db.executeSql(
@@ -41,7 +42,7 @@ export const getArmorItems = async (db: SQLite.SQLiteDatabase): Promise<ArmorIte
           soak as soak,
           encumbrance as encumbrance,
           hardpoints as hardpoints
-      FROM ${tableName}`);
+      FROM Armor`);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
