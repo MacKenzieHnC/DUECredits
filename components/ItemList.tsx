@@ -2,7 +2,6 @@ import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
@@ -72,15 +71,30 @@ export const ItemList: React.FC<{
   items: ArmorList | WeaponsList | undefined;
 }> = ({items}) => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  var name = '';
+  switch (items.itemType) {
+    case 1:
+      name = 'Armor';
+      break;
+    case 7:
+      name = 'Weapons';
+      break;
+    default:
+      name = 'Whoopsie!';
+      break;
+  }
+
   if (items === undefined) {
     return <View />;
   } else {
     return (
       <SafeAreaView>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <ScrollView
+          stickyHeaderIndices={[0]}
+          showsVerticalScrollIndicator={true}>
           <View style={[styles.appTitleView]}>
-            <Text style={styles.appTitleText}> List</Text>
+            <Text style={styles.appTitleText}>{name}</Text>
           </View>
           {getComponents(items)}
         </ScrollView>
@@ -91,9 +105,12 @@ export const ItemList: React.FC<{
 
 const styles = StyleSheet.create({
   appTitleView: {
-    marginVertical: 20,
+    flex: 1,
     justifyContent: 'center',
     flexDirection: 'row',
+    backgroundColor: '#000',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   appTitleText: {
     fontSize: 24,

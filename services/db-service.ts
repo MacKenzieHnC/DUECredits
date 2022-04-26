@@ -186,7 +186,7 @@ export const getWeaponItems = async (
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
-        weaponsLists[item.category-1].items.push!({
+        weaponsLists[item.category - 1].items.push!({
           key: item.key,
           itemProps: itemProps[index],
           category: item.category,
@@ -208,7 +208,6 @@ export const getWeaponItems = async (
       effects: effects,
       items: weaponsLists,
     };
-
   } catch (error) {
     console.error(error);
     throw Error('Failed to get items !!!');

@@ -16,11 +16,14 @@ export const ItemComponent: React.FC<{
           {itemProps.name}
         </Text>
         <View>{childProps}</View>
-        {itemProps.notes !== '' &&
-        <View style={styles.itemTextContainer}>
-          <Text>{'Notes: '}{notes}</Text>
-        </View>
-        }
+        {itemProps.notes !== '' && (
+          <View style={styles.itemTextContainer}>
+            <Text>
+              {'Notes: '}
+              {notes}
+            </Text>
+          </View>
+        )}
       </View>
       <View style={styles.spacer} />
       <View style={styles.priceContainer}>

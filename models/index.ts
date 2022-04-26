@@ -10,7 +10,7 @@ export type Item = {
 export type ArmorList = {
   itemType: 1;
   items: ArmorItem[];
-}
+};
 export type ArmorItem = {
   itemProps: Item;
   key: number;
@@ -35,7 +35,7 @@ export type WeaponCategory = {
 export type WeaponCategoryList = {
   category: number;
   items: WeaponItem[];
-}
+};
 export type WeaponSkill = {
   key: number;
   skill: String;
