@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SimpleAccordion} from 'react-native-simple-accordion';
 import {ArmorList, WeaponsList} from '../models';
 import {ArmorItemComponent} from './ArmorItem';
@@ -70,32 +63,12 @@ function getWeaponComponents(weaponsList: WeaponsList) {
 export const ItemList: React.FC<{
   items: ArmorList | WeaponsList | undefined;
 }> = ({items}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  var name = '';
-  switch (items.itemType) {
-    case 1:
-      name = 'Armor';
-      break;
-    case 7:
-      name = 'Weapons';
-      break;
-    default:
-      name = 'Whoopsie!';
-      break;
-  }
-
   if (items === undefined) {
     return <View />;
   } else {
     return (
       <SafeAreaView>
-        <ScrollView
-          stickyHeaderIndices={[0]}
-          showsVerticalScrollIndicator={true}>
-          <View style={[styles.appTitleView]}>
-            <Text style={styles.appTitleText}>{name}</Text>
-          </View>
+        <ScrollView showsVerticalScrollIndicator={true}>
           {getComponents(items)}
         </ScrollView>
       </SafeAreaView>

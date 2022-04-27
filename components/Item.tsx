@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 10,
     backgroundColor: 'indigo',
-    marginHorizontal: 20,
+    marginHorizontal: 5,
     borderRadius: 10,
     borderColor: 'black',
     borderWidth: 1,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   spacer: {
     display: 'flex',
-    flex: 60,
+    flex: 1,
   },
   itemTextContainer: {
     justifyContent: 'center',

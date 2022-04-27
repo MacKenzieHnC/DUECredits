@@ -8,12 +8,10 @@
  * @format
  */
 import React from 'react';
-import {useColorScheme} from 'react-native';
 import {Shop} from './components/Shop';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return <Shop shop={'Items'} />;
+  return <Shop shopTableName={'Items'} />;
 };
 
 export default App;
