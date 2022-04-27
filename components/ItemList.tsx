@@ -1,15 +1,16 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SimpleAccordion} from 'react-native-simple-accordion';
+import {ITEM_TYPE} from '../constants/enum';
 import {ArmorList, WeaponsList} from '../models';
 import {ArmorItemComponent} from './ArmorItem';
 import {WeaponItemComponent} from './WeaponItem';
 
 function getComponents(items: ArmorList | WeaponsList) {
   switch (items.itemType) {
-    case 1:
+    case ITEM_TYPE.Armor:
       return getArmorComponents(items as ArmorList);
-    case 7:
+    case ITEM_TYPE.Weapons:
       return getWeaponComponents(items as WeaponsList);
     default:
       return (

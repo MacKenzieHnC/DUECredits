@@ -10,6 +10,7 @@ import {
   WeaponCategoryList,
 } from '../models';
 import SQLite from 'react-native-sqlite-storage';
+import {ITEM_TYPE} from '../constants/enum';
 
 export const getDBConnection = async () => {
   return SQLite.openDatabase({
@@ -23,7 +24,7 @@ SQLite.enablePromise(true);
 
 const getItems = async (
   db: SQLite.SQLiteDatabase,
-  itemType: String,
+  itemType: number,
   parentTable: String,
 ): Promise<Item[]> => {
   try {
@@ -34,11 +35,14 @@ const getItems = async (
           i.price as price,
           i.rarity as rarity,
           i.notes as notes,
-          i.is_unique as is_unique
-      FROM ${parentTable} AS pt
-      JOIN ITEMS i ON pt.Key = i.Key
-      JOIN Item_Type AS it on i.Item_type = it.key
-      WHERE it.Type = "${itemType}"`,
+          i.is_unique as is_unique 
+        ${
+          parentTable === 'Items'
+            ? 'FROM ITEMS i '
+            : `FROM ${parentTable} AS pt JOIN ITEMS i ON pt.Key = i.Key `
+        } 
+          JOIN Item_Type AS it on i.Item_type = it.key
+          WHERE i.Item_Type = ${itemType}`,
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
@@ -57,7 +61,7 @@ export const getArmorItems = async (
   tableName: String,
 ): Promise<ArmorList> => {
   try {
-    const itemProps = await getItems(db, 'Armor', tableName);
+    const itemProps = await getItems(db, ITEM_TYPE.Armor, tableName);
     const items: ArmorItem[] = [];
     const results = await db.executeSql(
       `SELECT item as key,
@@ -81,7 +85,7 @@ export const getArmorItems = async (
       }
     });
     return {
-      itemType: 1,
+      itemType: ITEM_TYPE.Armor,
       items: items,
     };
   } catch (error) {
@@ -164,7 +168,7 @@ export const getWeaponItems = async (
     });
 
     // GET WEAPONS
-    const itemProps = await getItems(db, 'Weapons', tableName);
+    const itemProps = await getItems(db, ITEM_TYPE.Weapons, tableName);
     const weaponsLists: WeaponCategoryList[] = Array(categories.length);
     for (let i = 0; i < weaponsLists.length; i++) {
       weaponsLists[i] = {
@@ -186,7 +190,7 @@ export const getWeaponItems = async (
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
-        weaponsLists[item.category - 1].items.push!({
+        weaponsLists[item.category].items.push!({
           key: item.key,
           itemProps: itemProps[index],
           category: item.category,
@@ -201,7 +205,7 @@ export const getWeaponItems = async (
     });
 
     return {
-      itemType: 7,
+      itemType: ITEM_TYPE.Weapons,
       categories: categories,
       skills: skills,
       ranges: ranges,

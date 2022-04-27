@@ -8,7 +8,7 @@ export type Item = {
   unique: boolean;
 };
 export type ArmorList = {
-  itemType: 1;
+  itemType: number;
   items: ArmorItem[];
 };
 export type ArmorItem = {
@@ -21,7 +21,7 @@ export type ArmorItem = {
 };
 
 export type WeaponsList = {
-  itemType: 7;
+  itemType: number;
   categories: WeaponCategory[];
   skills: WeaponSkill[];
   ranges: WeaponRange[];
