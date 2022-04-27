@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {SimpleAccordion} from 'react-native-simple-accordion';
 import {ITEM_TYPE} from '../constants/enum';
 import {ArmorList, WeaponsList} from '../models';
@@ -76,18 +76,3 @@ export const ItemList: React.FC<{
     );
   }
 };
-
-const styles = StyleSheet.create({
-  appTitleView: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#000',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-  },
-  appTitleText: {
-    fontSize: 24,
-    fontWeight: '800',
-  },
-});

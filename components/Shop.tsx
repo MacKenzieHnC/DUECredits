@@ -1,13 +1,11 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {ArmorList, WeaponsList} from '../models';
 import {
   getDBConnection,
   getArmorItems,
   getWeaponItems,
 } from '../services/db-service';
-import {ShopIndex} from './ShopIndex';
 import {NavigationContainer} from '@react-navigation/native';
 import {ItemList} from './ItemList';
 
@@ -50,7 +48,3 @@ export const Shop = ({shopTableName}: {shopTableName: String}) => {
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  shopContainerView: {flex: 1, flexDirection: 'row'},
-});
