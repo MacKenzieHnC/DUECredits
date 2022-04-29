@@ -8,7 +8,6 @@ import {
 } from '../services/db-service';
 import {NavigationContainer} from '@react-navigation/native';
 import {ItemList} from './ItemList';
-import {View} from 'react-native';
 
 export const Inventory = ({
   inventoryTableName,
