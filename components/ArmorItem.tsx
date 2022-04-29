@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {ArmorItem, Item} from '../models';
+import {ArmorItem, Item} from '../models/ItemIndex';
 import {ItemComponent} from './Item';
 export const ArmorItemComponent: React.FC<{
   armorItem: ArmorItem;

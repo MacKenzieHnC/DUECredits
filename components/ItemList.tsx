@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {SimpleAccordion} from 'react-native-simple-accordion';
 import {ITEM_TYPE} from '../constants/enum';
-import {ArmorList, WeaponsList} from '../models';
+import {ArmorList, WeaponsList} from '../models/ItemIndex';
 import {ArmorItemComponent} from './ArmorItem';
 import {WeaponItemComponent} from './WeaponItem';
 

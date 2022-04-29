@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Item} from '../models';
+import {Item} from '../models/ItemIndex';
 export const ItemComponent: React.FC<{
   itemProps: Item;
   childProps: React.ReactElement;

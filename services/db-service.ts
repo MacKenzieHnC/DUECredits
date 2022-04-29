@@ -8,7 +8,7 @@ import {
   WeaponRange,
   WeaponEffect,
   WeaponCategoryList,
-} from '../models';
+} from '../models/ItemIndex';
 import SQLite from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
 

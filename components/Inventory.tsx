@@ -1,6 +1,6 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React, {useCallback, useEffect, useState} from 'react';
-import {ArmorList, WeaponsList} from '../models';
+import {ArmorList, WeaponsList} from '../models/ItemIndex';
 import {
   getDBConnection,
   getArmorItems,
