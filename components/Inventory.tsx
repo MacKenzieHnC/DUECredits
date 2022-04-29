@@ -8,8 +8,13 @@ import {
 } from '../services/db-service';
 import {NavigationContainer} from '@react-navigation/native';
 import {ItemList} from './ItemList';
+import {View} from 'react-native';
 
-export const Shop = ({shopTableName}: {shopTableName: String}) => {
+export const Inventory = ({
+  inventoryTableName,
+}: {
+  inventoryTableName: String;
+}) => {
   const [armorItems, setArmorItems] = useState<ArmorList>();
   const [weaponItems, setWeaponItems] = useState<WeaponsList>();
   const Drawer = createDrawerNavigator();
@@ -19,18 +24,18 @@ export const Shop = ({shopTableName}: {shopTableName: String}) => {
       const db = await getDBConnection();
 
       // Armor
-      const storedArmorItems = await getArmorItems(db, shopTableName);
+      const storedArmorItems = await getArmorItems(db, inventoryTableName);
       setArmorItems(storedArmorItems);
 
       // Weapons
-      const storedWeaponItems = await getWeaponItems(db, shopTableName);
+      const storedWeaponItems = await getWeaponItems(db, inventoryTableName);
       setWeaponItems(storedWeaponItems);
 
       // End database calls
     } catch (error) {
       console.error(error);
     }
-  }, [shopTableName]);
+  }, [inventoryTableName]);
   useEffect(() => {
     loadDataCallback();
   }, [loadDataCallback]);

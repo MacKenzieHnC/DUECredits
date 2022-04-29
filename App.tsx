@@ -7,49 +7,14 @@
  *
  * @format
  */
-import React, {useState} from 'react';
-import {Button, Text, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {DiceRoll, DicePool, getDiceRoll} from './Dice';
-
-const randomRoll = (pool: DicePool) => {
-  const roll = getDiceRoll(pool);
-
-  return roll;
-};
+import React from 'react';
+import {SafeAreaView} from 'react-navigation';
+import {Inventory} from './components/Inventory';
 
 const App = () => {
-  const [roll, setRoll] = useState<DiceRoll>({
-    successes: 1,
-    advantages: 1,
-    triumphs: 1,
-    failures: 1,
-    threats: 1,
-    despairs: 1,
-  });
-
-  const pool: DicePool = {
-    boosts: 1,
-    abilities: 2,
-    proficiencies: 3,
-    setbacks: 4,
-    difficulties: 5,
-    challenges: 6,
-  };
   return (
-    <SafeAreaView>
-      <View>
-        <Text>Successes: {roll.successes}</Text>
-        <Text>Advantages: {roll.advantages}</Text>
-        <Text>Triumphs: {roll.triumphs}</Text>
-
-        <Text>Failures: {roll.failures}</Text>
-        <Text>Threats: {roll.threats}</Text>
-        <Text>Despairs: {roll.despairs}</Text>
-      </View>
-      <View>
-        <Button title="Reroll" onPress={() => setRoll(randomRoll(pool))} />
-      </View>
+    <SafeAreaView style={{flex: 1}}>
+      <Inventory inventoryTableName={'Items'} />
     </SafeAreaView>
   );
 };
