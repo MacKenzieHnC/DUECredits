@@ -9,6 +9,7 @@ export type inventoryRules = {
   general: generalRules;
   armor: {
     general: generalRules;
+    limit: 'limit' | 'any' | 'none';
     defense: number[] | 'any';
     soak: number[] | 'any';
     encumbrance: number[] | 'any';
@@ -16,6 +17,7 @@ export type inventoryRules = {
   };
   weapons: {
     general: generalRules;
+    limit: 'limit' | 'any' | 'none';
     category: number[] | 'any'; // Key from db
     skill: number[] | 'any'; // Key from db
     damage: number[] | 'any';

@@ -1,5 +1,5 @@
 import {Picker} from '@react-native-picker/picker';
-import {HStack, Text, View} from 'native-base';
+import {HStack, Spacer, Text, View} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import {generalRules, inventoryRules} from '../models/InventoryRulesIndex';
@@ -136,7 +136,7 @@ const NumericOption: React.FC<{
 // Component for shared values among items (restricted, price, etc.)
 const GeneralRulesComponent: React.FC<{
   title: string;
-  options: inventoryRules;
+  options: generalRules;
   setOptions: Function;
 }> = ({title, options, setOptions}) => {
   const childComponent = (
@@ -145,35 +145,29 @@ const GeneralRulesComponent: React.FC<{
       <BooleanOption
         title={'Restricted'}
         options={options}
-        state={options.general.restricted}
+        state={options.restricted}
         setState={(restricted: boolean | 'any') =>
-          setOptions({
-            ...options,
-            general: {...options.general, restricted: restricted},
-          })
+          setOptions({...options, restricted: restricted})
         }
       />
       {/* Price */}
       <NumericOption
         title={'Price'}
         options={options}
-        state={options.general.price}
+        state={options.price}
         setState={(price: number[] | 'any') =>
-          setOptions({
-            ...options,
-            general: {...options.general, price: price},
-          })
+          setOptions({...options, price: price})
         }
       />
       {/* Rarity */}
       <NumericOption
         title={'Rarity'}
         options={options}
-        state={options.general.rarity}
+        state={options.rarity}
         setState={(rarity: number[] | 'any') =>
           setOptions({
             ...options,
-            general: {...options.general, rarity: rarity},
+            general: {...options, rarity: rarity},
           })
         }
       />
@@ -181,12 +175,9 @@ const GeneralRulesComponent: React.FC<{
       <BooleanOption
         title={'Unique'}
         options={options}
-        state={options.general.is_unique}
+        state={options.is_unique}
         setState={(is_unique: boolean | 'any') =>
-          setOptions({
-            ...options,
-            general: {...options.general, is_unique: is_unique},
-          })
+          setOptions({...options, is_unique: is_unique})
         }
       />
     </View>
@@ -195,12 +186,36 @@ const GeneralRulesComponent: React.FC<{
     <OptionComponent
       title={title}
       options={options}
-      setOption={(general: generalRules) =>
-        setOptions({...options, general: general})
-      }
+      setOption={setOptions}
       defaultOption={defaultGeneralOptions}
       anyOption={anyOptions.general}
       canBeNone={false}
+      childComponent={childComponent}
+    />
+  );
+};
+
+const ArmorRulesComponent: React.FC<{
+  options: inventoryRules['armor'];
+  setOptions: Function;
+}> = ({options, setOptions}) => {
+  const childComponent = (
+    <GeneralRulesComponent
+      title={'General Rules'}
+      options={options.general}
+      setOptions={(general: generalRules) =>
+        setOptions({...options, general: general})
+      }
+    />
+  );
+  return (
+    <OptionComponent
+      title={'Armor'}
+      options={options}
+      setOption={setOptions}
+      defaultOption={defaultOptions.armor}
+      anyOption={anyOptions.armor}
+      canBeNone={true}
       childComponent={childComponent}
     />
   );
@@ -216,6 +231,7 @@ const defaultGeneralOptions: generalRules = {
 const defaultOptions: inventoryRules = {
   general: defaultGeneralOptions,
   armor: {
+    limit: 'any',
     general: defaultGeneralOptions,
     defense: 'any',
     soak: 'any',
@@ -223,6 +239,7 @@ const defaultOptions: inventoryRules = {
     hardpoints: 'any',
   },
   weapons: {
+    limit: 'any',
     general: defaultGeneralOptions,
     category: 'any',
     skill: 'any',
@@ -247,13 +264,29 @@ export const InventoryOptions: React.FC<{}> = () => {
       </View>
       <GeneralRulesComponent
         title={'General Rules'}
-        options={options}
-        setOptions={setOptions}
+        options={options.general}
+        setOptions={(general: generalRules) =>
+          setOptions({...options, general: general})
+        }
+      />
+      <ArmorRulesComponent
+        options={options.armor}
+        setOptions={(armor: inventoryRules['armor']) =>
+          setOptions({...options, armor: armor})
+        }
       />
       <Text>General Restricted: {options.general.restricted.toString()}</Text>
       <Text>General Price: {options.general.price.toString()}</Text>
       <Text>General Rarity: {options.general.rarity.toString()}</Text>
       <Text>General Unique: {options.general.is_unique.toString()}</Text>
+      <Spacer />
+      <Text>Armor Limit: {options.armor.limit.toString()}</Text>
+      <Text>
+        Armor Restricted: {options.armor.general.restricted.toString()}
+      </Text>
+      <Text>Armor Price: {options.armor.general.price.toString()}</Text>
+      <Text>Armor Rarity: {options.armor.general.rarity.toString()}</Text>
+      <Text>Armor Unique: {options.armor.general.is_unique.toString()}</Text>
     </View>
   );
 };
