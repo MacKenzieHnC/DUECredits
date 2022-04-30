@@ -1,11 +1,12 @@
 import {Picker} from '@react-native-picker/picker';
+import {HStack, Text, View} from 'native-base';
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import {generalRules, inventoryRules} from '../models/InventoryRulesIndex';
 
 // Generic shared component between options
 const OptionComponent: React.FC<{
-  title: String;
+  title: string;
   limitOption: boolean;
   setLimitOption: Function;
   setOption: Function;
@@ -30,9 +31,9 @@ const OptionComponent: React.FC<{
   );
 };
 
-// Specialized component for restriction
+// Specialized component for boolean options (is restricted/unique)
 const BooleanOption: React.FC<{
-  title: String;
+  title: string;
   state: boolean | 'any';
   setState: Function;
 }> = ({title, state, setState}) => {
@@ -62,32 +63,106 @@ const BooleanOption: React.FC<{
   );
 };
 
+// Specialized component for numeric options (price, rarity, etc.)
+const NumericOption: React.FC<{
+  title: string;
+  state: number[] | 'any';
+  setState: Function;
+}> = ({title, state, setState}) => {
+  const [isLimited, setLimited] = useState(false);
+  const defaultOption = [0, 1000000000000];
+  return (
+    <View style={styles.optionsComponent}>
+      <OptionComponent
+        title={title}
+        limitOption={isLimited}
+        setLimitOption={setLimited}
+        setOption={setState}
+        defaultOption={defaultOption}
+      />
+      {isLimited ? (
+        <HStack style={{flexDirection: 'row'}}>
+          <View width="25%">
+            <Text>Min:</Text>
+            <TextInput
+              keyboardType="numeric"
+              placeholder={'MIN'}
+              onChangeText={itemValue =>
+                setState([parseInt(itemValue, 10), state[1]])
+              }
+            />
+          </View>
+          <View width="25%">
+            <Text>Max:</Text>
+            <TextInput
+              keyboardType="numeric"
+              placeholder={'MAX'}
+              onChangeText={itemValue =>
+                setState([state[0], parseInt(itemValue, 10)])
+              }
+            />
+          </View>
+        </HStack>
+      ) : (
+        <View />
+      )}
+    </View>
+  );
+};
+
 // Component for shared values among items (restricted, price, etc.)
 const GeneralRulesComponent: React.FC<{
-  options: generalRules;
+  options: inventoryRules;
   setOptions: Function;
 }> = ({options, setOptions}) => {
   return (
     <View>
-      {/* General Restricted */}
+      {/* Restricted */}
       <View>
         <BooleanOption
           title={'Restricted'}
-          state={options.restricted}
-          setState={setOptions}
+          state={options.general.restricted}
+          setState={(restricted: boolean | 'any') =>
+            setOptions({
+              ...options,
+              general: {...options.general, restricted: restricted},
+            })
+          }
+        />
+        {/* Price */}
+        <NumericOption
+          title={'Price'}
+          state={options.general.price}
+          setState={(price: number[] | 'any') =>
+            setOptions({
+              ...options,
+              general: {...options.general, price: price},
+            })
+          }
+        />
+        {/* Rarity */}
+        <NumericOption
+          title={'Rarity'}
+          state={options.general.rarity}
+          setState={(rarity: number[] | 'any') =>
+            setOptions({
+              ...options,
+              general: {...options.general, rarity: rarity},
+            })
+          }
         />
       </View>
     </View>
   );
 };
 
+// TODO: Load these in from database
 const defaultGeneralOptions: generalRules = {
   restricted: 'any',
   price: 'any',
   rarity: 'any',
   is_unique: 'any',
 };
-
 const defaultOptions: inventoryRules = {
   general: defaultGeneralOptions,
   armor: {
@@ -117,18 +192,10 @@ export const InventoryOptions: React.FC<{}> = () => {
   return (
     <View style={styles.optionsContainer}>
       <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>Options</Text>
+        <Text>Options</Text>
       </View>
-      <GeneralRulesComponent
-        options={options.general}
-        setOptions={(restricted: boolean | 'any') =>
-          setOptions({
-            ...options,
-            general: {...options.general, restricted: restricted},
-          })
-        }
-      />
-      <Text>{options.general.restricted.toString()}</Text>
+      <GeneralRulesComponent options={options} setOptions={setOptions} />
+      <Text>{options.general.price.toString()}</Text>
     </View>
   );
 };

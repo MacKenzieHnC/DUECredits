@@ -2,7 +2,7 @@ export type generalRules = {
   restricted: boolean | 'any';
   price: number[] | 'any';
   rarity: number[] | 'any';
-  is_unique: true | false | 'any';
+  is_unique: boolean | 'any';
 };
 
 export type inventoryRules = {
