@@ -1,6 +1,5 @@
+import {FlatList, ScrollView, Text, View} from 'native-base';
 import React from 'react';
-
-import {FlatList, View, ScrollView, Text, Accordion} from 'native-base';
 import {SimpleAccordion} from 'react-native-simple-accordion';
 import {ITEM_TYPE} from '../constants/enum';
 import {ArmorList, WeaponsList} from '../models/ItemIndex';

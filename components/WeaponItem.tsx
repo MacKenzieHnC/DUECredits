@@ -1,7 +1,6 @@
-import {HStack, VStack, Text} from 'native-base';
+import {HStack, Text, VStack} from 'native-base';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {WeaponItem, Item} from '../models/ItemIndex';
+import {WeaponItem} from '../models/ItemIndex';
 import {ItemComponent} from './Item';
 
 interface WeaponItemProps {
@@ -26,27 +25,3 @@ export const WeaponItemComponent = ({item}: WeaponItemProps) => {
     </ItemComponent>
   );
 };
-const styles = StyleSheet.create({
-  weaponItemContainer: {
-    marginTop: 10,
-    paddingHorizontal: 24,
-    backgroundColor: 'deepskyblue',
-    marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-  weaponItemTextContainer: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '400',
-  },
-  spacer: {
-    marginLeft: 20,
-    marginRight: 20,
-  },
-});
