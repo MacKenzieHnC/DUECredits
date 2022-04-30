@@ -1,5 +1,5 @@
 export type Item = {
-  restricted: boolean;
+  restricted: 'TRUE' | 'FALSE';
   item_type: number;
   name: string;
   price: number;
@@ -30,7 +30,7 @@ export type WeaponsList = {
 };
 export type WeaponCategory = {
   key: number;
-  category: String;
+  category: string;
 };
 export type WeaponCategoryList = {
   category: number;
@@ -38,11 +38,11 @@ export type WeaponCategoryList = {
 };
 export type WeaponSkill = {
   key: number;
-  skill: String;
+  skill: string;
 };
 export type WeaponRange = {
   key: number;
-  range: String;
+  range: string;
 };
 export type WeaponItem = {
   itemProps: Item;
@@ -50,16 +50,16 @@ export type WeaponItem = {
   category: number;
   skill: number;
   damage: number;
-  crit: String;
+  crit: string;
   range: number;
   encumbrance: number;
   hardpoints: number;
 };
 export type WeaponEffect = {
   key: number;
-  effect: String;
+  effect: string;
 };
 export type AppliedWeaponEffect = {
   effect: number;
-  modifier: String;
+  modifier: string;
 };

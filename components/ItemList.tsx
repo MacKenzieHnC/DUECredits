@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+
+import {FlatList, View, ScrollView, Text, Accordion} from 'native-base';
 import {SimpleAccordion} from 'react-native-simple-accordion';
 import {ITEM_TYPE} from '../constants/enum';
 import {ArmorList, WeaponsList} from '../models/ItemIndex';
@@ -9,7 +10,12 @@ import {WeaponItemComponent} from './WeaponItem';
 function getComponents(items: ArmorList | WeaponsList) {
   switch (items.itemType) {
     case ITEM_TYPE.Armor:
-      return getArmorComponents(items as ArmorList);
+      return (
+        <FlatList
+          data={(items as ArmorList).items}
+          renderItem={({item}) => <ArmorItemComponent item={item} />}
+        />
+      );
     case ITEM_TYPE.Weapons:
       return getWeaponComponents(items as WeaponsList);
     default:
@@ -21,44 +27,26 @@ function getComponents(items: ArmorList | WeaponsList) {
   }
 }
 
-function getArmorComponents(items: ArmorList) {
-  return items.items.map(item => (
-    <ArmorItemComponent
-      itemProps={item.itemProps}
-      armorItem={item}
-      key={item.key}
-    />
-  ));
-}
-
 function getWeaponComponents(weaponsList: WeaponsList) {
   const categories = weaponsList.categories;
-  const mySections = [];
 
-  weaponsList.items.map(category =>
-    mySections.push({
-      key: category.category,
-      title: categories[category.category].category,
-      content: category.items.map(item => (
-        <WeaponItemComponent
-          itemProps={item.itemProps}
-          weaponItem={item}
-          key={item.key}
+  return (
+    <ScrollView>
+      {weaponsList.items.map(category => (
+        <SimpleAccordion
+          key={category.category}
+          viewInside={
+            <>
+              {category.items.map(item => (
+                <WeaponItemComponent item={item} key={item.key} />
+              ))}
+            </>
+          }
+          title={categories[category.category].category}
         />
-      )),
-    }),
+      ))}
+    </ScrollView>
   );
-
-  var accordion = mySections.map(section => (
-    <SimpleAccordion
-      key={section.key}
-      viewInside={section.content}
-      title={section.title}
-      startCollapsed={false}
-    />
-  ));
-
-  return accordion;
 }
 
 export const ItemList: React.FC<{
@@ -67,12 +55,6 @@ export const ItemList: React.FC<{
   if (items === undefined) {
     return <View />;
   } else {
-    return (
-      <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={true}>
-          {getComponents(items)}
-        </ScrollView>
-      </SafeAreaView>
-    );
+    return <View>{getComponents(items)}</View>;
   }
 };

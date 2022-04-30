@@ -1,20 +1,16 @@
-import React, {useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
-import {SafeAreaView} from 'react-navigation';
-import {InventoryOptions} from './components/InventoryOptions';
+import {NativeBaseProvider, View} from 'native-base';
+import React from 'react';
+import {Inventory} from './components/Inventory';
+// import {InventoryOptions} from './components/InventoryOptions';
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.navigationContainer}>
-      <InventoryOptions />
-    </SafeAreaView>
+    <NativeBaseProvider>
+      <View p={1} flex="1">
+        <Inventory inventoryTableName={'items'} />
+      </View>
+    </NativeBaseProvider>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  navigationContainer: {
-    flex: 1,
-  },
-});
