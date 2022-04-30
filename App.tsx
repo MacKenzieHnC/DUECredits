@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {InventoryOptions} from './components/InventoryOptions';
 

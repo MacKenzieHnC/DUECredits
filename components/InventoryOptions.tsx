@@ -1,6 +1,7 @@
 import {Picker} from '@react-native-picker/picker';
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {generalRules, inventoryRules} from '../models/InventoryRulesIndex';
 
 // Generic shared component between options
 const OptionComponent: React.FC<{
@@ -30,46 +31,29 @@ const OptionComponent: React.FC<{
 };
 
 // Specialized component for restriction
-const LimitRestrictedComponent: React.FC<{
-  restricted: any;
-  setRestricted: Function;
-}> = ({restricted, setRestricted}) => {
+const BooleanOption: React.FC<{
+  title: String;
+  state: boolean | 'any';
+  setState: Function;
+}> = ({title, state, setState}) => {
+  const [isLimited, setLimited] = useState(false);
   return (
-    <View style={styles.option}>
-      <Picker
-        style={styles.picker}
-        selectedValue={restricted}
-        onValueChange={itemValue => setRestricted(itemValue)}>
-        <Picker.Item label={'Nonrestricted Only'} value={false} />
-        <Picker.Item label={'Restricted Only'} value={true} />
-      </Picker>
-    </View>
-  );
-};
-
-// Component for shared values among items (restricted, price, etc.)
-const GeneralRulesComponent: React.FC<{
-  generalRestricted: any;
-  setGeneralRestricted: Function;
-  defaultGeneralRestricted: any;
-}> = ({generalRestricted, setGeneralRestricted, defaultGeneralRestricted}) => {
-  const [limitGeneralRestricted, setLimitGeneralRestricted] = useState(false);
-  return (
-    <View>
-      {/* General Restricted */}
+    <View style={styles.optionsComponent}>
+      <OptionComponent
+        title={title}
+        limitOption={isLimited}
+        setLimitOption={setLimited}
+        setOption={setState}
+        defaultOption={false}
+      />
       <View>
-        <OptionComponent
-          title="Restricted"
-          limitOption={limitGeneralRestricted}
-          setLimitOption={setLimitGeneralRestricted}
-          setOption={setGeneralRestricted}
-          defaultOption={defaultGeneralRestricted}
-        />
-        {limitGeneralRestricted ? (
-          <LimitRestrictedComponent
-            restricted={generalRestricted}
-            setRestricted={setGeneralRestricted}
-          />
+        {isLimited ? (
+          <Picker
+            selectedValue={state}
+            onValueChange={itemValue => setState(itemValue)}>
+            <Picker.Item label={'Not ' + title + ' Only'} value={false} />
+            <Picker.Item label={title + ' Only'} value={true} />
+          </Picker>
         ) : (
           <View />
         )}
@@ -78,34 +62,79 @@ const GeneralRulesComponent: React.FC<{
   );
 };
 
+// Component for shared values among items (restricted, price, etc.)
+const GeneralRulesComponent: React.FC<{
+  options: generalRules;
+  setOptions: Function;
+}> = ({options, setOptions}) => {
+  return (
+    <View>
+      {/* General Restricted */}
+      <View>
+        <BooleanOption
+          title={'Restricted'}
+          state={options.restricted}
+          setState={setOptions}
+        />
+      </View>
+    </View>
+  );
+};
+
+const defaultGeneralOptions: generalRules = {
+  restricted: 'any',
+  price: 'any',
+  rarity: 'any',
+  is_unique: 'any',
+};
+
+const defaultOptions: inventoryRules = {
+  general: defaultGeneralOptions,
+  armor: {
+    general: defaultGeneralOptions,
+    defense: 'any',
+    soak: 'any',
+    encumbrance: 'any',
+    hardpoints: 'any',
+  },
+  weapons: {
+    general: defaultGeneralOptions,
+    category: 'any',
+    skill: 'any',
+    damage: 'any',
+    crit: 'any',
+    range: 'any',
+    encumbrance: 'any',
+    hardpoints: 'any',
+  },
+};
+
 // The main component.
 // Don't let all the variables scare you. Look at models/InventoryRulesIndex.ts to see what they all mean.
 export const InventoryOptions: React.FC<{}> = () => {
   // General options
-  const [generalRestricted, setGeneralRestricted] = useState(
-    'any' as boolean | 'any',
-  );
-  const [generalRestrictedDefault, setGeneralRestrictedDefault] =
-    useState(false);
-  const [generalPrice, setGeneralPrice] = useState('any' as 'any');
-  const [generalRarity, setGeneralRarity] = useState('any' as 'any');
-  const [generalIsUnique, setGeneralIsUnique] = useState('any' as 'any');
+  const [options, setOptions] = useState<inventoryRules>(defaultOptions);
   return (
     <View style={styles.optionsContainer}>
       <View style={styles.headerTextContainer}>
         <Text style={styles.headerText}>Options</Text>
       </View>
       <GeneralRulesComponent
-        generalRestricted={generalRestricted}
-        setGeneralRestricted={setGeneralRestricted}
-        defaultGeneralRestricted={generalRestrictedDefault}
+        options={options.general}
+        setOptions={(restricted: boolean | 'any') =>
+          setOptions({
+            ...options,
+            general: {...options.general, restricted: restricted},
+          })
+        }
       />
-      <Text>{generalRestricted.toString()}</Text>
+      <Text>{options.general.restricted.toString()}</Text>
     </View>
   );
 };
 const styles = StyleSheet.create({
   optionsContainer: {backgroundColor: 'indigo'},
+  optionsComponent: {flexDirection: 'column'},
   headerTextContainer: {margin: 10},
   headerText: {
     fontSize: 20,
@@ -113,5 +142,11 @@ const styles = StyleSheet.create({
   },
   option: {flexDirection: 'row', borderBottomWidth: 1, borderTopWidth: 1},
   optionTitle: {justifyContent: 'center', margin: 5},
-  picker: {flex: 1, borderLeftWidth: 1, borderRightWidth: 1},
+  picker: {
+    flex: 1,
+    flexDirection: 'row',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+  },
+  test: {borderWidth: 3},
 });

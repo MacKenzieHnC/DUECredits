@@ -1,11 +1,10 @@
 export type generalRules = {
-  general: {
-    restricted: true | false | 'any';
-    price: number[] | 'any';
-    rarity: number[] | 'any';
-    is_unique: true | false | 'any';
-  };
+  restricted: boolean | 'any';
+  price: number[] | 'any';
+  rarity: number[] | 'any';
+  is_unique: true | false | 'any';
 };
+
 export type inventoryRules = {
   general: generalRules;
   armor: {
