@@ -1,5 +1,5 @@
 import {HStack, Text, VStack} from 'native-base';
-import React from 'react';
+import React, {memo} from 'react';
 import {WeaponItem} from '../models/ItemIndex';
 import {ItemComponent} from './Item';
 
@@ -7,7 +7,7 @@ interface WeaponItemProps {
   item: WeaponItem;
 }
 
-export const WeaponItemComponent = ({item}: WeaponItemProps) => {
+export const WeaponItemComponent = memo(({item}: WeaponItemProps) => {
   return (
     <ItemComponent item={item}>
       <HStack space={3}>
@@ -24,4 +24,4 @@ export const WeaponItemComponent = ({item}: WeaponItemProps) => {
       </HStack>
     </ItemComponent>
   );
-};
+});
