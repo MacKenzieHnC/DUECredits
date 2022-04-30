@@ -1,5 +1,5 @@
 import {Picker} from '@react-native-picker/picker';
-import {HStack, Spacer, Text, View} from 'native-base';
+import {HStack, ScrollView, Spacer, Text, View} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import {generalRules, inventoryRules} from '../models/InventoryRulesIndex';
@@ -200,13 +200,51 @@ const ArmorRulesComponent: React.FC<{
   setOptions: Function;
 }> = ({options, setOptions}) => {
   const childComponent = (
-    <GeneralRulesComponent
-      title={'General Rules'}
-      options={options.general}
-      setOptions={(general: generalRules) =>
-        setOptions({...options, general: general})
-      }
-    />
+    <View>
+      <GeneralRulesComponent
+        title={'General Rules'}
+        options={options.general}
+        setOptions={(general: generalRules) =>
+          setOptions({...options, general: general})
+        }
+      />
+      {/* Defense */}
+      <NumericOption
+        title={'Defense'}
+        options={options}
+        state={options.defense}
+        setState={(defense: number[] | 'any') =>
+          setOptions({...options, defense: defense})
+        }
+      />
+      {/* Soak */}
+      <NumericOption
+        title={'Soak'}
+        options={options}
+        state={options.soak}
+        setState={(soak: number[] | 'any') =>
+          setOptions({...options, soak: soak})
+        }
+      />
+      {/* Encumbrance */}
+      <NumericOption
+        title={'Encumbrance'}
+        options={options}
+        state={options.encumbrance}
+        setState={(encumbrance: number[] | 'any') =>
+          setOptions({...options, encumbrance: encumbrance})
+        }
+      />
+      {/* Hardpoints */}
+      <NumericOption
+        title={'Hardpoints'}
+        options={options}
+        state={options.hardpoints}
+        setState={(hardpoints: number[] | 'any') =>
+          setOptions({...options, hardpoints: hardpoints})
+        }
+      />
+    </View>
   );
   return (
     <OptionComponent
@@ -262,31 +300,37 @@ export const InventoryOptions: React.FC<{}> = () => {
       <View style={styles.headerTextContainer}>
         <Text>Options</Text>
       </View>
-      <GeneralRulesComponent
-        title={'General Rules'}
-        options={options.general}
-        setOptions={(general: generalRules) =>
-          setOptions({...options, general: general})
-        }
-      />
-      <ArmorRulesComponent
-        options={options.armor}
-        setOptions={(armor: inventoryRules['armor']) =>
-          setOptions({...options, armor: armor})
-        }
-      />
-      <Text>General Restricted: {options.general.restricted.toString()}</Text>
-      <Text>General Price: {options.general.price.toString()}</Text>
-      <Text>General Rarity: {options.general.rarity.toString()}</Text>
-      <Text>General Unique: {options.general.is_unique.toString()}</Text>
-      <Spacer />
-      <Text>Armor Limit: {options.armor.limit.toString()}</Text>
-      <Text>
-        Armor Restricted: {options.armor.general.restricted.toString()}
-      </Text>
-      <Text>Armor Price: {options.armor.general.price.toString()}</Text>
-      <Text>Armor Rarity: {options.armor.general.rarity.toString()}</Text>
-      <Text>Armor Unique: {options.armor.general.is_unique.toString()}</Text>
+      <ScrollView>
+        <GeneralRulesComponent
+          title={'General Rules'}
+          options={options.general}
+          setOptions={(general: generalRules) =>
+            setOptions({...options, general: general})
+          }
+        />
+        <ArmorRulesComponent
+          options={options.armor}
+          setOptions={(armor: inventoryRules['armor']) =>
+            setOptions({...options, armor: armor})
+          }
+        />
+        <Text>General Restricted: {options.general.restricted.toString()}</Text>
+        <Text>General Price: {options.general.price.toString()}</Text>
+        <Text>General Rarity: {options.general.rarity.toString()}</Text>
+        <Text>General Unique: {options.general.is_unique.toString()}</Text>
+        <Spacer />
+        <Text>Armor Limit: {options.armor.limit.toString()}</Text>
+        <Text>
+          Armor Restricted: {options.armor.general.restricted.toString()}
+        </Text>
+        <Text>Armor Price: {options.armor.general.price.toString()}</Text>
+        <Text>Armor Rarity: {options.armor.general.rarity.toString()}</Text>
+        <Text>Armor Unique: {options.armor.general.is_unique.toString()}</Text>
+        <Text>Armor Defense: {options.armor.defense.toString()}</Text>
+        <Text>Armor Soak: {options.armor.soak.toString()}</Text>
+        <Text>Armor Encumbrance: {options.armor.encumbrance.toString()}</Text>
+        <Text>Armor Hardpoints: {options.armor.hardpoints.toString()}</Text>
+      </ScrollView>
     </View>
   );
 };
