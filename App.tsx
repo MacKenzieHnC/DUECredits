@@ -13,7 +13,7 @@ import {getDBConnection, getDBState} from './services/db-service';
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize database
+  // // Initialize database
   // const [db, setDB] = useState<SQLiteDatabase>();
   // const [dbState, setDBState] = useState<DBState>();
   // useEffect(() => {
@@ -35,7 +35,7 @@ const App = () => {
   //       {!dbState || !db ? (
   //         <LoadingScreen text={'INITIALIZING DATABASE...'} />
   //       ) : (
-  //         <InventoryOptions />
+  //         <InventoryOptions dbState={dbState} />
   //       )}
   //     </View>
   //   </NativeBaseProvider>

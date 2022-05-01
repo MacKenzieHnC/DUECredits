@@ -1,3 +1,5 @@
+import {ListItem} from './ItemIndex';
+
 export type generalOptions = {
   restricted: boolean | 'any';
   price: number[] | 'any';
@@ -18,11 +20,12 @@ export type inventoryOptions = {
   weapons: {
     general: generalOptions;
     limit: 'limit' | 'any' | 'none';
-    category: number[] | 'any'; // Key from db
-    skill: number[] | 'any'; // Key from db
+    categories: ListItem[] | 'any'; // Key from db
+    skills: ListItem[] | 'any'; // Key from db
     damage: number[] | 'any';
     crit: number[] | 'any';
-    range: number[] | 'any'; // Key from db
+    ranges: ListItem[] | 'any'; // Key from db
+    effects: ListItem[] | 'any'; // Key from db
     encumbrance: number[] | 'any';
     hardpoints: number[] | 'any';
   };

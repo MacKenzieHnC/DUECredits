@@ -1,12 +1,14 @@
-import {Box, ScrollView, Spacer, Text, View, VStack} from 'native-base';
+import {ScrollView, Spacer, Text, View, VStack} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   generalOptions,
   inventoryOptions,
 } from '../../models/InventoryOptionsIndex';
+import {DBState, ListItem} from '../../models/ItemIndex';
 import {ArmorOptions} from './ArmorOptons';
 import {GeneralOptions} from './GeneralOptions';
+import {WeaponOptions} from './WeaponOptions';
 
 // TODO: Load these in from database
 const defaultGeneralOptions: generalOptions = {
@@ -18,21 +20,22 @@ const defaultGeneralOptions: generalOptions = {
 const defaultOptions: inventoryOptions = {
   general: defaultGeneralOptions,
   armor: {
-    limit: 'any',
     general: defaultGeneralOptions,
+    limit: 'any',
     defense: 'any',
     soak: 'any',
     encumbrance: 'any',
     hardpoints: 'any',
   },
   weapons: {
-    limit: 'any',
     general: defaultGeneralOptions,
-    category: 'any',
-    skill: 'any',
+    limit: 'any',
+    categories: 'any',
+    skills: 'any',
     damage: 'any',
     crit: 'any',
-    range: 'any',
+    ranges: 'any',
+    effects: 'any',
     encumbrance: 'any',
     hardpoints: 'any',
   },
@@ -41,11 +44,11 @@ const anyOptions = defaultOptions;
 
 // The main component.
 // Don't let all the variables scare you. Look at models/InventoryOptionsIndex.ts to see what they all mean.
-export const InventoryOptions: React.FC<{}> = () => {
+export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
   // General options
   const [options, setOptions] = useState<inventoryOptions>(defaultOptions);
   return (
-    <ScrollView stickyHeaderIndices={[0]}>
+    <ScrollView stickyHeaderIndices={[0]} nestedScrollEnabled={true}>
       <View style={styles.headerTextContainer}>
         <Text style={styles.headerText}>Options</Text>
       </View>
@@ -75,6 +78,19 @@ export const InventoryOptions: React.FC<{}> = () => {
           defaultOptions={defaultOptions}
           anyOptions={anyOptions}
         />
+
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>Weapon Options</Text>
+        </View>
+        <WeaponOptions
+          options={options.weapons}
+          setOptions={(weapons: inventoryOptions['weapons']) =>
+            setOptions({...options, weapons: weapons})
+          }
+          defaultOptions={defaultOptions}
+          anyOptions={anyOptions}
+          dbState={dbState.weapons}
+        />
         <VStack space={2} backgroundColor={'primary.100'}>
           <Text>
             General Restricted: {options.general.restricted.toString()}
@@ -96,6 +112,14 @@ export const InventoryOptions: React.FC<{}> = () => {
           <Text>Armor Soak: {options.armor.soak.toString()}</Text>
           <Text>Armor Encumbrance: {options.armor.encumbrance.toString()}</Text>
           <Text>Armor Hardpoints: {options.armor.hardpoints.toString()}</Text>
+          <Text>
+            Weapon Categories:{' '}
+            {options.weapons.categories === 'any'
+              ? 'any'
+              : (options.weapons.categories as ListItem[]).map(
+                  item => item.item + '\t',
+                )}
+          </Text>
         </VStack>
       </VStack>
     </ScrollView>
