@@ -18,7 +18,7 @@ export const WeaponInventory = () => {
   const categories = data.categories;
 
   const items = data.items.map(weaponItem => ({
-    title: categories[weaponItem.category].category,
+    title: categories[weaponItem.category].item,
     data: weaponItem.items,
   }));
 
@@ -26,9 +26,9 @@ export const WeaponInventory = () => {
     <SectionList
       sections={items}
       stickySectionHeadersEnabled
-      keyExtractor={(weaponItem, index) => `${weaponItem.key}-${index}`}
+      keyExtractor={(weaponItem, index) => `${weaponItem.id}-${index}`}
       renderItem={({item: weaponItem}) => (
-        <WeaponItemComponent item={weaponItem} key={weaponItem.key} />
+        <WeaponItemComponent item={weaponItem} key={weaponItem.id} />
       )}
       renderSectionHeader={({section: {title}}) => (
         <Box backgroundColor="white" py={2}>

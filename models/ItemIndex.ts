@@ -7,13 +7,17 @@ export type Item = {
   notes: string;
   unique: boolean;
 };
+export type ListItem = {
+  id: number;
+  item: string;
+};
 export type ArmorList = {
   itemType: number;
   items: ArmorItem[];
 };
 export type ArmorItem = {
   itemProps: Item;
-  key: number;
+  id: number;
   defense: number;
   soak: number;
   encumbrance: number;
@@ -22,31 +26,19 @@ export type ArmorItem = {
 
 export type WeaponsList = {
   itemType: number;
-  categories: WeaponCategory[];
-  skills: WeaponSkill[];
-  ranges: WeaponRange[];
-  effects: WeaponEffect[];
+  categories: ListItem[];
+  skills: ListItem[];
+  ranges: ListItem[];
+  effects: ListItem[];
   items: WeaponCategoryList[];
-};
-export type WeaponCategory = {
-  key: number;
-  category: string;
 };
 export type WeaponCategoryList = {
   category: number;
   items: WeaponItem[];
 };
-export type WeaponSkill = {
-  key: number;
-  skill: string;
-};
-export type WeaponRange = {
-  key: number;
-  range: string;
-};
 export type WeaponItem = {
   itemProps: Item;
-  key: number;
+  id: number;
   category: number;
   skill: number;
   damage: number;
@@ -54,10 +46,6 @@ export type WeaponItem = {
   range: number;
   encumbrance: number;
   hardpoints: number;
-};
-export type WeaponEffect = {
-  key: number;
-  effect: string;
 };
 export type AppliedWeaponEffect = {
   effect: number;

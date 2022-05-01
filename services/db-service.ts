@@ -3,11 +3,8 @@ import {
   ArmorList,
   ArmorItem,
   WeaponsList,
-  WeaponCategory,
-  WeaponSkill,
-  WeaponRange,
-  WeaponEffect,
   WeaponCategoryList,
+  ListItem,
 } from '../models/ItemIndex';
 import SQLite from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
@@ -39,9 +36,9 @@ const getItems = async (
         ${
           parentTable === 'Items'
             ? 'FROM ITEMS i '
-            : `FROM ${parentTable} AS pt JOIN ITEMS i ON pt.Key = i.Key `
+            : `FROM ${parentTable} AS pt JOIN ITEMS i ON pt.id = i.id `
         } 
-          JOIN Item_Type AS it on i.Item_type = it.key
+          JOIN Item_Types AS it on i.Item_Type = it.id
           WHERE i.Item_Type = ${itemType}`,
     );
     results.forEach(result => {
@@ -64,7 +61,7 @@ export const getArmorItems = async (
     const itemProps = await getItems(db, ITEM_TYPE.Armor, tableName);
     const items: ArmorItem[] = [];
     const results = await db.executeSql(
-      `SELECT item as key,
+      `SELECT item as id,
           defense as defense, 
           soak as soak,
           encumbrance as encumbrance,
@@ -76,7 +73,7 @@ export const getArmorItems = async (
         const item = result.rows.item(index);
         items.push!({
           itemProps: itemProps[index],
-          key: item.key,
+          id: item.id,
           defense: item.defense,
           soak: item.soak,
           encumbrance: item.encumbrance,
@@ -99,73 +96,13 @@ export const getWeaponItems = async (
   tableName: String,
 ): Promise<WeaponsList> => {
   try {
-    // GET CATEGORIES
-    const categories: WeaponCategory[] = [];
-    var results = await db.executeSql(
-      `SELECT key as key,
-        category as category
-      FROM Weapon_Category`,
+    const categories: ListItem[] = await getCategoryList(
+      db,
+      'Weapon_Categories',
     );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        categories.push!({
-          key: item.key,
-          category: item.category,
-        });
-      }
-    });
-
-    // GET SKILLS
-    const skills: WeaponSkill[] = [];
-    results = await db.executeSql(
-      `SELECT key as key,
-        skill as skill
-      FROM Weapon_Skills`,
-    );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        skills.push!({
-          key: item.key,
-          skill: item.skill,
-        });
-      }
-    });
-
-    // GET RANGES
-    const ranges: WeaponRange[] = [];
-    results = await db.executeSql(
-      `SELECT key as key,
-        range as range
-      FROM Weapon_Range`,
-    );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        ranges.push!({
-          key: item.key,
-          range: item.range,
-        });
-      }
-    });
-
-    // GET EFFECTS
-    const effects: WeaponEffect[] = [];
-    results = await db.executeSql(
-      `SELECT key as key,
-        effect as effect
-      FROM Weapon_Effects`,
-    );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        effects.push!({
-          key: item.key,
-          effect: item.effect,
-        });
-      }
-    });
+    const skills: ListItem[] = await getCategoryList(db, 'Weapon_Skills');
+    const ranges: ListItem[] = await getCategoryList(db, 'Weapon_Ranges');
+    const effects: ListItem[] = await getCategoryList(db, 'Weapon_Effects');
 
     // GET WEAPONS
     const itemProps = await getItems(db, ITEM_TYPE.Weapons, tableName);
@@ -176,8 +113,8 @@ export const getWeaponItems = async (
         items: [],
       };
     }
-    results = await db.executeSql(
-      `SELECT item as key,
+    const results = await db.executeSql(
+      `SELECT item as id,
         category as category,
         skill as skill,
         damage as damage,
@@ -191,7 +128,7 @@ export const getWeaponItems = async (
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
         weaponsLists[item.category].items.push!({
-          key: item.key,
+          id: item.id,
           itemProps: itemProps[index],
           category: item.category,
           skill: item.skill,
@@ -215,5 +152,32 @@ export const getWeaponItems = async (
   } catch (error) {
     console.error(error);
     throw Error('Failed to get items !!!');
+  }
+};
+
+const getCategoryList = async (
+  db: SQLite.SQLiteDatabase,
+  tableName: string,
+) => {
+  try {
+    const list: ListItem[] = [];
+    var results = await db.executeSql(
+      `SELECT id,
+        item
+      FROM ${tableName}`,
+    );
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        const item = result.rows.item(index);
+        list.push!({
+          id: item.id,
+          item: item.item,
+        });
+      }
+    });
+    return list;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get' + tableName + ' items !!!');
   }
 };
