@@ -1,14 +1,14 @@
-export type generalRules = {
+export type generalOptions = {
   restricted: boolean | 'any';
   price: number[] | 'any';
   rarity: number[] | 'any';
   is_unique: boolean | 'any';
 };
 
-export type inventoryRules = {
-  general: generalRules;
+export type inventoryOptions = {
+  general: generalOptions;
   armor: {
-    general: generalRules;
+    general: generalOptions;
     limit: 'limit' | 'any' | 'none';
     defense: number[] | 'any';
     soak: number[] | 'any';
@@ -16,7 +16,7 @@ export type inventoryRules = {
     hardpoints: number[] | 'any';
   };
   weapons: {
-    general: generalRules;
+    general: generalOptions;
     limit: 'limit' | 'any' | 'none';
     category: number[] | 'any'; // Key from db
     skill: number[] | 'any'; // Key from db
@@ -28,7 +28,7 @@ export type inventoryRules = {
   };
 };
 
-export type shopRules = {
-  inventoryRules: inventoryRules;
+export type shopOptions = {
+  inventoryOptions: inventoryOptions;
   location: number;
 };

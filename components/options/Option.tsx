@@ -1,5 +1,5 @@
 import {Picker} from '@react-native-picker/picker';
-import {View} from 'native-base';
+import {Box, View} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 
@@ -23,39 +23,54 @@ export const Option: React.FC<{
 }) => {
   const [limitedState, setLimited] = useState('any');
   return (
-    <View style={styles.options}>
+    <Box
+      width="100%"
+      p={5}
+      rounded="md"
+      backgroundColor="primary.900"
+      mb={2}
+      borderWidth={1}
+      borderColor="primary.800">
       <View style={{flexDirection: 'row'}}>
         <View style={styles.optionTitle}>
           <Text>{title}:</Text>
         </View>
-        <Picker
-          style={styles.picker}
-          selectedValue={limitedState}
-          onValueChange={itemValue => {
-            setLimited(itemValue);
-            switch (itemValue) {
-              case 'any':
-                canBeNone
-                  ? setOption({...options, limit: 'any'})
-                  : setOption(anyOption);
-                break;
-              case 'none':
-                setOption({...options, limit: 'none'});
-                break;
-              case 'limit':
-                canBeNone
-                  ? setOption({...options, limit: 'limit'})
-                  : setOption(defaultOption);
-                break;
-            }
-          }}>
-          <Picker.Item label={'any'} value={'any'} />
-          {canBeNone ? <Picker.Item label={'none'} value={'none'} /> : false}
-          <Picker.Item label={'limit'} value={'limit'} />
-        </Picker>
+        <Box
+          flex={1}
+          p={5}
+          rounded="md"
+          mb={2}
+          borderWidth={1}
+          borderColor="primary.800">
+          <Picker
+            style={styles.picker}
+            selectedValue={limitedState}
+            onValueChange={itemValue => {
+              setLimited(itemValue);
+              switch (itemValue) {
+                case 'any':
+                  canBeNone
+                    ? setOption({...options, limit: 'any'})
+                    : setOption(anyOption);
+                  break;
+                case 'none':
+                  setOption({...options, limit: 'none'});
+                  break;
+                case 'limit':
+                  canBeNone
+                    ? setOption({...options, limit: 'limit'})
+                    : setOption(defaultOption);
+                  break;
+              }
+            }}>
+            <Picker.Item label={'any'} value={'any'} />
+            {canBeNone ? <Picker.Item label={'none'} value={'none'} /> : false}
+            <Picker.Item label={'limit'} value={'limit'} />
+          </Picker>
+        </Box>
       </View>
       {limitedState === 'limit' ? <View>{childComponent}</View> : false}
-    </View>
+    </Box>
   );
 };
 

@@ -1,4 +1,4 @@
-import {ScrollView, Spacer, Text, View} from 'native-base';
+import {Box, ScrollView, Spacer, Text, View, VStack} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
@@ -45,20 +45,28 @@ export const InventoryOptions: React.FC<{}> = () => {
   // General options
   const [options, setOptions] = useState<inventoryOptions>(defaultOptions);
   return (
-    <View style={styles.optionsContainer}>
+    <ScrollView stickyHeaderIndices={[0]}>
       <View style={styles.headerTextContainer}>
-        <Text>Options</Text>
+        <Text style={styles.headerText}>Options</Text>
       </View>
-      <ScrollView>
-        <GeneralOptions
-          title={'General Options'}
-          options={options.general}
-          setOptions={(general: generalOptions) =>
-            setOptions({...options, general: general})
-          }
-          defaultOptions={defaultOptions.general}
-          anyOptions={anyOptions.general}
-        />
+      <VStack space={3}>
+        <View>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerText}>General Options</Text>
+          </View>
+          <GeneralOptions
+            title={'General Options'}
+            options={options.general}
+            setOptions={(general: generalOptions) =>
+              setOptions({...options, general: general})
+            }
+            defaultOptions={defaultOptions.general}
+            anyOptions={anyOptions.general}
+          />
+        </View>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>Armor Options</Text>
+        </View>
         <ArmorOptions
           options={options.armor}
           setOptions={(armor: inventoryOptions['armor']) =>
@@ -67,7 +75,7 @@ export const InventoryOptions: React.FC<{}> = () => {
           defaultOptions={defaultOptions}
           anyOptions={anyOptions}
         />
-        <View>
+        <VStack space={2} backgroundColor={'primary.100'}>
           <Text>
             General Restricted: {options.general.restricted.toString()}
           </Text>
@@ -88,12 +96,20 @@ export const InventoryOptions: React.FC<{}> = () => {
           <Text>Armor Soak: {options.armor.soak.toString()}</Text>
           <Text>Armor Encumbrance: {options.armor.encumbrance.toString()}</Text>
           <Text>Armor Hardpoints: {options.armor.hardpoints.toString()}</Text>
-        </View>
-      </ScrollView>
-    </View>
+        </VStack>
+      </VStack>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
-  optionsContainer: {backgroundColor: 'indigo', marginBottom: 20},
+  headerTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    padding: 5,
+  },
+  headerText: {fontSize: 20},
+  optionsContainer: {marginBottom: 20},
   option: {flexDirection: 'row', borderBottomWidth: 1, borderTopWidth: 1},
 });

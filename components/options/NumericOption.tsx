@@ -1,4 +1,4 @@
-import {HStack, Text, View} from 'native-base';
+import {Box, HStack} from 'native-base';
 import React from 'react';
 import {TextInput} from 'react-native';
 import {Option} from './Option';
@@ -13,26 +13,38 @@ export const NumericOption: React.FC<{
   const defaultOption = [0, 1000000000000];
   const childComponent = (
     <HStack style={{flexDirection: 'row'}}>
-      <View width="25%">
-        <Text>Min:</Text>
+      <Box
+        width="50%"
+        p={5}
+        rounded="md"
+        mb={2}
+        borderWidth={1}
+        borderColor="primary.800">
         <TextInput
           keyboardType="numeric"
           placeholder={'MIN'}
           onChangeText={itemValue =>
             setState([parseInt(itemValue, 10), state[1]])
           }
+          textAlign={'center'}
         />
-      </View>
-      <View width="25%">
-        <Text>Max:</Text>
+      </Box>
+      <Box
+        width="50%"
+        p={5}
+        rounded="md"
+        mb={2}
+        borderWidth={1}
+        borderColor="primary.800">
         <TextInput
           keyboardType="numeric"
           placeholder={'MAX'}
           onChangeText={itemValue =>
             setState([state[0], parseInt(itemValue, 10)])
           }
+          textAlign={'center'}
         />
-      </View>
+      </Box>
     </HStack>
   );
   return (
