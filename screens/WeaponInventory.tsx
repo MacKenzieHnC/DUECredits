@@ -1,23 +1,32 @@
 import {Box, Heading, SectionList, Text} from 'native-base';
 import React from 'react';
 import {useQuery} from 'react-query';
+import {LoadingScreen} from '../components/LoadingScreen';
 import {WeaponItemComponent} from '../components/WeaponItem';
-import {getDBConnection, getWeaponItems} from '../services/db-service';
+import {
+  getDBConnection,
+  getDBWeaponsState,
+  getWeaponItems,
+} from '../services/db-service';
 
 export const WeaponInventory = () => {
   const {data, isLoading} = useQuery(['Inventory', 'Weapons'], async () => {
     const db = await getDBConnection();
-
-    return getWeaponItems(db, 'items');
+    const state = await getDBWeaponsState(db);
+    const list = await getWeaponItems(db, state, 'items');
+    return {
+      list: list,
+      state: state,
+    };
   });
 
   if (isLoading || !data) {
-    return <Text>Loading....</Text>;
+    return <LoadingScreen text={'Loading weapons...'} />;
   }
 
-  const categories = data.categories;
+  const categories = data.state.categories;
 
-  const items = data.items.map(weaponItem => ({
+  const items = data.list.items.map(weaponItem => ({
     title: categories[weaponItem.category].item,
     data: weaponItem.items,
   }));

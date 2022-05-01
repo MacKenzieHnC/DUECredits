@@ -26,10 +26,6 @@ export type ArmorItem = {
 
 export type WeaponsList = {
   itemType: number;
-  categories: ListItem[];
-  skills: ListItem[];
-  ranges: ListItem[];
-  effects: ListItem[];
   items: WeaponCategoryList[];
 };
 export type WeaponCategoryList = {
@@ -50,4 +46,15 @@ export type WeaponItem = {
 export type AppliedWeaponEffect = {
   effect: number;
   modifier: string;
+};
+
+export type DBWeaponsState = {
+  categories: ListItem[];
+  skills: ListItem[];
+  ranges: ListItem[];
+  effects: ListItem[];
+};
+
+export type DBState = {
+  weapons: DBWeaponsState;
 };

@@ -5,8 +5,10 @@ import {
   WeaponsList,
   WeaponCategoryList,
   ListItem,
+  DBWeaponsState,
+  DBState,
 } from '../models/ItemIndex';
-import SQLite from 'react-native-sqlite-storage';
+import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
 
 export const getDBConnection = async () => {
@@ -93,20 +95,15 @@ export const getArmorItems = async (
 
 export const getWeaponItems = async (
   db: SQLite.SQLiteDatabase,
+  dbWeaponsState: DBWeaponsState,
   tableName: String,
 ): Promise<WeaponsList> => {
   try {
-    const categories: ListItem[] = await getCategoryList(
-      db,
-      'Weapon_Categories',
-    );
-    const skills: ListItem[] = await getCategoryList(db, 'Weapon_Skills');
-    const ranges: ListItem[] = await getCategoryList(db, 'Weapon_Ranges');
-    const effects: ListItem[] = await getCategoryList(db, 'Weapon_Effects');
-
     // GET WEAPONS
     const itemProps = await getItems(db, ITEM_TYPE.Weapons, tableName);
-    const weaponsLists: WeaponCategoryList[] = Array(categories.length);
+    const weaponsLists: WeaponCategoryList[] = Array(
+      dbWeaponsState.categories.length,
+    );
     for (let i = 0; i < weaponsLists.length; i++) {
       weaponsLists[i] = {
         category: i,
@@ -143,10 +140,6 @@ export const getWeaponItems = async (
 
     return {
       itemType: ITEM_TYPE.Weapons,
-      categories: categories,
-      skills: skills,
-      ranges: ranges,
-      effects: effects,
       items: weaponsLists,
     };
   } catch (error) {
@@ -179,5 +172,39 @@ const getCategoryList = async (
   } catch (error) {
     console.error(error);
     throw Error('Failed to get' + tableName + ' items !!!');
+  }
+};
+
+export const getDBWeaponsState = async (
+  db: SQLiteDatabase,
+): Promise<DBWeaponsState> => {
+  try {
+    const categories: ListItem[] = await getCategoryList(
+      db,
+      'Weapon_Categories',
+    );
+    const skills: ListItem[] = await getCategoryList(db, 'Weapon_Skills');
+    const ranges: ListItem[] = await getCategoryList(db, 'Weapon_Ranges');
+    const effects: ListItem[] = await getCategoryList(db, 'Weapon_Effects');
+
+    return {
+      categories: categories,
+      skills: skills,
+      ranges: ranges,
+      effects: effects,
+    };
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get initial weapons state !!!');
+  }
+};
+
+export const getDBState = async (db: SQLiteDatabase): Promise<DBState> => {
+  try {
+    const weapons = await getDBWeaponsState(db);
+    return {weapons: weapons};
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get initial database state !!!');
   }
 };

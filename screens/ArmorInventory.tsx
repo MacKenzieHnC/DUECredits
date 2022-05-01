@@ -2,6 +2,7 @@ import {FlatList, Text, View} from 'native-base';
 import React from 'react';
 import {useQuery} from 'react-query';
 import {ArmorItemComponent} from '../components/ArmorItem';
+import {LoadingScreen} from '../components/LoadingScreen';
 import {getArmorItems, getDBConnection} from '../services/db-service';
 
 export const ArmorInventory = () => {
@@ -12,7 +13,7 @@ export const ArmorInventory = () => {
   });
 
   if (isLoading || !data) {
-    return <Text>Loading....</Text>;
+    return <LoadingScreen text={'Loading armor...'} />;
   }
 
   return (
