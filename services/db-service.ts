@@ -26,6 +26,8 @@ const getItems = async (
   itemType: number,
   parentTable: String,
 ): Promise<Item[]> => {
+  console.log('🚀 ~ file: db-service.ts ~ line 29 ~ itemType', itemType);
+  console.log('🚀 ~ file: db-service.ts ~ line 29 ~ parentTable', parentTable);
   try {
     const items: Item[] = [];
     const results = await db.executeSql(
@@ -59,6 +61,7 @@ export const getArmorItems = async (
   db: SQLite.SQLiteDatabase,
   tableName: String,
 ): Promise<ArmorList> => {
+  console.log('🚀 ~ file: db-service.ts ~ line 64 ~ tableName', tableName);
   try {
     const itemProps = await getItems(db, ITEM_TYPE.Armor, tableName);
     const items: ArmorItem[] = [];
@@ -98,6 +101,7 @@ export const getWeaponItems = async (
   dbWeaponsState: DBWeaponsState,
   tableName: String,
 ): Promise<WeaponsList> => {
+  console.log('🚀 ~ file: db-service.ts ~ line 104 ~ tableName', tableName);
   try {
     // GET WEAPONS
     const itemProps = await getItems(db, ITEM_TYPE.Weapons, tableName);

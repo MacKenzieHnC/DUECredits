@@ -1,24 +1,11 @@
-import {Box, Heading, SectionList, Text} from 'native-base';
+import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
-import {useQuery} from 'react-query';
 import {LoadingScreen} from '../components/LoadingScreen';
 import {WeaponItemComponent} from '../components/WeaponItem';
-import {
-  getDBConnection,
-  getDBWeaponsState,
-  getWeaponItems,
-} from '../services/db-service';
+import {useGetAllWeaponsQuery} from '../store/slices/databaseSlice';
 
 export const WeaponInventory = () => {
-  const {data, isLoading} = useQuery(['Inventory', 'Weapons'], async () => {
-    const db = await getDBConnection();
-    const state = await getDBWeaponsState(db);
-    const list = await getWeaponItems(db, state, 'items');
-    return {
-      list: list,
-      state: state,
-    };
-  });
+  const {data, isLoading} = useGetAllWeaponsQuery();
 
   if (isLoading || !data) {
     return <LoadingScreen text={'Loading weapons...'} />;

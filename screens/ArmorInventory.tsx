@@ -1,16 +1,11 @@
-import {FlatList, Text, View} from 'native-base';
+import {FlatList, View} from 'native-base';
 import React from 'react';
-import {useQuery} from 'react-query';
 import {ArmorItemComponent} from '../components/ArmorItem';
 import {LoadingScreen} from '../components/LoadingScreen';
-import {getArmorItems, getDBConnection} from '../services/db-service';
+import {useGetAllArmorQuery} from '../store/slices/databaseSlice';
 
 export const ArmorInventory = () => {
-  const {data, isLoading} = useQuery(['Inventory', 'Armor'], async () => {
-    const db = await getDBConnection();
-
-    return getArmorItems(db, 'items');
-  });
+  const {data, isLoading} = useGetAllArmorQuery();
 
   if (isLoading || !data) {
     return <LoadingScreen text={'Loading armor...'} />;
