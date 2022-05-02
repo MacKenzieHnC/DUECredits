@@ -1,4 +1,4 @@
-import {ScrollView, Spacer, Text, View, VStack} from 'native-base';
+import {ScrollView, Text, View, VStack} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
@@ -49,6 +49,54 @@ export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
   const [options, setOptions] = useState<inventoryOptions>(defaultOptions);
   return (
     <ScrollView stickyHeaderIndices={[0]} nestedScrollEnabled={true}>
+      <VStack space={2} backgroundColor={'primary.100'}>
+        <Text>
+          Weapons Restricted: {options.weapons.general.restricted.toString()}
+        </Text>
+        <Text>Weapons Price: {options.weapons.general.price.toString()}</Text>
+        <Text>Weapons Rarity: {options.weapons.general.rarity.toString()}</Text>
+        <Text>
+          Weapons Unique: {options.weapons.general.is_unique.toString()}
+        </Text>
+        <Text>
+          Weapon Categories:{' '}
+          {options.weapons.categories === 'any'
+            ? 'any'
+            : (options.weapons.categories as ListItem[]).map(
+                item => item.item + '\t',
+              )}
+        </Text>
+        <Text>
+          Weapon Skills:{' '}
+          {options.weapons.skills === 'any'
+            ? 'any'
+            : (options.weapons.skills as ListItem[]).map(
+                item => item.item + '\t',
+              )}
+        </Text>
+        <Text>Weapons Damage: {options.weapons.damage.toString()}</Text>
+        <Text>Weapons Crit: {options.weapons.crit.toString()}</Text>
+        <Text>
+          Weapon Ranges:{' '}
+          {options.weapons.ranges === 'any'
+            ? 'any'
+            : (options.weapons.ranges as ListItem[]).map(
+                item => item.item + '\t',
+              )}
+        </Text>
+        <Text>
+          Weapon Effects:{' '}
+          {options.weapons.effects === 'any'
+            ? 'any'
+            : (options.weapons.effects as ListItem[]).map(
+                item => item.item + '\t',
+              )}
+        </Text>
+        <Text>
+          Weapons Encumbrance: {options.weapons.encumbrance.toString()}
+        </Text>
+        <Text>Weapons Hardpoints: {options.weapons.hardpoints.toString()}</Text>
+      </VStack>
       <View style={styles.headerTextContainer}>
         <Text style={styles.headerText}>Options</Text>
       </View>
@@ -91,36 +139,6 @@ export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
           anyOptions={anyOptions}
           dbState={dbState.weapons}
         />
-        <VStack space={2} backgroundColor={'primary.100'}>
-          <Text>
-            General Restricted: {options.general.restricted.toString()}
-          </Text>
-          <Text>General Price: {options.general.price.toString()}</Text>
-          <Text>General Rarity: {options.general.rarity.toString()}</Text>
-          <Text>General Unique: {options.general.is_unique.toString()}</Text>
-          <Spacer />
-          <Text>Armor Limit: {options.armor.limit.toString()}</Text>
-          <Text>
-            Armor Restricted: {options.armor.general.restricted.toString()}
-          </Text>
-          <Text>Armor Price: {options.armor.general.price.toString()}</Text>
-          <Text>Armor Rarity: {options.armor.general.rarity.toString()}</Text>
-          <Text>
-            Armor Unique: {options.armor.general.is_unique.toString()}
-          </Text>
-          <Text>Armor Defense: {options.armor.defense.toString()}</Text>
-          <Text>Armor Soak: {options.armor.soak.toString()}</Text>
-          <Text>Armor Encumbrance: {options.armor.encumbrance.toString()}</Text>
-          <Text>Armor Hardpoints: {options.armor.hardpoints.toString()}</Text>
-          <Text>
-            Weapon Categories:{' '}
-            {options.weapons.categories === 'any'
-              ? 'any'
-              : (options.weapons.categories as ListItem[]).map(
-                  item => item.item + '\t',
-                )}
-          </Text>
-        </VStack>
       </VStack>
     </ScrollView>
   );

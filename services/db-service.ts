@@ -151,13 +151,15 @@ export const getWeaponItems = async (
 const getCategoryList = async (
   db: SQLite.SQLiteDatabase,
   tableName: string,
+  orderBy: string | undefined,
 ) => {
   try {
     const list: ListItem[] = [];
     var results = await db.executeSql(
       `SELECT id,
         item
-      FROM ${tableName}`,
+      FROM ${tableName}
+      ${orderBy ? ' ORDER BY ' + orderBy : ''}`,
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
@@ -182,10 +184,19 @@ export const getDBWeaponsState = async (
     const categories: ListItem[] = await getCategoryList(
       db,
       'Weapon_Categories',
+      'item',
     );
-    const skills: ListItem[] = await getCategoryList(db, 'Weapon_Skills');
-    const ranges: ListItem[] = await getCategoryList(db, 'Weapon_Ranges');
-    const effects: ListItem[] = await getCategoryList(db, 'Weapon_Effects');
+    const skills: ListItem[] = await getCategoryList(
+      db,
+      'Weapon_Skills',
+      'item',
+    );
+    const ranges: ListItem[] = await getCategoryList(db, 'Weapon_Ranges', 'id');
+    const effects: ListItem[] = await getCategoryList(
+      db,
+      'Weapon_Effects',
+      'item',
+    );
 
     return {
       categories: categories,
