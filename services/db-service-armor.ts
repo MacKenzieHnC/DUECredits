@@ -1,12 +1,12 @@
 import SQLite from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
-import {ArmorList, ArmorItem} from '../models/ItemIndex';
+import {ArmorItem} from '../models/ItemIndex';
 import {getItems} from './db-service';
 
 export const getArmorItems = async (
   db: SQLite.SQLiteDatabase,
   tableName: String,
-): Promise<ArmorList> => {
+): Promise<ArmorItem[]> => {
   try {
     const itemProps = await getItems(db, ITEM_TYPE.Armor, tableName);
     const items: ArmorItem[] = [];
@@ -31,10 +31,7 @@ export const getArmorItems = async (
         });
       }
     });
-    return {
-      itemType: ITEM_TYPE.Armor,
-      items: items,
-    };
+    return items;
   } catch (error) {
     console.error(error);
     throw Error('Failed to get items !!!');

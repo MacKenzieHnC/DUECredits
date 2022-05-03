@@ -1,17 +1,14 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
-import {ArmorList, DBWeaponsState, WeaponsList} from '../../models/ItemIndex';
-import {getDBConnection} from '../../services/db-service';
+import {ArmorItem, DBState, WeaponItem} from '../../models/ItemIndex';
+import {getDBConnection, getDBState} from '../../services/db-service';
 import {getArmorItems} from '../../services/db-service-armor';
-import {
-  getDBWeaponsState,
-  getWeaponItems,
-} from '../../services/db-service-weapons';
+import {getWeaponItems} from '../../services/db-service-weapons';
 
 export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),
   reducerPath: 'database',
   endpoints: build => ({
-    getAllArmor: build.query<ArmorList, void>({
+    getAllArmor: build.query<ArmorItem[], void>({
       queryFn: async () => {
         try {
           const db = await getDBConnection();
@@ -22,22 +19,30 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllWeapons: build.query<
-      {list: WeaponsList; state: DBWeaponsState},
-      void
-    >({
+    getAllWeapons: build.query<WeaponItem[], void>({
       queryFn: async () => {
         try {
           const db = await getDBConnection();
-          const weaponState = await getDBWeaponsState(db);
-          const data = await getWeaponItems(db, weaponState, 'Items');
-          return {data: {state: weaponState, list: data}};
+          const data = await getWeaponItems(db, 'Items');
+          return {data};
         } catch (error) {
-          return {error: {data: "Can't get Armor", status: 500}};
+          return {error: {data: "Can't get Weapons", status: 500}};
+        }
+      },
+    }),
+    getDBState: build.query<DBState, void>({
+      queryFn: async () => {
+        try {
+          const db = await getDBConnection();
+          const data = await getDBState(db);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get DB State", status: 500}};
         }
       },
     }),
   }),
 });
 
-export const {useGetAllArmorQuery, useGetAllWeaponsQuery} = databaseSlice;
+export const {useGetDBStateQuery, useGetAllArmorQuery, useGetAllWeaponsQuery} =
+  databaseSlice;

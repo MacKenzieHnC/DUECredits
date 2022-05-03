@@ -5,7 +5,7 @@ import {
   generalOptions,
   inventoryOptions,
 } from '../../models/InventoryOptionsIndex';
-import {DBState, ListItem} from '../../models/ItemIndex';
+import {DBState, CategoryLike} from '../../models/ItemIndex';
 import {ArmorOptions} from './ArmorOptons';
 import {GeneralOptions} from './GeneralOptions';
 import {WeaponOptions} from './WeaponOptions';
@@ -62,7 +62,7 @@ export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
           Weapon Categories:{' '}
           {options.weapons.categories === 'any'
             ? 'any'
-            : (options.weapons.categories as ListItem[]).map(
+            : (options.weapons.categories as CategoryLike[]).map(
                 item => item.item + '\t',
               )}
         </Text>
@@ -70,7 +70,7 @@ export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
           Weapon Skills:{' '}
           {options.weapons.skills === 'any'
             ? 'any'
-            : (options.weapons.skills as ListItem[]).map(
+            : (options.weapons.skills as CategoryLike[]).map(
                 item => item.item + '\t',
               )}
         </Text>
@@ -80,7 +80,7 @@ export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
           Weapon Ranges:{' '}
           {options.weapons.ranges === 'any'
             ? 'any'
-            : (options.weapons.ranges as ListItem[]).map(
+            : (options.weapons.ranges as CategoryLike[]).map(
                 item => item.item + '\t',
               )}
         </Text>
@@ -88,7 +88,7 @@ export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
           Weapon Effects:{' '}
           {options.weapons.effects === 'any'
             ? 'any'
-            : (options.weapons.effects as ListItem[]).map(
+            : (options.weapons.effects as CategoryLike[]).map(
                 item => item.item + '\t',
               )}
         </Text>

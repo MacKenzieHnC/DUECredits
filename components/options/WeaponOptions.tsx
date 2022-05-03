@@ -4,7 +4,7 @@ import {
   inventoryOptions,
   generalOptions,
 } from '../../models/InventoryOptionsIndex';
-import {DBWeaponsState, ListItem} from '../../models/ItemIndex';
+import {CategoryLike, DBState} from '../../models/ItemIndex';
 import {GeneralOptions} from './GeneralOptions';
 import {MultiSelectOption} from './MultiSelectOption';
 import {NumericOption} from './NumericOption';
@@ -15,7 +15,7 @@ export const WeaponOptions: React.FC<{
   setOptions: Function;
   defaultOptions: inventoryOptions;
   anyOptions: inventoryOptions;
-  dbState: DBWeaponsState;
+  dbState: DBState['weapons'];
 }> = ({options, setOptions, defaultOptions, anyOptions, dbState}) => {
   const childComponent = (
     <View>
@@ -33,7 +33,7 @@ export const WeaponOptions: React.FC<{
         title={'Categories'}
         options={options.categories}
         state={dbState.categories}
-        setState={(categories: ListItem[] | 'any') =>
+        setState={(categories: CategoryLike[] | 'any') =>
           setOptions({...options, categories: categories})
         }
         items={dbState.categories}
@@ -43,7 +43,7 @@ export const WeaponOptions: React.FC<{
         title={'Skills'}
         options={options.skills}
         state={dbState.skills}
-        setState={(skills: ListItem[] | 'any') =>
+        setState={(skills: CategoryLike[] | 'any') =>
           setOptions({...options, skills: skills})
         }
         items={dbState.skills}
@@ -71,7 +71,7 @@ export const WeaponOptions: React.FC<{
         title={'Ranges'}
         options={options.ranges}
         state={dbState.ranges}
-        setState={(ranges: ListItem[] | 'any') =>
+        setState={(ranges: CategoryLike[] | 'any') =>
           setOptions({...options, ranges: ranges})
         }
         items={dbState.ranges}
@@ -81,7 +81,7 @@ export const WeaponOptions: React.FC<{
         title={'Effects'}
         options={options.effects}
         state={dbState.effects}
-        setState={(effects: ListItem[] | 'any') =>
+        setState={(effects: CategoryLike[] | 'any') =>
           setOptions({...options, effects: effects})
         }
         items={dbState.effects}

@@ -1,6 +1,5 @@
-import {Box, HStack, VStack, Text, Spacer} from 'native-base';
+import {Box, HStack, VStack, Text} from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native-windows';
 import {ArmorItem, WeaponItem} from '../models/ItemIndex';
 
 interface ItemProps {
@@ -14,14 +13,14 @@ export const ItemComponent = ({item, children}: ItemProps) => {
   return (
     <Box maxWidth="100%" p={5} rounded="md" backgroundColor="primary.900" m={2}>
       <HStack alignItems="center">
-        <VStack space={2} style={styles.nameContainer}>
-          <Text color="white" style={styles.nameText}>
+        <VStack space={2} flex={1}>
+          <Text color="white" flexWrap={'wrap'}>
             {isRestricted ? '(R) ' : ''}
             {item.itemProps.name}
           </Text>
           {children}
         </VStack>
-        <Box style={styles.priceContainer}>
+        <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
           <Text color="white">Price: {item.itemProps.price}</Text>
         </Box>
       </HStack>
@@ -33,13 +32,3 @@ export const ItemComponent = ({item, children}: ItemProps) => {
     </Box>
   );
 };
-
-const styles = StyleSheet.create({
-  priceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: 150,
-  },
-  nameContainer: {flex: 1},
-  nameText: {flexWrap: 'wrap'},
-});

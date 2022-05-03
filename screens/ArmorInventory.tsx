@@ -14,7 +14,7 @@ export const ArmorInventory = () => {
   return (
     <View>
       <FlatList
-        data={data.items}
+        data={data}
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({item}) => (
           <ArmorItemComponent key={item.id} item={item} />

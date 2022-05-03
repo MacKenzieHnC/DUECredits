@@ -12,7 +12,6 @@ import {
 import PropTypes from 'prop-types';
 import {Dimensions} from 'react-native';
 import {Icon} from 'native-base';
-import {ListItem} from '../../models/ItemIndex';
 
 const MultiPicker: React.FC<{
   items;

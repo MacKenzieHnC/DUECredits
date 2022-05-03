@@ -1,19 +1,16 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {RootState} from '..';
-import {WeaponCategoryList} from '../../models/ItemIndex';
+import {WeaponItem} from '../../models/ItemIndex';
 import {getDBConnection} from '../../services/db-service';
-import {
-  getDBWeaponsState,
-  getWeaponItems,
-} from '../../services/db-service-weapons';
+import {getWeaponItems} from '../../services/db-service-weapons';
 
 export interface WeaponCategoryState {
-  categories: WeaponCategoryList | null;
+  items: WeaponItem[] | null;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: WeaponCategoryState = {
-  categories: null,
+  items: null,
   status: 'idle',
 };
 
@@ -21,10 +18,9 @@ export const fetchWeaponCategoriesAsync = createAsyncThunk(
   'weaponCategory/fetchCategories',
   async () => {
     const db = await getDBConnection();
-    const weaponState = await getDBWeaponsState(db);
-    const response = await getWeaponItems(db, weaponState, 'Items');
+    const response = await getWeaponItems(db, 'Items');
 
-    return response.items;
+    return response;
   },
 );
 
@@ -39,7 +35,7 @@ export const weaponCategorySlice = createSlice({
       })
       .addCase(fetchWeaponCategoriesAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.categories = action.payload;
+        state.items = action.payload;
       })
       .addCase(fetchWeaponCategoriesAsync.rejected, state => {
         state.status = 'failed';
@@ -48,6 +44,6 @@ export const weaponCategorySlice = createSlice({
 });
 
 export const selectWeaponCategories = (state: RootState) =>
-  state.weaponCategories.categories;
+  state.weaponCategories.items;
 
 export default weaponCategorySlice.reducer;

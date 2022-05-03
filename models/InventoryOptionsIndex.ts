@@ -1,4 +1,4 @@
-import {ListItem} from './ItemIndex';
+import {CategoryLike} from './ItemIndex';
 
 export type generalOptions = {
   restricted: boolean | 'any';
@@ -20,12 +20,12 @@ export type inventoryOptions = {
   weapons: {
     general: generalOptions;
     limit: 'limit' | 'any' | 'none';
-    categories: ListItem[] | 'any'; // Key from db
-    skills: ListItem[] | 'any'; // Key from db
+    categories: CategoryLike[] | 'any'; // Key from db
+    skills: CategoryLike[] | 'any'; // Key from db
     damage: number[] | 'any';
     crit: number[] | 'any';
-    ranges: ListItem[] | 'any'; // Key from db
-    effects: ListItem[] | 'any'; // Key from db
+    ranges: CategoryLike[] | 'any'; // Key from db
+    effects: CategoryLike[] | 'any'; // Key from db
     encumbrance: number[] | 'any';
     hardpoints: number[] | 'any';
   };

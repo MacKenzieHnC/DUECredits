@@ -2,25 +2,31 @@ import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
 import {LoadingScreen} from '../components/LoadingScreen';
 import {WeaponItemComponent} from '../components/WeaponItem';
-import {useGetAllWeaponsQuery} from '../store/slices/databaseSlice';
+import {WeaponItem} from '../models/ItemIndex';
+import {
+  useGetAllWeaponsQuery,
+  useGetDBStateQuery,
+} from '../store/slices/databaseSlice';
 
 export const WeaponInventory = () => {
-  const {data, isLoading} = useGetAllWeaponsQuery();
+  const {data: items, isLoading: itemsLoading} = useGetAllWeaponsQuery();
 
-  if (isLoading || !data) {
+  const {data: dbState, isLoading: dbStateLoading} = useGetDBStateQuery();
+
+  if (itemsLoading || !items) {
     return <LoadingScreen text={'Loading weapons...'} />;
+  } else if (dbStateLoading || !dbState) {
+    return <LoadingScreen text={'Loading weapon categories...'} />;
   }
 
-  const categories = data.state.categories;
-
-  const items = data.list.items.map(weaponItem => ({
-    title: categories[weaponItem.category].item,
-    data: weaponItem.items,
+  const categorizedList = dbState.weapons.categories.map(category => ({
+    title: category.item,
+    data: items.filter((item: WeaponItem) => item.category === category.id),
   }));
 
   return (
     <SectionList
-      sections={items}
+      sections={categorizedList}
       stickySectionHeadersEnabled
       keyExtractor={(weaponItem, index) => `${weaponItem.id}-${index}`}
       renderItem={({item: weaponItem}) => (
