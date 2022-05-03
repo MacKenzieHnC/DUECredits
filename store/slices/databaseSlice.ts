@@ -1,11 +1,11 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
 import {ArmorList, DBWeaponsState, WeaponsList} from '../../models/ItemIndex';
+import {getDBConnection} from '../../services/db-service';
+import {getArmorItems} from '../../services/db-service-armor';
 import {
-  getArmorItems,
-  getWeaponItems,
-  getDBConnection,
   getDBWeaponsState,
-} from '../../services/db-service';
+  getWeaponItems,
+} from '../../services/db-service-weapons';
 
 export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),

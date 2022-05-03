@@ -1,11 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {RootState} from '..';
 import {WeaponCategoryList} from '../../models/ItemIndex';
+import {getDBConnection} from '../../services/db-service';
 import {
-  getDBConnection,
   getDBWeaponsState,
   getWeaponItems,
-} from '../../services/db-service';
+} from '../../services/db-service-weapons';
 
 export interface WeaponCategoryState {
   categories: WeaponCategoryList | null;

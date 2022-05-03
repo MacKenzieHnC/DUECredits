@@ -1,5 +1,5 @@
 export type Item = {
-  restricted: 'TRUE' | 'FALSE';
+  restricted: boolean;
   item_type: number;
   name: string;
   price: number;
@@ -43,16 +43,23 @@ export type WeaponItem = {
   encumbrance: number;
   hardpoints: number;
 };
+export type WeaponEffect = {
+  id: number;
+  name: string;
+  active: boolean;
+  ranked: boolean;
+  description: string;
+};
 export type AppliedWeaponEffect = {
   effect: number;
-  modifier: string;
+  rank: string | undefined;
 };
 
 export type DBWeaponsState = {
   categories: ListItem[];
   skills: ListItem[];
   ranges: ListItem[];
-  effects: ListItem[];
+  effects: WeaponEffect[];
 };
 
 export type DBState = {

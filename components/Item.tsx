@@ -8,14 +8,14 @@ interface ItemProps {
 }
 
 export const ItemComponent = ({item, children}: ItemProps) => {
-  const isRestricted = item.itemProps.restricted === 'TRUE';
+  const isRestricted = item.itemProps.restricted;
 
   return (
     <Box width="100%" p={5} rounded="md" backgroundColor="primary.900" mb={2}>
       <VStack space={2}>
         <HStack justifyContent="space-between">
           <Text color="white">
-            {isRestricted && '(R) '}
+            {isRestricted ? '(R) ' : ''}
             {item.itemProps.name}
           </Text>
           <Text color="white">Price: {item.itemProps.price}</Text>
