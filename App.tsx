@@ -1,16 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {Box, NativeBaseProvider, Text, View} from 'native-base';
-import React, {useEffect, useState} from 'react';
-import {Alert, SafeAreaView} from 'react-native';
-import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {QueryClient, QueryClientProvider} from 'react-query';
+import {NativeBaseProvider, View} from 'native-base';
+import React from 'react';
+import {Provider} from 'react-redux';
 import {Inventory} from './components/Inventory';
-import {LoadingScreen} from './components/LoadingScreen';
-import {InventoryOptions} from './components/options/InventoryOptions';
-import {DBState} from './models/ItemIndex';
-import {getDBConnection, getDBState} from './services/db-service';
-
-const queryClient = new QueryClient();
+import {store} from './store';
+// import {InventoryOptions} from './components/InventoryOptions';
 
 const App = () => {
   // // Initialize database
@@ -43,13 +37,13 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
         <NativeBaseProvider>
           <View p={1} flex="1">
             <Inventory />
           </View>
         </NativeBaseProvider>
-      </QueryClientProvider>
+      </Provider>
     </NavigationContainer>
   );
 };
