@@ -5,7 +5,7 @@ import {LoadingScreen} from '../components/LoadingScreen';
 import {useGetAllArmorQuery} from '../store/slices/databaseSlice';
 
 export const ArmorInventory = () => {
-  const {data, isLoading} = useGetAllArmorQuery();
+  const {data, isLoading} = useGetAllArmorQuery('Items');
 
   if (isLoading || !data) {
     return <LoadingScreen text={'Loading armor...'} />;

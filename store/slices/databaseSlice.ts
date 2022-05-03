@@ -8,22 +8,22 @@ export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),
   reducerPath: 'database',
   endpoints: build => ({
-    getAllArmor: build.query<ArmorItem[], void>({
-      queryFn: async () => {
+    getAllArmor: build.query<ArmorItem[], string>({
+      async queryFn(tableName: string) {
         try {
           const db = await getDBConnection();
-          const data = await getArmorItems(db, 'Items');
+          const data = await getArmorItems(db, tableName);
           return {data};
         } catch (error) {
           return {error: {data: "Can't get Armor", status: 500}};
         }
       },
     }),
-    getAllWeapons: build.query<WeaponItem[], void>({
-      queryFn: async () => {
+    getAllWeapons: build.query<WeaponItem[], string>({
+      async queryFn(tableName: string) {
         try {
           const db = await getDBConnection();
-          const data = await getWeaponItems(db, 'Items');
+          const data = await getWeaponItems(db, tableName);
           return {data};
         } catch (error) {
           return {error: {data: "Can't get Weapons", status: 500}};

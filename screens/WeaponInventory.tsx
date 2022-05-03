@@ -9,7 +9,7 @@ import {
 } from '../store/slices/databaseSlice';
 
 export const WeaponInventory = () => {
-  const {data: items, isLoading: itemsLoading} = useGetAllWeaponsQuery();
+  const {data: items, isLoading: itemsLoading} = useGetAllWeaponsQuery('Items');
 
   const {data: dbState, isLoading: dbStateLoading} = useGetDBStateQuery();
 
