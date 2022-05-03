@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     width: 150,
-    backgroundColor: 'red',
   },
   nameContainer: {flex: 1},
   nameText: {flexWrap: 'wrap'},
