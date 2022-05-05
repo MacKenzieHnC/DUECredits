@@ -5,7 +5,7 @@ import {extractItemProps} from './db-service';
 
 export const getVehicleAttachmentItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<VehicleAttachmentItem[]> => {
   try {
     const items: VehicleAttachmentItem[] = [];

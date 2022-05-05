@@ -5,7 +5,7 @@ import {extractItemProps, getCategoryList} from './db-service';
 
 export const getGearItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<GearItem[]> => {
   try {
     const items: GearItem[] = [];

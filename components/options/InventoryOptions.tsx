@@ -5,7 +5,9 @@ import {
   generalOptions,
   inventoryOptions,
 } from '../../models/InventoryOptionsIndex';
-import {DBState, CategoryLike} from '../../models/ItemIndex';
+import {CategoryLike} from '../../models/ItemIndex';
+import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {LoadingScreen} from '../LoadingScreen';
 import {ArmorOptions} from './ArmorOptons';
 import {GeneralOptions} from './GeneralOptions';
 import {WeaponOptions} from './WeaponOptions';
@@ -44,9 +46,15 @@ const anyOptions = defaultOptions;
 
 // The main component.
 // Don't let all the variables scare you. Look at models/InventoryOptionsIndex.ts to see what they all mean.
-export const InventoryOptions: React.FC<{dbState: DBState}> = ({dbState}) => {
+export const InventoryOptions = () => {
   // General options
   const [options, setOptions] = useState<inventoryOptions>(defaultOptions);
+  const {data: dbState, isLoading} = useGetDBStateQuery();
+
+  if (isLoading || !dbState) {
+    return <LoadingScreen text={'Loading armor...'} />;
+  }
+
   return (
     <ScrollView stickyHeaderIndices={[0]} nestedScrollEnabled={true}>
       <VStack space={2} backgroundColor={'primary.100'}>

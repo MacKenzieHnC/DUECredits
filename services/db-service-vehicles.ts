@@ -10,7 +10,7 @@ import {extractItemProps, getCategoryList} from './db-service';
 
 export const getPlanetaryVehicleItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<PlanetaryVehicleItem[]> => {
   try {
     const items: PlanetaryVehicleItem[] = [];

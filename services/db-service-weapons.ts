@@ -10,7 +10,7 @@ import {
 import {extractItemProps, getCategoryList} from './db-service';
 export const getWeaponItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<WeaponItem[]> => {
   try {
     // GET WEAPONS

@@ -6,7 +6,7 @@ import {extractWeaponEffects} from './db-service-weapons';
 
 export const getVehicleWeaponItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<VehicleWeaponItem[]> => {
   try {
     const items: VehicleWeaponItem[] = [];

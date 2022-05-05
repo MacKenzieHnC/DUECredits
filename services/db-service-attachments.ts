@@ -5,7 +5,7 @@ import {extractItemProps, getCategoryList} from './db-service';
 
 export const getAttachmentItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<AttachmentItem[]> => {
   try {
     const items: AttachmentItem[] = [];

@@ -5,7 +5,7 @@ import {extractItemProps} from './db-service';
 
 export const getArmorItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<ArmorItem[]> => {
   try {
     const items: ArmorItem[] = [];

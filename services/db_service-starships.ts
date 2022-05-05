@@ -6,7 +6,7 @@ import {extractVehicleProps} from './db-service-vehicles';
 
 export const getStarshipItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
 ): Promise<StarshipItem[]> => {
   try {
     const items: StarshipItem[] = [];

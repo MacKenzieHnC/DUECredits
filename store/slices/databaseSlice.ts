@@ -24,8 +24,8 @@ export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),
   reducerPath: 'database',
   endpoints: build => ({
-    getAllArmor: build.query<ArmorItem[], string>({
-      async queryFn(tableName: string) {
+    getAllArmor: build.query<ArmorItem[], string | undefined>({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getArmorItems(db, tableName);
@@ -35,8 +35,8 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllAttachments: build.query<AttachmentItem[], string>({
-      async queryFn(tableName: string) {
+    getAllAttachments: build.query<AttachmentItem[], string | undefined>({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getAttachmentItems(db, tableName);
@@ -46,8 +46,8 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllGear: build.query<GearItem[], string>({
-      async queryFn(tableName: string) {
+    getAllGear: build.query<GearItem[], string | undefined>({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getGearItems(db, tableName);
@@ -57,8 +57,11 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllPlanetaryVehicles: build.query<PlanetaryVehicleItem[], string>({
-      async queryFn(tableName: string) {
+    getAllPlanetaryVehicles: build.query<
+      PlanetaryVehicleItem[],
+      string | undefined
+    >({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getPlanetaryVehicleItems(db, tableName);
@@ -68,8 +71,8 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllStarships: build.query<StarshipItem[], string>({
-      async queryFn(tableName: string) {
+    getAllStarships: build.query<StarshipItem[], string | undefined>({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getStarshipItems(db, tableName);
@@ -79,8 +82,11 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllVehicleAttachments: build.query<VehicleAttachmentItem[], string>({
-      async queryFn(tableName: string) {
+    getAllVehicleAttachments: build.query<
+      VehicleAttachmentItem[],
+      string | undefined
+    >({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getVehicleAttachmentItems(db, tableName);
@@ -90,8 +96,8 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllVehicleWeapons: build.query<VehicleWeaponItem[], string>({
-      async queryFn(tableName: string) {
+    getAllVehicleWeapons: build.query<VehicleWeaponItem[], string | undefined>({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getVehicleWeaponItems(db, tableName);
@@ -101,8 +107,8 @@ export const databaseSlice = createApi({
         }
       },
     }),
-    getAllWeapons: build.query<WeaponItem[], string>({
-      async queryFn(tableName: string) {
+    getAllWeapons: build.query<WeaponItem[], string | undefined>({
+      async queryFn(tableName) {
         try {
           const db = await getDBConnection();
           const data = await getWeaponItems(db, tableName);

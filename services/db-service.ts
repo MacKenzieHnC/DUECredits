@@ -40,7 +40,7 @@ export const extractItemProps = (item: any) => {
 
 export const getCategoryList = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string,
+  tableName: string | undefined,
   orderBy: string | undefined,
 ) => {
   try {
