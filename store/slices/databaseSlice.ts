@@ -1,7 +1,23 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
-import {ArmorItem, DBState, WeaponItem} from '../../models/ItemIndex';
+import {
+  ArmorItem,
+  AttachmentItem,
+  DBState,
+  GearItem,
+  StarshipItem,
+  VehicleAttachmentItem,
+  WeaponItem,
+  PlanetaryVehicleItem,
+  VehicleWeaponItem,
+} from '../../models/ItemIndex';
 import {getDBConnection, getDBState} from '../../services/db-service';
 import {getArmorItems} from '../../services/db-service-armor';
+import {getAttachmentItems} from '../../services/db-service-attachments';
+import {getGearItems} from '../../services/db-service-gear';
+import {getPlanetaryVehicleItems} from '../../services/db-service-vehicles';
+import {getStarshipItems} from '../../services/db_service-starships';
+import {getVehicleAttachmentItems} from '../../services/db-service-vehicleAttachments';
+import {getVehicleWeaponItems} from '../../services/db-service-vehicleWeapons';
 import {getWeaponItems} from '../../services/db-service-weapons';
 
 export const databaseSlice = createApi({
@@ -16,6 +32,72 @@ export const databaseSlice = createApi({
           return {data};
         } catch (error) {
           return {error: {data: "Can't get Armor", status: 500}};
+        }
+      },
+    }),
+    getAllAttachments: build.query<AttachmentItem[], string>({
+      async queryFn(tableName: string) {
+        try {
+          const db = await getDBConnection();
+          const data = await getAttachmentItems(db, tableName);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Attachments", status: 500}};
+        }
+      },
+    }),
+    getAllGear: build.query<GearItem[], string>({
+      async queryFn(tableName: string) {
+        try {
+          const db = await getDBConnection();
+          const data = await getGearItems(db, tableName);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Gear", status: 500}};
+        }
+      },
+    }),
+    getAllPlanetaryVehicles: build.query<PlanetaryVehicleItem[], string>({
+      async queryFn(tableName: string) {
+        try {
+          const db = await getDBConnection();
+          const data = await getPlanetaryVehicleItems(db, tableName);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Vehicles", status: 500}};
+        }
+      },
+    }),
+    getAllStarships: build.query<StarshipItem[], string>({
+      async queryFn(tableName: string) {
+        try {
+          const db = await getDBConnection();
+          const data = await getStarshipItems(db, tableName);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Starships", status: 500}};
+        }
+      },
+    }),
+    getAllVehicleAttachments: build.query<VehicleAttachmentItem[], string>({
+      async queryFn(tableName: string) {
+        try {
+          const db = await getDBConnection();
+          const data = await getVehicleAttachmentItems(db, tableName);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Vehicle Attachments", status: 500}};
+        }
+      },
+    }),
+    getAllVehicleWeapons: build.query<VehicleWeaponItem[], string>({
+      async queryFn(tableName: string) {
+        try {
+          const db = await getDBConnection();
+          const data = await getVehicleWeaponItems(db, tableName);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Vehicle Weapons", status: 500}};
         }
       },
     }),
@@ -44,5 +126,14 @@ export const databaseSlice = createApi({
   }),
 });
 
-export const {useGetDBStateQuery, useGetAllArmorQuery, useGetAllWeaponsQuery} =
-  databaseSlice;
+export const {
+  useGetDBStateQuery,
+  useGetAllArmorQuery,
+  useGetAllAttachmentsQuery,
+  useGetAllGearQuery,
+  useGetAllPlanetaryVehiclesQuery,
+  useGetAllStarshipsQuery,
+  useGetAllVehicleAttachmentsQuery,
+  useGetAllVehicleWeaponsQuery,
+  useGetAllWeaponsQuery,
+} = databaseSlice;

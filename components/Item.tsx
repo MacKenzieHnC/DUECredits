@@ -1,9 +1,26 @@
 import {Box, HStack, VStack, Text} from 'native-base';
 import React from 'react';
-import {ArmorItem, WeaponItem} from '../models/ItemIndex';
+import {
+  ArmorItem,
+  AttachmentItem,
+  GearItem,
+  PlanetaryVehicleItem,
+  StarshipItem,
+  VehicleAttachmentItem,
+  VehicleWeaponItem,
+  WeaponItem,
+} from '../models/ItemIndex';
 
 interface ItemProps {
-  item: ArmorItem | WeaponItem;
+  item:
+    | ArmorItem
+    | AttachmentItem
+    | GearItem
+    | StarshipItem
+    | PlanetaryVehicleItem
+    | VehicleAttachmentItem
+    | VehicleWeaponItem
+    | WeaponItem;
   children: React.ReactNode;
 }
 

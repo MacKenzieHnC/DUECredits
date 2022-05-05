@@ -1,17 +1,17 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
-import {AttachmentItem, CategoryLike, DBState} from '../models/ItemIndex';
+import {GearItem, CategoryLike, DBState} from '../models/ItemIndex';
 import {extractItemProps, getCategoryList} from './db-service';
 
-export const getAttachmentItems = async (
+export const getGearItems = async (
   db: SQLite.SQLiteDatabase,
   tableName: string,
-): Promise<AttachmentItem[]> => {
+): Promise<GearItem[]> => {
   try {
-    const items: AttachmentItem[] = [];
+    const items: GearItem[] = [];
     const results = await db.executeSql(
       `SELECT *
-        FROM ${ITEM_TYPE.Attachments.tableName} x
+        FROM ${ITEM_TYPE.Gear.tableName} x
         JOIN Item_View i ON i.id = x.item
         ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
     );
@@ -22,7 +22,6 @@ export const getAttachmentItems = async (
           itemProps: extractItemProps(item),
           category: item.category,
           encumbrance: item.encumbrance,
-          hardpoints: item.hardpoints,
         });
       }
     });
@@ -33,13 +32,13 @@ export const getAttachmentItems = async (
   }
 };
 
-export const getDBAttachmentsState = async (
+export const getDBGearState = async (
   db: SQLiteDatabase,
-): Promise<DBState['attachments']> => {
+): Promise<DBState['gear']> => {
   try {
     const categories: CategoryLike[] = await getCategoryList(
       db,
-      'Attachment_Categories',
+      'Gear_Categories',
       'item',
     );
 
@@ -48,6 +47,6 @@ export const getDBAttachmentsState = async (
     };
   } catch (error) {
     console.error(error);
-    throw Error('Failed to get initial attachments state !!!');
+    throw Error('Failed to get initial gear state !!!');
   }
 };

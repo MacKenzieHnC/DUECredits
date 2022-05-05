@@ -1,6 +1,14 @@
-import {DBState, CategoryLike, Rulebook} from '../models/ItemIndex';
+import {
+  DBState,
+  CategoryLike,
+  AdditionalRule,
+  Rulebook,
+} from '../models/ItemIndex';
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {getDBWeaponsState} from './db-service-weapons';
+import {getDBAttachmentsState} from './db-service-attachments';
+import {getDBGearState} from './db-service-gear';
+import {getDBVehiclesState} from './db-service-vehicles';
 
 export const getDBConnection = async () => {
   return SQLite.openDatabase({
@@ -58,6 +66,33 @@ export const getCategoryList = async (
   }
 };
 
+const getAdditionalRules = async (
+  db: SQLiteDatabase,
+): Promise<AdditionalRule[]> => {
+  try {
+    const list: AdditionalRule[] = [];
+    var results = await db.executeSql(
+      `SELECT *
+      FROM Additional_Rules
+       ORDER BY name`,
+    );
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        const item = result.rows.item(index);
+        list.push!({
+          id: item.id,
+          name: item.name,
+          desc: item.desc,
+        });
+      }
+    });
+    return list;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get additional rules !!!');
+  }
+};
+
 const getRulebooks = async (db: SQLiteDatabase): Promise<Rulebook[]> => {
   try {
     const list: Rulebook[] = [];
@@ -85,10 +120,22 @@ const getRulebooks = async (db: SQLiteDatabase): Promise<Rulebook[]> => {
 
 export const getDBState = async (db: SQLiteDatabase): Promise<DBState> => {
   try {
+    const additionalRules = await getAdditionalRules(db);
+    const attachments = await getDBAttachmentsState(db);
+    const gear = await getDBGearState(db);
     const rulebooks = await getRulebooks(db);
+    const vehicles = await getDBVehiclesState(db);
+    const starships = {
+      navicomputer: await getCategoryList(db, 'Navicomputer', undefined),
+    };
     const weapons = await getDBWeaponsState(db);
     return {
+      additionalRules: additionalRules,
+      attachments: attachments,
+      gear: gear,
       rulebooks: rulebooks,
+      starships: starships,
+      vehicles: vehicles,
       weapons: weapons,
     };
   } catch (error) {
