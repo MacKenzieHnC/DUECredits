@@ -9,7 +9,8 @@ import {
 } from '../store/slices/databaseSlice';
 
 export const WeaponInventory = () => {
-  const {data: items, isLoading: itemsLoading} = useGetAllWeaponsQuery('Items');
+  const {data: items, isLoading: itemsLoading} =
+    useGetAllWeaponsQuery(undefined);
 
   const {data: dbState, isLoading: dbStateLoading} = useGetDBStateQuery();
 
@@ -19,18 +20,22 @@ export const WeaponInventory = () => {
     return <LoadingScreen text={'Loading weapon categories...'} />;
   }
 
-  const categorizedList = dbState.weapons.categories.map(category => ({
-    title: category.item,
-    data: items.filter((item: WeaponItem) => item.category === category.id),
-  }));
+  const categorizedList = dbState.weapons.categories
+    .map(category => ({
+      title: category.item,
+      data: items.filter((item: WeaponItem) => item.category === category.id),
+    }))
+    .filter(category => category.data.length > 0);
 
   return (
     <SectionList
       sections={categorizedList}
       stickySectionHeadersEnabled
-      keyExtractor={(weaponItem, index) => `${weaponItem.id}-${index}`}
+      keyExtractor={(weaponItem, index) =>
+        `${weaponItem.itemProps.id}-${index}`
+      }
       renderItem={({item: weaponItem}) => (
-        <WeaponItemComponent item={weaponItem} key={weaponItem.id} />
+        <WeaponItemComponent item={weaponItem} key={weaponItem.itemProps.id} />
       )}
       renderSectionHeader={({section: {title}}) => (
         <Box backgroundColor="white" py={2}>

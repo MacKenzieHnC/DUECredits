@@ -1,37 +1,31 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
 import {
+  AppliedEffect,
   CategoryLike,
   DBState,
   WeaponEffect,
   WeaponItem,
 } from '../models/ItemIndex';
-import {getItems} from './db-service';
+import {extractItemProps, getCategoryList} from './db-service';
 export const getWeaponItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: String,
+  tableName: string,
 ): Promise<WeaponItem[]> => {
   try {
     // GET WEAPONS
-    const itemProps = await getItems(db, ITEM_TYPE.Weapons, tableName);
-    const weaponsList: WeaponItem[] = [];
+    const items: WeaponItem[] = [];
     const results = await db.executeSql(
-      `SELECT item as id,
-        category as category,
-        skill as skill,
-        damage as damage,
-        crit as crit,
-        range as range,
-        encumbrance as encumbrance,
-        hardpoints as hardpoints
-      FROM Weapons`,
+      `SELECT *
+        FROM ${ITEM_TYPE.Weapons.tableName} x
+        JOIN Item_View i ON i.id = x.item
+        ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
-        weaponsList.push!({
-          id: item.id,
-          itemProps: itemProps[index],
+        items.push!({
+          itemProps: extractItemProps(item),
           category: item.category,
           skill: item.skill,
           damage: item.damage,
@@ -39,43 +33,15 @@ export const getWeaponItems = async (
           range: item.range,
           encumbrance: item.encumbrance,
           hardpoints: item.hardpoints,
+          effects: extractWeaponEffects(item),
         });
       }
     });
 
-    return weaponsList;
+    return items;
   } catch (error) {
     console.error(error);
     throw Error('Failed to get items !!!');
-  }
-};
-
-const getCategoryList = async (
-  db: SQLite.SQLiteDatabase,
-  tableName: string,
-  orderBy: string | undefined,
-) => {
-  try {
-    const list: CategoryLike[] = [];
-    var results = await db.executeSql(
-      `SELECT id,
-        item
-      FROM ${tableName}
-      ${orderBy ? ' ORDER BY ' + orderBy : ''}`,
-    );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        list.push!({
-          id: item.id,
-          item: item.item,
-        });
-      }
-    });
-    return list;
-  } catch (error) {
-    console.error(error);
-    throw Error('Failed to get' + tableName + ' items !!!');
   }
 };
 
@@ -83,11 +49,7 @@ const getWeaponEffects = async (db: SQLite.SQLiteDatabase) => {
   try {
     const list: WeaponEffect[] = [];
     var results = await db.executeSql(
-      `SELECT id,
-        name,
-        active,
-        ranked,
-        description
+      `SELECT *
       FROM Weapon_Effects
       ORDER BY name`,
     );
@@ -140,4 +102,13 @@ export const getDBWeaponsState = async (
     console.error(error);
     throw Error('Failed to get initial weapons state !!!');
   }
+};
+
+export const extractWeaponEffects = (item: any): AppliedEffect[] => {
+  return item.effects
+    ? item.effects.split(',').map((effect: string) => {
+        const final = effect.split(':');
+        return {id: final[0], rank: final[1]};
+      })
+    : [];
 };

@@ -5,7 +5,7 @@ import {LoadingScreen} from '../components/LoadingScreen';
 import {useGetAllArmorQuery} from '../store/slices/databaseSlice';
 
 export const ArmorInventory = () => {
-  const {data, isLoading} = useGetAllArmorQuery('Items');
+  const {data, isLoading} = useGetAllArmorQuery(undefined);
 
   if (isLoading || !data) {
     return <LoadingScreen text={'Loading armor...'} />;
@@ -15,9 +15,9 @@ export const ArmorInventory = () => {
     <View>
       <FlatList
         data={data}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
+        keyExtractor={(item, index) => `${item.itemProps.id}-${index}`}
         renderItem={({item}) => (
-          <ArmorItemComponent key={item.id} item={item} />
+          <ArmorItemComponent key={item.itemProps.id} item={item} />
         )}
         initialNumToRender={10}
       />

@@ -1,29 +1,25 @@
 import SQLite from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
 import {ArmorItem} from '../models/ItemIndex';
-import {getItems} from './db-service';
+import {extractItemProps} from './db-service';
 
 export const getArmorItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: String,
+  tableName: string,
 ): Promise<ArmorItem[]> => {
   try {
-    const itemProps = await getItems(db, ITEM_TYPE.Armor, tableName);
     const items: ArmorItem[] = [];
     const results = await db.executeSql(
-      `SELECT item as id,
-          defense as defense, 
-          soak as soak,
-          encumbrance as encumbrance,
-          hardpoints as hardpoints
-      FROM Armor`,
+      `SELECT *
+        FROM ${ITEM_TYPE.Armor.tableName} x
+        JOIN Item_View i ON i.id = x.item
+        ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
         items.push!({
-          itemProps: itemProps[index],
-          id: item.id,
+          itemProps: extractItemProps(item),
           defense: item.defense,
           soak: item.soak,
           encumbrance: item.encumbrance,
