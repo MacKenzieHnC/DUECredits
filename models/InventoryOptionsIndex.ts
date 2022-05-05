@@ -1,16 +1,16 @@
 import {CategoryLike} from './ItemIndex';
 
-export type generalOptions = {
+export type GeneralOptions = {
   restricted: boolean | 'any';
   price: number[] | 'any';
   rarity: number[] | 'any';
   is_unique: boolean | 'any';
 };
 
-export type inventoryOptions = {
-  general: generalOptions;
+export type InventoryOptions = {
+  general: GeneralOptions;
   armor: {
-    general: generalOptions;
+    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
     defense: number[] | 'any';
     soak: number[] | 'any';
@@ -18,7 +18,7 @@ export type inventoryOptions = {
     hardpoints: number[] | 'any';
   };
   weapons: {
-    general: generalOptions;
+    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
     categories: CategoryLike[] | 'any'; // Key from db
     skills: CategoryLike[] | 'any'; // Key from db
@@ -31,7 +31,7 @@ export type inventoryOptions = {
   };
 };
 
-export type shopOptions = {
-  inventoryOptions: inventoryOptions;
+export type ShopOptions = {
+  inventoryOptions: InventoryOptions;
   location: number;
 };

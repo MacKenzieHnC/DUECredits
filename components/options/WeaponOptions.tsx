@@ -1,28 +1,28 @@
 import React from 'react';
 import {View} from 'react-native';
 import {
-  inventoryOptions,
-  generalOptions,
+  InventoryOptions,
+  GeneralOptions,
 } from '../../models/InventoryOptionsIndex';
 import {CategoryLike, DBState} from '../../models/ItemIndex';
-import {GeneralOptions} from './GeneralOptions';
+import {GeneralOptionsComponent} from './GeneralOptions';
 import {MultiSelectOption} from './MultiSelectOption';
 import {NumericOption} from './NumericOption';
 import {Option} from './Option';
 
-export const WeaponOptions: React.FC<{
-  options: inventoryOptions['weapons'];
+export const WeaponOptionsComponent: React.FC<{
+  options: InventoryOptions['weapons'];
   setOptions: Function;
-  defaultOptions: inventoryOptions;
-  anyOptions: inventoryOptions;
+  defaultOptions: InventoryOptions;
+  anyOptions: InventoryOptions;
   dbState: DBState['weapons'];
 }> = ({options, setOptions, defaultOptions, anyOptions, dbState}) => {
   const childComponent = (
     <View>
-      <GeneralOptions
+      <GeneralOptionsComponent
         title={'General Options'}
         options={options.general}
-        setOptions={(general: generalOptions) =>
+        setOptions={(general: GeneralOptions) =>
           setOptions({...options, general: general})
         }
         defaultOptions={defaultOptions.general}

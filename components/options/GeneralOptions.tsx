@@ -1,17 +1,17 @@
 import React from 'react';
 import {View} from 'react-native';
-import {generalOptions} from '../../models/InventoryOptionsIndex';
+import {GeneralOptions} from '../../models/InventoryOptionsIndex';
 import {BooleanOption} from './BooleanOption';
 import {NumericOption} from './NumericOption';
 import {Option} from './Option';
 
 // Component for shared values among items (restricted, price, etc.)
-export const GeneralOptions: React.FC<{
+export const GeneralOptionsComponent: React.FC<{
   title: string;
-  options: generalOptions;
+  options: GeneralOptions;
   setOptions: Function;
-  defaultOptions: generalOptions;
-  anyOptions: generalOptions;
+  defaultOptions: GeneralOptions;
+  anyOptions: GeneralOptions;
 }> = ({title, options, setOptions, defaultOptions, anyOptions}) => {
   const childComponent = (
     <View>

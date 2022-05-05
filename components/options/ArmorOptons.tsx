@@ -1,25 +1,25 @@
 import React from 'react';
 import {View} from 'react-native';
 import {
-  inventoryOptions,
-  generalOptions,
+  InventoryOptions,
+  GeneralOptions,
 } from '../../models/InventoryOptionsIndex';
-import {GeneralOptions} from './GeneralOptions';
+import {GeneralOptionsComponent} from './GeneralOptions';
 import {NumericOption} from './NumericOption';
 import {Option} from './Option';
 
-export const ArmorOptions: React.FC<{
-  options: inventoryOptions['armor'];
+export const ArmorOptionsComponent: React.FC<{
+  options: InventoryOptions['armor'];
   setOptions: Function;
-  defaultOptions: inventoryOptions;
-  anyOptions: inventoryOptions;
+  defaultOptions: InventoryOptions;
+  anyOptions: InventoryOptions;
 }> = ({options, setOptions, defaultOptions, anyOptions}) => {
   const childComponent = (
     <View>
-      <GeneralOptions
+      <GeneralOptionsComponent
         title={'General Options'}
         options={options.general}
-        setOptions={(general: generalOptions) =>
+        setOptions={(general: GeneralOptions) =>
           setOptions({...options, general: general})
         }
         defaultOptions={defaultOptions.general}
