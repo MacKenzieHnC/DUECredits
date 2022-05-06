@@ -3,24 +3,24 @@ import {Box, View} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 
-// Generic shared component between options
-export const Option: React.FC<{
+interface OptionProps {
   title: string;
   options: any;
-  setOption: Function;
+  passBack: Function;
   defaultOption: any;
-  anyOption: any;
   canBeNone: boolean;
   childComponent: Element;
-}> = ({
+}
+
+// Generic shared component between options
+export const Option = ({
   title,
   options,
-  setOption,
+  passBack,
   defaultOption,
-  anyOption,
   canBeNone,
   childComponent,
-}) => {
+}: OptionProps) => {
   const [limitedState, setLimited] = useState('any');
   return (
     <Box
@@ -50,16 +50,16 @@ export const Option: React.FC<{
               switch (itemValue) {
                 case 'any':
                   canBeNone
-                    ? setOption({...options, limit: 'any'})
-                    : setOption(anyOption);
+                    ? passBack({...options, limit: 'any'})
+                    : passBack('any');
                   break;
                 case 'none':
-                  setOption({...options, limit: 'none'});
+                  passBack({...options, limit: 'none'});
                   break;
                 case 'limit':
                   canBeNone
-                    ? setOption({...options, limit: 'limit'})
-                    : setOption(defaultOption);
+                    ? passBack({...options, limit: 'limit'})
+                    : passBack(defaultOption);
                   break;
               }
             }}>

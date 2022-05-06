@@ -3,8 +3,8 @@ import React from 'react';
 import {View} from 'native-base';
 import {Inventory} from './Inventory';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {ShopOptionsComponent} from './options/ShopOptions';
 import {ShopScreen} from '../screens/ShopScreen';
+import {ShopOptionsComponent} from '../screens/Options/ShopOptions';
 
 export const ShopComponent = () => {
   const Stack = createNativeStackNavigator();

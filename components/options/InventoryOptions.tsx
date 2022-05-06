@@ -1,15 +1,14 @@
-import {Text, View, VStack} from 'native-base';
+import {View, VStack} from 'native-base';
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
 import {
   GeneralOptions,
   InventoryOptions,
 } from '../../models/InventoryOptionsIndex';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../LoadingScreen';
-import {ArmorOptionsComponent} from './ArmorOptons';
 import {GeneralOptionsComponent} from './GeneralOptions';
-import {WeaponOptionsComponent} from './WeaponOptions';
+import {WeaponOptionsComponent} from '../../screens/Options/WeaponOptions';
+import {ArmorOptionsComponent} from '../../screens/Options/ArmorOptions';
 
 interface InventoryOptionsProps {
   options: InventoryOptions;
@@ -34,9 +33,6 @@ export const InventoryOptionsComponent: React.FC<InventoryOptionsProps> = ({
   return (
     <VStack space={3}>
       <View>
-        <View style={styles.headerTextContainer}>
-          <Text style={styles.headerText}>General Options</Text>
-        </View>
         <GeneralOptionsComponent
           title={'General Options'}
           options={options.general}
@@ -47,9 +43,6 @@ export const InventoryOptionsComponent: React.FC<InventoryOptionsProps> = ({
           anyOptions={anyOptions.general}
         />
       </View>
-      <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>Armor Options</Text>
-      </View>
       <ArmorOptionsComponent
         options={options.armor}
         setOptions={(armor: InventoryOptions['armor']) =>
@@ -58,10 +51,6 @@ export const InventoryOptionsComponent: React.FC<InventoryOptionsProps> = ({
         defaultOptions={defaultOptions}
         anyOptions={anyOptions}
       />
-
-      <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>Weapon Options</Text>
-      </View>
       <WeaponOptionsComponent
         options={options.weapons}
         setOptions={(weapons: InventoryOptions['weapons']) =>
@@ -74,15 +63,3 @@ export const InventoryOptionsComponent: React.FC<InventoryOptionsProps> = ({
     </VStack>
   );
 };
-const styles = StyleSheet.create({
-  headerTextContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    padding: 5,
-  },
-  headerText: {fontSize: 20},
-  optionsContainer: {marginBottom: 20},
-  option: {flexDirection: 'row', borderBottomWidth: 1, borderTopWidth: 1},
-});

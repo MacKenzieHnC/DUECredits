@@ -3,13 +3,20 @@ import {Box} from 'native-base';
 import React from 'react';
 import {Option} from './Option';
 
-// Specialized component for boolean options (is restricted/unique)
-export const BooleanOption: React.FC<{
+interface BooleanOptionProps {
   title: string;
   options: any;
   state: boolean | 'any';
-  setState: Function;
-}> = ({title, options, state, setState}) => {
+  passBack: Function;
+}
+
+// Specialized component for boolean options (is restricted/unique)
+export const BooleanOption = ({
+  title,
+  options,
+  state,
+  passBack,
+}: BooleanOptionProps) => {
   const childComponent = (
     <Box
       width="100%"
@@ -20,7 +27,7 @@ export const BooleanOption: React.FC<{
       borderColor="primary.800">
       <Picker
         selectedValue={state}
-        onValueChange={itemValue => setState(itemValue)}>
+        onValueChange={itemValue => passBack(itemValue)}>
         <Picker.Item label={'Non-' + title + ' Only'} value={false} />
         <Picker.Item label={title + ' Only'} value={true} />
       </Picker>
@@ -30,9 +37,8 @@ export const BooleanOption: React.FC<{
     <Option
       title={title}
       options={options}
-      setOption={setState}
+      passBack={passBack}
       defaultOption={false}
-      anyOption={'any'}
       canBeNone={false}
       childComponent={childComponent}
     />

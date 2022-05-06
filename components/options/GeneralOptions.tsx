@@ -5,14 +5,20 @@ import {BooleanOption} from './BooleanOption';
 import {NumericOption} from './NumericOption';
 import {Option} from './Option';
 
-// Component for shared values among items (restricted, price, etc.)
-export const GeneralOptionsComponent: React.FC<{
+interface GeneralOptionsProps {
   title: string;
   options: GeneralOptions;
-  setOptions: Function;
+  passBack: Function;
   defaultOptions: GeneralOptions;
-  anyOptions: GeneralOptions;
-}> = ({title, options, setOptions, defaultOptions, anyOptions}) => {
+}
+
+// Component for shared values among items (restricted, price, etc.)
+export const GeneralOptionsComponent = ({
+  title,
+  options,
+  passBack,
+  defaultOptions,
+}: GeneralOptionsProps) => {
   const childComponent = (
     <View>
       {/* Restricted */}
@@ -20,8 +26,8 @@ export const GeneralOptionsComponent: React.FC<{
         title={'Restricted'}
         options={options}
         state={options.restricted}
-        setState={(restricted: boolean | 'any') =>
-          setOptions({...options, restricted: restricted})
+        passBack={(restricted: boolean | 'any') =>
+          passBack({...options, restricted: restricted})
         }
       />
       {/* Price */}
@@ -29,8 +35,8 @@ export const GeneralOptionsComponent: React.FC<{
         title={'Price'}
         options={options}
         state={options.price}
-        setState={(price: number[] | 'any') =>
-          setOptions({...options, price: price})
+        passBack={(price: number[] | 'any') =>
+          passBack({...options, price: price})
         }
       />
       {/* Rarity */}
@@ -38,8 +44,8 @@ export const GeneralOptionsComponent: React.FC<{
         title={'Rarity'}
         options={options}
         state={options.rarity}
-        setState={(rarity: number[] | 'any') =>
-          setOptions({...options, rarity: rarity})
+        passBack={(rarity: number[] | 'any') =>
+          passBack({...options, rarity: rarity})
         }
       />
       {/* Restricted */}
@@ -47,8 +53,8 @@ export const GeneralOptionsComponent: React.FC<{
         title={'Unique'}
         options={options}
         state={options.is_unique}
-        setState={(is_unique: boolean | 'any') =>
-          setOptions({...options, is_unique: is_unique})
+        passBack={(is_unique: boolean | 'any') =>
+          passBack({...options, is_unique: is_unique})
         }
       />
     </View>
@@ -57,9 +63,8 @@ export const GeneralOptionsComponent: React.FC<{
     <Option
       title={title}
       options={options}
-      setOption={setOptions}
+      passBack={passBack}
       defaultOption={defaultOptions}
-      anyOption={anyOptions}
       canBeNone={false}
       childComponent={childComponent}
     />

@@ -1,4 +1,4 @@
-import {CategoryLike} from './ItemIndex';
+import {CategoryLike, WeaponEffect} from './ItemIndex';
 
 export type GeneralOptions = {
   restricted: boolean | 'any';
@@ -25,7 +25,7 @@ export type InventoryOptions = {
     damage: number[] | 'any';
     crit: number[] | 'any';
     ranges: CategoryLike[] | 'any'; // Key from db
-    effects: CategoryLike[] | 'any'; // Key from db
+    effects: WeaponEffect[] | 'any'; // Key from db
     encumbrance: number[] | 'any';
     hardpoints: number[] | 'any';
   };
@@ -34,4 +34,10 @@ export type InventoryOptions = {
 export type ShopOptions = {
   inventoryOptions: InventoryOptions;
   location: number;
+};
+
+export type Shop = {
+  id: number;
+  name: string;
+  options: ShopOptions;
 };

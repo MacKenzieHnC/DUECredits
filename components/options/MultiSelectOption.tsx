@@ -5,14 +5,22 @@ import {Option} from './Option';
 import MultiPicker from '../MultiPicker/MultiPicker';
 import {SafeAreaView} from 'react-native';
 
-// Specialized component for boolean options (is restricted/unique)
-export const MultiSelectOption: React.FC<{
+interface MultiSelectOptionProps {
   title: string;
   options: any;
   state: CategoryLike[] | WeaponEffect[] | 'any';
-  setState: Function;
+  passBack: Function;
   items: CategoryLike[] | WeaponEffect[];
-}> = ({title, options, state, setState, items}) => {
+}
+
+// Specialized component for boolean options (is restricted/unique)
+export const MultiSelectOption = ({
+  title,
+  options,
+  state,
+  passBack: passBack,
+  items,
+}: MultiSelectOptionProps) => {
   const childComponent = (
     <View borderColor="primary.800">
       <MultiPicker
@@ -20,7 +28,7 @@ export const MultiSelectOption: React.FC<{
         placeholder={title}
         icon={undefined}
         selectedItems={state === 'any' ? items : state}
-        onChangeItems={setState}
+        onChangeItems={passBack}
       />
     </View>
   );
@@ -29,9 +37,8 @@ export const MultiSelectOption: React.FC<{
       <Option
         title={title}
         options={options}
-        setOption={setState}
+        passBack={passBack}
         defaultOption={items}
-        anyOption={'any'}
         canBeNone={false}
         childComponent={childComponent}
       />
