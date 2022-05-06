@@ -1,12 +1,12 @@
 import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
-import {GearItemComponent} from '../components/GearItem';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {GearItem} from '../models/ItemIndex';
+import {GearItemComponent} from '../../components/ListComponents/GearItem';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {GearItem} from '../../models/ItemIndex';
 import {
   useGetAllGearQuery,
   useGetDBStateQuery,
-} from '../store/slices/databaseSlice';
+} from '../../store/slices/databaseSlice';
 
 export const GearInventory = () => {
   const {data: items, isLoading: itemsLoading} = useGetAllGearQuery(undefined);

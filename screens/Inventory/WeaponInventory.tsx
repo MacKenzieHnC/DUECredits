@@ -1,12 +1,12 @@
 import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {WeaponItemComponent} from '../components/WeaponItem';
-import {WeaponItem} from '../models/ItemIndex';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {WeaponItemComponent} from '../../components/ListComponents/WeaponItem';
+import {WeaponItem} from '../../models/ItemIndex';
 import {
   useGetAllWeaponsQuery,
   useGetDBStateQuery,
-} from '../store/slices/databaseSlice';
+} from '../../store/slices/databaseSlice';
 
 export const WeaponInventory = () => {
   const {data: items, isLoading: itemsLoading} =

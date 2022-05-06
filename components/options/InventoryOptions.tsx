@@ -1,6 +1,6 @@
 import {Text, View, VStack} from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {
   GeneralOptions,
   InventoryOptions,

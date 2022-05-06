@@ -1,12 +1,12 @@
 import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
-import {AttachmentItemComponent} from '../components/AttachmentItem';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {AttachmentItem} from '../models/ItemIndex';
+import {AttachmentItemComponent} from '../../components/ListComponents/AttachmentItem';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {AttachmentItem} from '../../models/ItemIndex';
 import {
   useGetAllAttachmentsQuery,
   useGetDBStateQuery,
-} from '../store/slices/databaseSlice';
+} from '../../store/slices/databaseSlice';
 
 export const AttachmentInventory = () => {
   const {data: items, isLoading: itemsLoading} =

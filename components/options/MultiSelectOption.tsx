@@ -1,6 +1,6 @@
 import {View} from 'native-base';
 import React from 'react';
-import {CategoryLike} from '../../models/ItemIndex';
+import {CategoryLike, WeaponEffect} from '../../models/ItemIndex';
 import {Option} from './Option';
 import MultiPicker from '../MultiPicker/MultiPicker';
 import {SafeAreaView} from 'react-native';
@@ -9,9 +9,9 @@ import {SafeAreaView} from 'react-native';
 export const MultiSelectOption: React.FC<{
   title: string;
   options: any;
-  state: CategoryLike[] | 'any';
+  state: CategoryLike[] | WeaponEffect[] | 'any';
   setState: Function;
-  items: CategoryLike[];
+  items: CategoryLike[] | WeaponEffect[];
 }> = ({title, options, state, setState, items}) => {
   const childComponent = (
     <View borderColor="primary.800">

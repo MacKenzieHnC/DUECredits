@@ -9,7 +9,7 @@ import {
   VehicleAttachmentItem,
   VehicleWeaponItem,
   WeaponItem,
-} from '../models/ItemIndex';
+} from '../../models/ItemIndex';
 
 interface ItemProps {
   item:

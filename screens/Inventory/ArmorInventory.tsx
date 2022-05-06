@@ -1,8 +1,8 @@
 import {FlatList, View} from 'native-base';
 import React from 'react';
-import {ArmorItemComponent} from '../components/ArmorItem';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {useGetAllArmorQuery} from '../store/slices/databaseSlice';
+import {ArmorItemComponent} from '../../components/ListComponents/ArmorItem';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {useGetAllArmorQuery} from '../../store/slices/databaseSlice';
 
 export const ArmorInventory = () => {
   const {data, isLoading} = useGetAllArmorQuery(undefined);

@@ -1,4 +1,4 @@
-import {ScrollView} from 'native-base';
+import {ScrollView, View} from 'native-base';
 import React, {useState} from 'react';
 import {
   GeneralOptions,
@@ -52,7 +52,7 @@ export const ShopOptionsComponent = () => {
   return !options ? (
     <LoadingScreen text="Loading options" />
   ) : (
-    <ScrollView stickyHeaderIndices={[0]} nestedScrollEnabled={true}>
+    <ScrollView>
       <InventoryOptionsComponent
         options={options!.inventoryOptions}
         setOptions={(inventoryOptions: InventoryOptions) =>

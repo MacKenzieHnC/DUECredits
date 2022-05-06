@@ -1,14 +1,14 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
 
-import {ArmorInventory} from '../screens/ArmorInventory';
-import {AttachmentInventory} from '../screens/AttachmentInventory';
-import {GearInventory} from '../screens/GearInventory';
-import {StarshipInventory} from '../screens/StarshipsInventory';
-import {PlanetaryVehicleInventory} from '../screens/PlanetaryVehicleInventory';
-import {VehicleAttachmentsInventory} from '../screens/VehicleAttachmentsInventory';
-import {WeaponInventory} from '../screens/WeaponInventory';
-import {VehicleWeaponsInventory} from '../screens/VehicleWeaponsInventory';
+import {ArmorInventory} from '../screens/Inventory/ArmorInventory';
+import {AttachmentInventory} from '../screens/Inventory/AttachmentInventory';
+import {GearInventory} from '../screens/Inventory/GearInventory';
+import {StarshipInventory} from '../screens/Inventory/StarshipsInventory';
+import {PlanetaryVehicleInventory} from '../screens/Inventory/PlanetaryVehicleInventory';
+import {VehicleAttachmentsInventory} from '../screens/Inventory/VehicleAttachmentsInventory';
+import {WeaponInventory} from '../screens/Inventory/WeaponInventory';
+import {VehicleWeaponsInventory} from '../screens/Inventory/VehicleWeaponsInventory';
 
 const Drawer = createDrawerNavigator();
 

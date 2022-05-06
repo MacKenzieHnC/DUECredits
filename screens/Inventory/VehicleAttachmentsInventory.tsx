@@ -1,8 +1,8 @@
 import {FlatList, View} from 'native-base';
 import React from 'react';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {VehicleAttachmentItemComponent} from '../components/VehicleAttachmentItem';
-import {useGetAllVehicleAttachmentsQuery} from '../store/slices/databaseSlice';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {VehicleAttachmentItemComponent} from '../../components/ListComponents/VehicleAttachmentItem';
+import {useGetAllVehicleAttachmentsQuery} from '../../store/slices/databaseSlice';
 
 export const VehicleAttachmentsInventory = () => {
   const {data: items, isLoading: itemsLoading} =

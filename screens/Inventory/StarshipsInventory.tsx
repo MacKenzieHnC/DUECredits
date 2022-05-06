@@ -1,12 +1,12 @@
 import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
-import {StarshipItemComponent} from '../components/StarshipItem';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {StarshipItem} from '../models/ItemIndex';
+import {StarshipItemComponent} from '../../components/ListComponents/StarshipItem';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {StarshipItem} from '../../models/ItemIndex';
 import {
   useGetAllStarshipsQuery,
   useGetDBStateQuery,
-} from '../store/slices/databaseSlice';
+} from '../../store/slices/databaseSlice';
 
 export const StarshipInventory = () => {
   const {data: items, isLoading: itemsLoading} =

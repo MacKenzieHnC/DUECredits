@@ -1,6 +1,6 @@
 import {HStack, Text, VStack} from 'native-base';
 import React, {memo} from 'react';
-import {WeaponItem} from '../models/ItemIndex';
+import {WeaponItem} from '../../models/ItemIndex';
 import {ItemComponent} from './Item';
 
 interface WeaponItemProps {

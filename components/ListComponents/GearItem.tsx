@@ -1,6 +1,6 @@
 import {Text} from 'native-base';
 import React, {memo} from 'react';
-import {GearItem} from '../models/ItemIndex';
+import {GearItem} from '../../models/ItemIndex';
 import {ItemComponent} from './Item';
 
 interface GearItemProps {

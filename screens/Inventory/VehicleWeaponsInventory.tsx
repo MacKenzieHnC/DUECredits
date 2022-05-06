@@ -1,8 +1,8 @@
 import {FlatList, View} from 'native-base';
 import React from 'react';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {VehicleWeaponItemComponent} from '../components/VehicleWeaponItem';
-import {useGetAllVehicleWeaponsQuery} from '../store/slices/databaseSlice';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {VehicleWeaponItemComponent} from '../../components/ListComponents/VehicleWeaponItem';
+import {useGetAllVehicleWeaponsQuery} from '../../store/slices/databaseSlice';
 
 export const VehicleWeaponsInventory = () => {
   const {data: items, isLoading: itemsLoading} =

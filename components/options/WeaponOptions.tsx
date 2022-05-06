@@ -4,7 +4,7 @@ import {
   InventoryOptions,
   GeneralOptions,
 } from '../../models/InventoryOptionsIndex';
-import {CategoryLike, DBState} from '../../models/ItemIndex';
+import {CategoryLike, DBState, WeaponEffect} from '../../models/ItemIndex';
 import {GeneralOptionsComponent} from './GeneralOptions';
 import {MultiSelectOption} from './MultiSelectOption';
 import {NumericOption} from './NumericOption';
@@ -81,7 +81,7 @@ export const WeaponOptionsComponent: React.FC<{
         title={'Effects'}
         options={options.effects}
         state={dbState.effects}
-        setState={(effects: CategoryLike[] | 'any') =>
+        setState={(effects: WeaponEffect[] | 'any') =>
           setOptions({...options, effects: effects})
         }
         items={dbState.effects}

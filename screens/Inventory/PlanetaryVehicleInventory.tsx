@@ -1,12 +1,12 @@
 import {Box, Heading, SectionList} from 'native-base';
 import React from 'react';
-import {VehicleItemComponent} from '../components/VehicleItem';
-import {LoadingScreen} from '../components/LoadingScreen';
-import {PlanetaryVehicleItem} from '../models/ItemIndex';
+import {VehicleItemComponent} from '../../components/ListComponents/VehicleItem';
+import {LoadingScreen} from '../../components/LoadingScreen';
+import {PlanetaryVehicleItem} from '../../models/ItemIndex';
 import {
   useGetAllPlanetaryVehiclesQuery,
   useGetDBStateQuery,
-} from '../store/slices/databaseSlice';
+} from '../../store/slices/databaseSlice';
 
 export const PlanetaryVehicleInventory = () => {
   const {data: items, isLoading: itemsLoading} =

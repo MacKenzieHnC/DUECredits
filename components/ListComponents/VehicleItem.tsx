@@ -1,6 +1,6 @@
 import {HStack, Text} from 'native-base';
 import React, {memo} from 'react';
-import {PlanetaryVehicleItem} from '../models/ItemIndex';
+import {PlanetaryVehicleItem} from '../../models/ItemIndex';
 import {ItemComponent} from './Item';
 
 interface VehicleItemProps {
