@@ -6,8 +6,8 @@ import {
   WeaponEffect,
 } from '../../models/ItemIndex';
 import {Option} from './Option';
-import MultiPicker from '../MultiPicker/MultiPicker';
 import {SafeAreaView} from 'react-native';
+import MultiPicker from './MultiPicker/MultiPicker';
 
 interface MultiSelectOptionProps {
   title: string;
