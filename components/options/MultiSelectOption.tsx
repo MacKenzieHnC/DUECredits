@@ -1,6 +1,10 @@
 import {View} from 'native-base';
 import React from 'react';
-import {CategoryLike, WeaponEffect} from '../../models/ItemIndex';
+import {
+  AdditionalRule,
+  CategoryLike,
+  WeaponEffect,
+} from '../../models/ItemIndex';
 import {Option} from './Option';
 import MultiPicker from '../MultiPicker/MultiPicker';
 import {SafeAreaView} from 'react-native';
@@ -8,9 +12,9 @@ import {SafeAreaView} from 'react-native';
 interface MultiSelectOptionProps {
   title: string;
   options: any;
-  state: CategoryLike[] | WeaponEffect[] | 'any';
+  state: CategoryLike[] | WeaponEffect[] | AdditionalRule[] | 'any';
   passBack: Function;
-  items: CategoryLike[] | WeaponEffect[];
+  items: CategoryLike[] | WeaponEffect[] | AdditionalRule[];
 }
 
 // Specialized component for boolean options (is restricted/unique)

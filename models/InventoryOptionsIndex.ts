@@ -1,4 +1,4 @@
-import {CategoryLike, WeaponEffect} from './ItemIndex';
+import {AdditionalRule, CategoryLike, WeaponEffect} from './ItemIndex';
 
 export type GeneralOptions = {
   restricted: boolean | 'any';
@@ -16,6 +16,76 @@ export type InventoryOptions = {
     soak: number[] | 'any';
     encumbrance: number[] | 'any';
     hardpoints: number[] | 'any';
+  };
+  attachments: {
+    general: GeneralOptions;
+    limit: 'limit' | 'any' | 'none';
+    categories: CategoryLike[] | 'any'; // Key from db
+    encumbrance: number[] | 'any';
+    hardpoints: number[] | 'any';
+  };
+  gear: {
+    general: GeneralOptions;
+    limit: 'limit' | 'any' | 'none';
+    categories: CategoryLike[] | 'any'; // Key from db
+    encumbrance: number[] | 'any';
+  };
+  planetaryVehicles: {
+    general: GeneralOptions;
+    type: number[] | 'any';
+    categories: CategoryLike[] | 'any';
+    manufacturer: CategoryLike[] | 'any';
+    model: string | 'any';
+    silhouette: number[] | 'any';
+    speed: number[] | 'any';
+    handling: number[] | 'any';
+    armor: number[] | 'any';
+    htt: number[] | 'any';
+    sst: number[] | 'any';
+    defense: string | 'any';
+    sensors: CategoryLike[] | 'any';
+    crew: number[] | 'any';
+    encumbrance: number[] | 'any';
+    passengers: number[] | 'any';
+    hardpoints: number[] | 'any';
+    weapons: number[] | 'any';
+  };
+  starships: {
+    general: GeneralOptions;
+    type: number[] | 'any';
+    categories: CategoryLike[] | 'any';
+    manufacturer: CategoryLike[] | 'any';
+    model: string | 'any';
+    silhouette: number[] | 'any';
+    speed: number[] | 'any';
+    handling: number[] | 'any';
+    armor: number[] | 'any';
+    htt: number[] | 'any';
+    sst: number[] | 'any';
+    defense: string | 'any';
+    sensors: CategoryLike[] | 'any';
+    crew: number[] | 'any';
+    encumbrance: number[] | 'any';
+    passengers: number[] | 'any';
+    hardpoints: number[] | 'any';
+    weapons: number[] | 'any';
+    navicomputer: CategoryLike[] | 'any';
+    additionalRules: AdditionalRule[] | 'any';
+  };
+  vehicleAttachments: {
+    general: GeneralOptions;
+    limit: 'limit' | 'any' | 'none';
+    hardpoints: number[] | 'any';
+  };
+  vehicleWeapons: {
+    general: GeneralOptions;
+    limit: 'limit' | 'any' | 'none';
+    categories: CategoryLike[] | 'any';
+    ranges: CategoryLike[] | 'any';
+    damage: number[] | 'any';
+    crit: number[] | 'any';
+    compatibleSilhouette: number[] | 'any';
+    effects: WeaponEffect[] | 'any';
   };
   weapons: {
     general: GeneralOptions;

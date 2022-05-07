@@ -4,7 +4,7 @@ import {
   InventoryOptions,
   GeneralOptions,
 } from '../../models/InventoryOptionsIndex';
-import {CategoryLike, WeaponEffect} from '../../models/ItemIndex';
+import {CategoryLike} from '../../models/ItemIndex';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {MultiSelectOption} from '../../components/options/MultiSelectOption';
 import {NumericOption} from '../../components/options/NumericOption';
@@ -15,11 +15,11 @@ import {useAppSelector} from '../../hooks/redux';
 import {selectOptions} from '../../store/slices/shopSlice';
 import {ScrollView} from 'native-base';
 
-export const WeaponOptionsScreen = ({navigation}) => {
+export const AttachmentOptionsScreen = ({navigation}) => {
   // Initialize
   const defaultOptions = useAppSelector(selectOptions);
-  const [options, setOptions] = useState<InventoryOptions['weapons']>(
-    defaultOptions.weapons,
+  const [options, setOptions] = useState<InventoryOptions['attachments']>(
+    defaultOptions.attachments,
   );
   const {data: dbState, isLoading} = useGetDBStateQuery();
   if (isLoading || !dbState || !options) {
@@ -27,11 +27,11 @@ export const WeaponOptionsScreen = ({navigation}) => {
   }
 
   // Function to alert shop of changes
-  const passBack = (newOptions: InventoryOptions['weapons']) => {
+  const passBack = (newOptions: InventoryOptions['attachments']) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {...defaultOptions, weapons: newOptions}},
+      params: {newOptions: {...defaultOptions, attachments: newOptions}},
       merge: true,
     });
   };
@@ -50,61 +50,13 @@ export const WeaponOptionsScreen = ({navigation}) => {
       <MultiSelectOption
         title={'Categories'}
         options={options.categories}
-        state={dbState.weapons.categories}
+        state={dbState.attachments.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
-        items={dbState.weapons.categories}
-      />
-      {/* Skill */}
-      <MultiSelectOption
-        title={'Skills'}
-        options={options.skills}
-        state={dbState.weapons.skills}
-        passBack={(skills: CategoryLike[] | 'any') =>
-          passBack({...options, skills: skills})
-        }
-        items={dbState.weapons.skills}
+        items={dbState.attachments.categories}
       />
       {/* Damage */}
-      <NumericOption
-        title={'Damage'}
-        options={options.damage}
-        state={defaultOptions.damage}
-        passBack={(damage: number[] | 'any') =>
-          passBack({...options, damage: damage})
-        }
-      />
-      {/* Crit */}
-      <NumericOption
-        title={'Crit'}
-        options={options.crit}
-        state={defaultOptions.crit}
-        passBack={(crit: number[] | 'any') =>
-          passBack({...options, crit: crit})
-        }
-      />
-      {/* Range */}
-      <MultiSelectOption
-        title={'Ranges'}
-        options={options.ranges}
-        state={dbState.weapons.ranges}
-        passBack={(ranges: CategoryLike[] | 'any') =>
-          passBack({...options, ranges: ranges})
-        }
-        items={dbState.weapons.ranges}
-      />
-      {/* Effect */}
-      <MultiSelectOption
-        title={'Effects'}
-        options={options.effects}
-        state={dbState.weapons.effects}
-        passBack={(effects: WeaponEffect[] | 'any') =>
-          passBack({...options, effects: effects})
-        }
-        items={dbState.weapons.effects}
-      />
-      {/* Encumbrance */}
       <NumericOption
         title={'Encumbrance'}
         options={options.encumbrance}
@@ -127,7 +79,7 @@ export const WeaponOptionsScreen = ({navigation}) => {
   return (
     <ScrollView>
       <Option
-        title={'Weapons'}
+        title={'Attachments'}
         options={options}
         passBack={passBack}
         defaultOption={defaultOptions}

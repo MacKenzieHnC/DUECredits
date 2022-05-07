@@ -4,7 +4,7 @@ import {View} from 'native-base';
 import {Inventory} from './Inventory';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ShopScreen} from '../screens/ShopScreen';
-import {ShopOptionsComponent} from '../screens/Options/ShopOptions';
+import {ShopOptionsScreen} from '../screens/Options/ShopOptions';
 
 export const ShopComponent = () => {
   const Stack = createNativeStackNavigator();
@@ -12,7 +12,7 @@ export const ShopComponent = () => {
     <View flex={1}>
       <Stack.Navigator>
         <Stack.Screen name="Shop" component={ShopScreen} />
-        <Stack.Screen name="Options" component={ShopOptionsComponent} />
+        <Stack.Screen name="Options" component={ShopOptionsScreen} />
         <Stack.Screen name="Inventory" component={Inventory} />
       </Stack.Navigator>
     </View>

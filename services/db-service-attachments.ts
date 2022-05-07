@@ -40,7 +40,7 @@ export const getDBAttachmentsState = async (
     const categories: CategoryLike[] = await getCategoryList(
       db,
       'Attachment_Categories',
-      'item',
+      'name',
     );
 
     return {

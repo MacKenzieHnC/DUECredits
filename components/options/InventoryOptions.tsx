@@ -7,8 +7,8 @@ import {
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../LoadingScreen';
 import {GeneralOptionsComponent} from './GeneralOptions';
-import {WeaponOptionsComponent} from '../../screens/Options/WeaponOptions';
-import {ArmorOptionsComponent} from '../../screens/Options/ArmorOptions';
+import {WeaponOptionsScreen} from '../../screens/Options/WeaponOptions';
+import {ArmorOptionsScreen} from '../../screens/Options/ArmorOptions';
 
 interface InventoryOptionsProps {
   options: InventoryOptions;
@@ -43,7 +43,7 @@ export const InventoryOptionsComponent: React.FC<InventoryOptionsProps> = ({
           anyOptions={anyOptions.general}
         />
       </View>
-      <ArmorOptionsComponent
+      <ArmorOptionsScreen
         options={options.armor}
         setOptions={(armor: InventoryOptions['armor']) =>
           setOptions({...options, armor: armor})
@@ -51,7 +51,7 @@ export const InventoryOptionsComponent: React.FC<InventoryOptionsProps> = ({
         defaultOptions={defaultOptions}
         anyOptions={anyOptions}
       />
-      <WeaponOptionsComponent
+      <WeaponOptionsScreen
         options={options.weapons}
         setOptions={(weapons: InventoryOptions['weapons']) =>
           setOptions({...options, weapons: weapons})

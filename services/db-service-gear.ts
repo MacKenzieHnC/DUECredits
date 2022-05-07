@@ -39,7 +39,7 @@ export const getDBGearState = async (
     const categories: CategoryLike[] = await getCategoryList(
       db,
       'Gear_Categories',
-      'item',
+      'name',
     );
 
     return {

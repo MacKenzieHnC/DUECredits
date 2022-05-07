@@ -57,7 +57,7 @@ const MultiPicker: React.FC<{
           <View style={styles.previewContainer}>
             {selected?.map((id, index) => (
               <View key={index} style={styles.previewItem}>
-                <Text>{itemFromID(id).item}</Text>
+                <Text>{itemFromID(id).name}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     setSelected(selected.filter(x => x != id));
@@ -96,7 +96,7 @@ const MultiPicker: React.FC<{
                               ? {color: '#000'}
                               : {color: '#bbb'}
                           }>
-                          {item.item}
+                          {item.name}
                         </Text>
                       </TouchableOpacity>
                     </View>

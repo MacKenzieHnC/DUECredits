@@ -78,12 +78,12 @@ export const getDBWeaponsState = async (
     const categories: CategoryLike[] = await getCategoryList(
       db,
       'Weapon_Categories',
-      'item',
+      'name',
     );
     const skills: CategoryLike[] = await getCategoryList(
       db,
       'Weapon_Skills',
-      'item',
+      'name',
     );
     const ranges: CategoryLike[] = await getCategoryList(
       db,

@@ -55,7 +55,7 @@ export const getCategoryList = async (
         const item = result.rows.item(index);
         list.push!({
           id: item.id,
-          item: item.item,
+          name: item.name,
         });
       }
     });
@@ -99,14 +99,14 @@ const getRulebooks = async (db: SQLiteDatabase): Promise<Rulebook[]> => {
     var results = await db.executeSql(
       `SELECT *
       FROM Rulebooks
-       ORDER BY item`,
+       ORDER BY name`,
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
         list.push!({
           id: item.id,
-          item: item.item,
+          name: item.name,
           abbrev: item.abbrev,
         });
       }

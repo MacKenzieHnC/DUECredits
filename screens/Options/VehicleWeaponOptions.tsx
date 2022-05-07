@@ -15,11 +15,11 @@ import {useAppSelector} from '../../hooks/redux';
 import {selectOptions} from '../../store/slices/shopSlice';
 import {ScrollView} from 'native-base';
 
-export const WeaponOptionsScreen = ({navigation}) => {
+export const VehicleWeaponOptionsScreen = ({navigation}) => {
   // Initialize
   const defaultOptions = useAppSelector(selectOptions);
-  const [options, setOptions] = useState<InventoryOptions['weapons']>(
-    defaultOptions.weapons,
+  const [options, setOptions] = useState<InventoryOptions['vehicleWeapons']>(
+    defaultOptions.vehicleWeapons,
   );
   const {data: dbState, isLoading} = useGetDBStateQuery();
   if (isLoading || !dbState || !options) {
@@ -27,11 +27,11 @@ export const WeaponOptionsScreen = ({navigation}) => {
   }
 
   // Function to alert shop of changes
-  const passBack = (newOptions: InventoryOptions['weapons']) => {
+  const passBack = (newOptions: InventoryOptions['vehicleWeapons']) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {...defaultOptions, weapons: newOptions}},
+      params: {newOptions: {...defaultOptions, vehicleWeapons: newOptions}},
       merge: true,
     });
   };
@@ -56,15 +56,15 @@ export const WeaponOptionsScreen = ({navigation}) => {
         }
         items={dbState.weapons.categories}
       />
-      {/* Skill */}
+      {/* Range */}
       <MultiSelectOption
-        title={'Skills'}
-        options={options.skills}
-        state={dbState.weapons.skills}
-        passBack={(skills: CategoryLike[] | 'any') =>
-          passBack({...options, skills: skills})
+        title={'Ranges'}
+        options={options.ranges}
+        state={dbState.vehicles.ranges}
+        passBack={(ranges: CategoryLike[] | 'any') =>
+          passBack({...options, ranges: ranges})
         }
-        items={dbState.weapons.skills}
+        items={dbState.vehicles.ranges}
       />
       {/* Damage */}
       <NumericOption
@@ -84,15 +84,14 @@ export const WeaponOptionsScreen = ({navigation}) => {
           passBack({...options, crit: crit})
         }
       />
-      {/* Range */}
-      <MultiSelectOption
-        title={'Ranges'}
-        options={options.ranges}
-        state={dbState.weapons.ranges}
-        passBack={(ranges: CategoryLike[] | 'any') =>
-          passBack({...options, ranges: ranges})
+      {/* Compatible Silhouette */}
+      <NumericOption
+        title={'Compatible Silhouette'}
+        options={options.compatibleSilhouette}
+        state={defaultOptions.compatibleSilhouette}
+        passBack={(compatibleSilhouette: number[] | 'any') =>
+          passBack({...options, compatibleSilhouette: compatibleSilhouette})
         }
-        items={dbState.weapons.ranges}
       />
       {/* Effect */}
       <MultiSelectOption
@@ -104,30 +103,12 @@ export const WeaponOptionsScreen = ({navigation}) => {
         }
         items={dbState.weapons.effects}
       />
-      {/* Encumbrance */}
-      <NumericOption
-        title={'Encumbrance'}
-        options={options.encumbrance}
-        state={defaultOptions.encumbrance}
-        passBack={(encumbrance: number[] | 'any') =>
-          passBack({...options, encumbrance: encumbrance})
-        }
-      />
-      {/* Hardpoints */}
-      <NumericOption
-        title={'Hardpoints'}
-        options={options.hardpoints}
-        state={defaultOptions.hardpoints}
-        passBack={(hardpoints: number[] | 'any') =>
-          passBack({...options, hardpoints: hardpoints})
-        }
-      />
     </View>
   );
   return (
     <ScrollView>
       <Option
-        title={'Weapons'}
+        title={'VehicleWeapons'}
         options={options}
         passBack={passBack}
         defaultOption={defaultOptions}

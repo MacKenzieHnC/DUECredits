@@ -43,7 +43,7 @@ export type Item = {
 
 export type CategoryLike = {
   id: number;
-  item: string;
+  name: string;
 };
 
 export type AdditionalRule = {
@@ -84,7 +84,7 @@ export type PlanetaryVehicleItem = {
 
 export type Rulebook = {
   id: number;
-  item: string;
+  name: string;
   abbrev: string;
 };
 

@@ -1,14 +1,20 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {Text, View} from 'native-base';
 import React, {useState} from 'react';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
 import {InventoryOptions} from '../../models/InventoryOptionsIndex';
 import {selectOptions} from '../../store/slices/shopSlice';
-import {ArmorOptionsComponent} from './ArmorOptions';
-import {WeaponOptionsComponent} from './WeaponOptions';
+import {ArmorOptionsScreen} from './ArmorOptions';
+import {AttachmentOptionsScreen} from './AttachmentOptions';
+import {GearOptionsScreen} from './GearOptions';
+import {GeneralOptionsScreen} from './GeneralOptions';
+import {PlanetaryVehicleOptionsScreen} from './PlanetaryVehiclesOptions';
+import {StarshipOptionsScreen} from './StarshipOptions';
+import {VehicleAttachmentOptionsScreen} from './VehicleAttachmentOptions';
+import {VehicleWeaponOptionsScreen} from './VehicleWeaponOptions';
+import {WeaponOptionsScreen} from './WeaponOptions';
 
-export const ShopOptionsComponent = ({navigation, route}) => {
+export const ShopOptionsScreen = ({navigation, route}) => {
   //Initialize
   const defaultOptions = useAppSelector(selectOptions);
   const [options, setOptions] = useState<InventoryOptions>(defaultOptions);
@@ -23,17 +29,25 @@ export const ShopOptionsComponent = ({navigation, route}) => {
 
   const Drawer = createDrawerNavigator();
   return (
-    <View flex={1}>
-      <Text>
-        Armor restricted: {options.armor.general.restricted.toString()}
-      </Text>
-      <Text>
-        Weapon restricted: {options.weapons.general.restricted.toString()}
-      </Text>
-      <Drawer.Navigator>
-        <Drawer.Screen name="Armor" component={ArmorOptionsComponent} />
-        <Drawer.Screen name="Weapons" component={WeaponOptionsComponent} />
-      </Drawer.Navigator>
-    </View>
+    <Drawer.Navigator>
+      <Drawer.Screen name="General" component={GeneralOptionsScreen} />
+      <Drawer.Screen name="Armor" component={ArmorOptionsScreen} />
+      <Drawer.Screen name="Attachments" component={AttachmentOptionsScreen} />
+      <Drawer.Screen name="Gear" component={GearOptionsScreen} />
+      <Drawer.Screen name="Weapons" component={WeaponOptionsScreen} />
+      <Drawer.Screen
+        name="Planetary Vehicles"
+        component={PlanetaryVehicleOptionsScreen}
+      />
+      <Drawer.Screen name="Starships" component={StarshipOptionsScreen} />
+      <Drawer.Screen
+        name="Vehicle Attachments"
+        component={VehicleAttachmentOptionsScreen}
+      />
+      <Drawer.Screen
+        name="Vehicle Weapons"
+        component={VehicleWeaponOptionsScreen}
+      />
+    </Drawer.Navigator>
   );
 };

@@ -43,17 +43,17 @@ export const getDBVehiclesState = async (
     const categories: CategoryLike[] = await getCategoryList(
       db,
       'Vehicle_Categories',
-      'item',
+      'name',
     );
     const manufacturers: CategoryLike[] = await getCategoryList(
       db,
       'Manufacturers',
-      'item',
+      'name',
     );
     const ranges: CategoryLike[] = await getCategoryList(
       db,
       'Ranges_Planetary_Scale',
-      'item',
+      'name',
     );
 
     return {
