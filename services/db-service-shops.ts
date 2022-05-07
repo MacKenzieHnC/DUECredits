@@ -1,57 +1,41 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {
-  GeneralOptions,
-  InventoryOptions,
-  Shop,
-  ShopOptions,
-} from '../models/InventoryOptionsIndex';
+import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
+import {JSONToString, StringToJSON} from './db-service';
 
-export const getShop = async (
+export const updateRules = async (
   db: SQLiteDatabase,
   shopID: number,
-): Promise<Shop> => {
+  rules: ShopOptions,
+) => {
   try {
-    // TODO: Hardcoded shop
-    const defaultGeneralOptions: GeneralOptions = {
-      restricted: 'any',
-      price: 'any',
-      rarity: 'any',
-      is_unique: 'any',
-    };
-    const defaultInventoryOptions: InventoryOptions = {
-      general: defaultGeneralOptions,
-      armor: {
-        general: defaultGeneralOptions,
-        limit: 'any',
-        defense: 'any',
-        soak: 'any',
-        encumbrance: 'any',
-        hardpoints: 'any',
-      },
-      weapons: {
-        general: defaultGeneralOptions,
-        limit: 'any',
-        categories: 'any',
-        skills: 'any',
-        damage: 'any',
-        crit: 'any',
-        ranges: 'any',
-        effects: 'any',
-        encumbrance: 'any',
-        hardpoints: 'any',
-      },
-    };
+    var json = JSONToString(rules);
+    await db.executeSql(
+      `UPDATE Shops SET rules = "${json}" WHERE id = ${shopID}`,
+    );
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get initial database state !!!');
+  }
+};
 
-    const defaultShopOptions: ShopOptions = {
-      location: 0,
-      inventoryOptions: defaultInventoryOptions,
-    };
-
-    return {
-      id: shopID,
-      name: 'default',
-      options: defaultShopOptions,
-    };
+export const getAllShops = async (db: SQLiteDatabase): Promise<Shop[]> => {
+  try {
+    const results = await db.executeSql(
+      `SELECT *
+      FROM Shops`,
+    );
+    const list: Shop[] = [];
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        const item = result.rows.item(index);
+        list.push!({
+          id: item.id,
+          name: item.name,
+          options: StringToJSON(item.rules),
+        });
+      }
+    });
+    return list;
   } catch (error) {
     console.error(error);
     throw Error('Failed to get initial database state !!!');

@@ -4,16 +4,19 @@ import {LoadingScreen} from '../../components/LoadingScreen';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {NumericOption} from '../../components/options/NumericOption';
 import {Option} from '../../components/options/Option';
-import {useAppSelector} from '../../hooks/redux';
 import {
   GeneralOptions,
   InventoryOptions,
 } from '../../models/InventoryOptionsIndex';
-import {selectOptions} from '../../store/slices/shopSlice';
+import {useAppSelector} from '../../hooks/redux';
+import {selectCurrentShop} from '../../store/slices/appSlice';
+import {selectShop} from '../../store/slices/databaseSlice';
 
 export const ArmorOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
+  const defaultOptions = useAppSelector(
+    selectShop(useAppSelector(selectCurrentShop)),
+  ).options.inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['armor']>(
     defaultOptions.armor,
   );

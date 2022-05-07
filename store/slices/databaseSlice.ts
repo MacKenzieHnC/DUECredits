@@ -1,4 +1,5 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
+import {createSelector} from '@reduxjs/toolkit';
 import {
   ArmorItem,
   AttachmentItem,
@@ -19,6 +20,8 @@ import {getStarshipItems} from '../../services/db_service-starships';
 import {getVehicleAttachmentItems} from '../../services/db-service-vehicleAttachments';
 import {getVehicleWeaponItems} from '../../services/db-service-vehicleWeapons';
 import {getWeaponItems} from '../../services/db-service-weapons';
+import {getAllShops} from '../../services/db-service-shops';
+import {Shop} from '../../models/InventoryOptionsIndex';
 
 export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),
@@ -129,11 +132,33 @@ export const databaseSlice = createApi({
         }
       },
     }),
+    getAllShops: build.query<Shop[], void>({
+      async queryFn() {
+        try {
+          const db = await getDBConnection();
+          const data = await getAllShops(db);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Shop", status: 500}};
+        }
+      },
+    }),
   }),
 });
 
+export const selectAllShops = createSelector(
+  databaseSlice.endpoints.getAllShops.select(),
+  database => database?.data,
+);
+
+export const selectShop = (shopID: number) =>
+  createSelector(databaseSlice.endpoints.getAllShops.select(), shops =>
+    shops?.data?.find(shop => shop.id === shopID),
+  );
+
 export const {
   useGetDBStateQuery,
+  useGetAllShopsQuery,
   useGetAllArmorQuery,
   useGetAllAttachmentsQuery,
   useGetAllGearQuery,

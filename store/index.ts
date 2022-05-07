@@ -1,10 +1,10 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
+import appSlice from './slices/appSlice';
 import {databaseSlice} from './slices/databaseSlice';
-import shopSlice from './slices/shopSlice';
 
 export const store = configureStore({
   reducer: {
-    shopSlice,
+    appSlice,
     [databaseSlice.reducerPath]: databaseSlice.reducer,
   },
   middleware: getDefaultMiddleware =>

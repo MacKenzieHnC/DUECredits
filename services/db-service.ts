@@ -11,6 +11,14 @@ import {getDBAttachmentsState} from './db-service-attachments';
 import {getDBGearState} from './db-service-gear';
 import {getDBVehiclesState} from './db-service-vehicles';
 
+export const JSONToString = (someJSON: any) => {
+  return JSON.stringify(someJSON).split('"').join("'");
+};
+
+export const StringToJSON = (someString: string) => {
+  return JSON.parse(someString.split("'").join('"'));
+};
+
 export const getDBConnection = async () => {
   return SQLite.openDatabase({
     name: 'SWRPG.db',

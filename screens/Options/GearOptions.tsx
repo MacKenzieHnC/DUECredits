@@ -12,12 +12,15 @@ import {Option} from '../../components/options/Option';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectOptions} from '../../store/slices/shopSlice';
+import {selectCurrentShop} from '../../store/slices/appSlice';
+import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
 
 export const GearOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
+  const defaultOptions = useAppSelector(
+    selectShop(useAppSelector(selectCurrentShop)),
+  ).options.inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['gear']>(
     defaultOptions.gear,
   );
