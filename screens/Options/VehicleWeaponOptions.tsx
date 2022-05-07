@@ -17,7 +17,7 @@ import {ScrollView} from 'native-base';
 
 export const VehicleWeaponOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['vehicleWeapons']>(
     defaultOptions.vehicleWeapons,
   );
@@ -55,6 +55,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}) => {
           passBack({...options, categories: categories})
         }
         items={dbState.weapons.categories}
+        features={['name']}
       />
       {/* Range */}
       <MultiSelectOption
@@ -65,6 +66,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}) => {
           passBack({...options, ranges: ranges})
         }
         items={dbState.vehicles.ranges}
+        features={['name']}
       />
       {/* Damage */}
       <NumericOption
@@ -102,6 +104,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}) => {
           passBack({...options, effects: effects})
         }
         items={dbState.weapons.effects}
+        features={['name']}
       />
     </View>
   );

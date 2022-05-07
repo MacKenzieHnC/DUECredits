@@ -13,13 +13,25 @@ import PropTypes from 'prop-types';
 import {Dimensions} from 'react-native';
 import {Icon} from 'native-base';
 
-const MultiPicker: React.FC<{
+interface MultiPickerProps {
   items;
   placeholder;
   icon;
   selectedItems;
-  onChangeItems;
-}> = ({items, placeholder, icon, selectedItems, onChangeItems}) => {
+  onChangeItems: Function;
+  features: string[];
+  featureNames?: string[];
+}
+
+const MultiPicker = ({
+  items,
+  placeholder,
+  icon,
+  selectedItems,
+  onChangeItems,
+  features,
+  featureNames,
+}: MultiPickerProps) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(selectedItems.map(item => item.id));
 
@@ -40,6 +52,11 @@ const MultiPicker: React.FC<{
   function closeModel() {
     onChangeItems(selected.map(id => itemFromID(id)));
     setVisible(false);
+  }
+
+  var itemDisplay = '';
+  for (let i = 0; i < features.length; i++) {
+    itemDisplay += features[i] + (featureNames ? featureNames[i] : '');
   }
 
   return (
@@ -96,7 +113,7 @@ const MultiPicker: React.FC<{
                               ? {color: '#000'}
                               : {color: '#bbb'}
                           }>
-                          {item.name}
+                          {itemDisplay}
                         </Text>
                       </TouchableOpacity>
                     </View>

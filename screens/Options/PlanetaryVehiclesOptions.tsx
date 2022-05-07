@@ -17,7 +17,7 @@ import {ScrollView} from 'native-base';
 
 export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['planetaryVehicles']>(
     defaultOptions.planetaryVehicles,
   );
@@ -55,6 +55,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
           passBack({...options, categories: categories})
         }
         items={dbState.vehicles.categories}
+        features={['name']}
       />
       {/* Manufacturer */}
       <MultiSelectOption
@@ -65,6 +66,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
           passBack({...options, manufacturer: manufacturer})
         }
         items={dbState.vehicles.manufacturers}
+        features={['name']}
       />
       {/* Silhouette */}
       <NumericOption
@@ -125,6 +127,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
           passBack({...options, sensors: sensors})
         }
         items={dbState.vehicles.ranges}
+        features={['name']}
       />
       {/* Crew */}
       <NumericOption

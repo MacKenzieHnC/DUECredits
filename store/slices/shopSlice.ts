@@ -107,14 +107,16 @@ const defaultInventoryOptions: InventoryOptions = {
 const initialState = {
   status: 'idle',
   entities: {
-    location: 0,
-    inventoryOptions: defaultInventoryOptions,
+    shopOptions: {
+      location: 4,
+      inventoryOptions: defaultInventoryOptions,
+    },
   },
 };
 
 export const selectOptions = createSelector(
-  state => state.shopSlice.entities.inventoryOptions,
-  inventoryOptions => inventoryOptions,
+  state => state.shopSlice.entities.shopOptions,
+  shopOptions => shopOptions,
 );
 
 export const shopSlice = createSlice({

@@ -13,7 +13,7 @@ import {selectOptions} from '../../store/slices/shopSlice';
 
 export const ArmorOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['armor']>(
     defaultOptions.armor,
   );

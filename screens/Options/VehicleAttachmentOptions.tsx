@@ -15,7 +15,7 @@ import {ScrollView} from 'native-base';
 
 export const VehicleAttachmentOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
   const [options, setOptions] = useState<
     InventoryOptions['vehicleAttachments']
   >(defaultOptions.vehicleAttachments);

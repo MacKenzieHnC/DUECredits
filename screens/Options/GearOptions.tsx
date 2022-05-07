@@ -17,7 +17,7 @@ import {ScrollView} from 'native-base';
 
 export const GearOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['gear']>(
     defaultOptions.gear,
   );
@@ -55,6 +55,7 @@ export const GearOptionsScreen = ({navigation}) => {
           passBack({...options, categories: categories})
         }
         items={dbState.gear.categories}
+        features={['name']}
       />
       {/* Damage */}
       <NumericOption

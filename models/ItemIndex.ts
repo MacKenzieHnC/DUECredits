@@ -9,6 +9,8 @@ export type DBState = {
     categories: CategoryLike[];
   };
 
+  locations: Location[];
+
   rulebooks: Rulebook[];
 
   starships: {
@@ -55,6 +57,13 @@ export type AdditionalRule = {
 export type AppliedEffect = {
   id: number;
   rank: string | undefined;
+};
+
+export type Location = {
+  id: number;
+  name: string;
+  price_modifier: number;
+  rarity_modifier: number;
 };
 
 export type ArmorItem = {

@@ -17,7 +17,7 @@ import {ScrollView} from 'native-base';
 
 export const AttachmentOptionsScreen = ({navigation}) => {
   // Initialize
-  const defaultOptions = useAppSelector(selectOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
   const [options, setOptions] = useState<InventoryOptions['attachments']>(
     defaultOptions.attachments,
   );
@@ -55,6 +55,7 @@ export const AttachmentOptionsScreen = ({navigation}) => {
           passBack({...options, categories: categories})
         }
         items={dbState.attachments.categories}
+        features={['name']}
       />
       {/* Damage */}
       <NumericOption

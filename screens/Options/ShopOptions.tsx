@@ -2,7 +2,10 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import React, {useState} from 'react';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {InventoryOptions} from '../../models/InventoryOptionsIndex';
+import {
+  InventoryOptions,
+  ShopOptions,
+} from '../../models/InventoryOptionsIndex';
 import {selectOptions} from '../../store/slices/shopSlice';
 import {ArmorOptionsScreen} from './ArmorOptions';
 import {AttachmentOptionsScreen} from './AttachmentOptions';
@@ -16,8 +19,8 @@ import {WeaponOptionsScreen} from './WeaponOptions';
 
 export const ShopOptionsScreen = ({navigation, route}) => {
   //Initialize
-  const defaultOptions = useAppSelector(selectOptions);
-  const [options, setOptions] = useState<InventoryOptions>(defaultOptions);
+  const defaultOptions = useAppSelector(selectOptions).inventoryOptions;
+  const [options, setOptions] = useState<ShopOptions>(defaultOptions);
   React.useEffect(() => {
     if (route.params?.newOptions) {
       setOptions(route.params.newOptions);

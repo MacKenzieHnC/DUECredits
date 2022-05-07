@@ -15,6 +15,7 @@ interface MultiSelectOptionProps {
   state: CategoryLike[] | WeaponEffect[] | AdditionalRule[] | 'any';
   passBack: Function;
   items: CategoryLike[] | WeaponEffect[] | AdditionalRule[];
+  features: string[];
 }
 
 // Specialized component for boolean options (is restricted/unique)
@@ -24,6 +25,7 @@ export const MultiSelectOption = ({
   state,
   passBack: passBack,
   items,
+  features,
 }: MultiSelectOptionProps) => {
   const childComponent = (
     <View borderColor="primary.800">
@@ -33,6 +35,7 @@ export const MultiSelectOption = ({
         icon={undefined}
         selectedItems={state === 'any' ? items : state}
         onChangeItems={passBack}
+        features={features}
       />
     </View>
   );

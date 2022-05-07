@@ -2,6 +2,7 @@ import {
   DBState,
   CategoryLike,
   AdditionalRule,
+  Location,
   Rulebook,
 } from '../models/ItemIndex';
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
@@ -118,11 +119,38 @@ const getRulebooks = async (db: SQLiteDatabase): Promise<Rulebook[]> => {
   }
 };
 
+const getLocations = async (db: SQLiteDatabase): Promise<Location[]> => {
+  try {
+    const list: Location[] = [];
+    var results = await db.executeSql(
+      `SELECT *
+      FROM Locations
+       ORDER BY id`,
+    );
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        const item = result.rows.item(index);
+        list.push!({
+          id: item.id,
+          name: item.name,
+          price_modifier: item.price_modifier,
+          rarity_modifier: item.rarity_modifier,
+        });
+      }
+    });
+    return list;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get Locations !!!');
+  }
+};
+
 export const getDBState = async (db: SQLiteDatabase): Promise<DBState> => {
   try {
     const additionalRules = await getAdditionalRules(db);
     const attachments = await getDBAttachmentsState(db);
     const gear = await getDBGearState(db);
+    const locations = await getLocations(db);
     const rulebooks = await getRulebooks(db);
     const vehicles = await getDBVehiclesState(db);
     const starships = {
@@ -132,6 +160,7 @@ export const getDBState = async (db: SQLiteDatabase): Promise<DBState> => {
     return {
       additionalRules: additionalRules,
       attachments: attachments,
+      locations: locations,
       gear: gear,
       rulebooks: rulebooks,
       starships: starships,
