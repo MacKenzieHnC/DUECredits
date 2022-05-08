@@ -1,6 +1,7 @@
-import {Box, HStack} from 'native-base';
+import {Box, HStack, Text, VStack} from 'native-base';
 import React from 'react';
 import {TextInput} from 'react-native';
+import {formatNumber} from '../../Utils/FormatNumber';
 import {Option} from './Option';
 
 interface NumericOptionProps {
@@ -17,48 +18,83 @@ export const NumericOption = ({
   defaultOption,
   passBack: passBack,
 }: NumericOptionProps) => {
+  const toString = (num: number) => {
+    var output = num.toLocaleString();
+    if (output === 'NaN') {
+      return num;
+    } else {
+      return output;
+    }
+  };
+
+  const toNumber = (str: string) => {
+    var output = 0;
+    var isNegative = (str.match(/[-]/g) || []).length % 2 !== 0;
+    str === '' || str === '-'
+      ? (output = 0)
+      : (output = parseInt(str.replace(/[^0-9]/g, ''), 10));
+    isNegative ? (output *= -1) : null;
+    return output;
+  };
   const childComponent = (
-    <HStack style={{flexDirection: 'row'}}>
-      <Box
-        width="50%"
-        p={5}
-        rounded="md"
-        mb={2}
-        borderWidth={1}
-        borderColor="primary.800">
-        <TextInput
-          keyboardType="numeric"
-          placeholder={'MIN'}
-          onChangeText={itemValue =>
-            passBack([parseInt(itemValue, 10), state[1]])
-          }
-          textAlign={'center'}
-        />
-      </Box>
-      <Box
-        width="50%"
-        p={5}
-        rounded="md"
-        mb={2}
-        borderWidth={1}
-        borderColor="primary.800">
-        <TextInput
-          keyboardType="numeric"
-          placeholder={'MAX'}
-          onChangeText={itemValue =>
-            passBack([state[0], parseInt(itemValue, 10)])
-          }
-          textAlign={'center'}
-        />
-      </Box>
-    </HStack>
+    <VStack>
+      <HStack style={{flexDirection: 'row'}}>
+        <Box
+          style={{flex: 1}}
+          width="50%"
+          minHeight={75}
+          rounded="md"
+          borderWidth={1}
+          borderColor="primary.800">
+          <TextInput
+            style={{flex: 1}}
+            keyboardType="numeric"
+            allowFontScaling={true}
+            selectTextOnFocus={true}
+            multiline={true}
+            value={toString(state[0] as number)}
+            onChangeText={itemValue =>
+              passBack([toNumber(itemValue), state[1]])
+            }
+            textAlign={'center'}
+          />
+        </Box>
+        <Box
+          style={{flex: 1}}
+          width="50%"
+          minHeight={75}
+          rounded="md"
+          borderWidth={1}
+          borderColor="primary.800">
+          <TextInput
+            style={{flex: 1}}
+            keyboardType="numeric"
+            allowFontScaling={true}
+            selectTextOnFocus={true}
+            multiline={true}
+            value={toString(state[1] as number)}
+            onChangeText={itemValue =>
+              passBack([state[0], toNumber(itemValue)])
+            }
+            textAlign={'center'}
+          />
+        </Box>
+      </HStack>
+      {state[1] < state[0] ? (
+        <Text>
+          WARNING: Maximum less than minimum! This item type won't show up!
+        </Text>
+      ) : null}
+    </VStack>
   );
   return (
     <Option
       title={title}
       options={state}
       passBack={passBack}
-      defaultOption={defaultOption === 'any' ? [0, 10000] : defaultOption}
+      defaultOption={
+        defaultOption === 'any' ? [0, 1000000000000] : defaultOption
+      }
       canBeNone={false}
       childComponent={childComponent}
       startLimited={state === 'any' ? 'any' : 'limit'}
