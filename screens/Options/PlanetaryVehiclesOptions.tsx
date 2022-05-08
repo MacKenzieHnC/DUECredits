@@ -3,6 +3,8 @@ import {View} from 'react-native';
 import {
   InventoryOptions,
   GeneralOptions,
+  Shop,
+  ShopOptions,
 } from '../../models/InventoryOptionsIndex';
 import {CategoryLike} from '../../models/ItemIndex';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
@@ -16,13 +18,13 @@ import {selectCurrentShop} from '../../store/slices/appSlice';
 import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
 
-export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
+export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
   // Initialize
-  const defaultOptions = useAppSelector(
-    selectShop(useAppSelector(selectCurrentShop)),
-  ).options.inventoryOptions;
+  const defaultOptions: ShopOptions = (
+    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
+  ).options;
   const [options, setOptions] = useState<InventoryOptions['planetaryVehicles']>(
-    defaultOptions.planetaryVehicles,
+    defaultOptions.inventoryOptions.planetaryVehicles,
   );
   const {data: dbState, isLoading} = useGetDBStateQuery();
   if (isLoading || !dbState || !options) {
@@ -34,8 +36,15 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {...defaultOptions, planetaryVehicles: newOptions}},
-      merge: true,
+      params: {
+        options: {
+          ...defaultOptions,
+          inventoryOptions: {
+            ...defaultOptions.inventoryOptions,
+            planetaryVehicles: newOptions,
+          },
+        },
+      },
     });
   };
 
@@ -47,13 +56,17 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.general}
+        defaultOptions={
+          defaultOptions.inventoryOptions.planetaryVehicles.general
+        }
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
-        options={options.categories}
-        state={dbState.vehicles.categories}
+        state={options.categories}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.categories
+        }
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -63,8 +76,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Manufacturer */}
       <MultiSelectOption
         title={'Manufacturers'}
-        options={options.manufacturer}
-        state={dbState.vehicles.manufacturers}
+        state={options.manufacturer}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.manufacturer
+        }
         passBack={(manufacturer: CategoryLike[] | 'any') =>
           passBack({...options, manufacturer: manufacturer})
         }
@@ -74,8 +89,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Silhouette */}
       <NumericOption
         title={'Silhouette'}
-        options={options.silhouette}
-        state={defaultOptions.silhouette}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.silhouette}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.silhouette
+        }
         passBack={(silhouette: number[] | 'any') =>
           passBack({...options, silhouette: silhouette})
         }
@@ -83,8 +100,8 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Speed */}
       <NumericOption
         title={'Speed'}
-        options={options.speed}
-        state={defaultOptions.speed}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.speed}
+        defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.speed}
         passBack={(speed: number[] | 'any') =>
           passBack({...options, speed: speed})
         }
@@ -92,8 +109,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Handling */}
       <NumericOption
         title={'Handling'}
-        options={options.handling}
-        state={defaultOptions.handling}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.handling}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.handling
+        }
         passBack={(handling: number[] | 'any') =>
           passBack({...options, handling: handling})
         }
@@ -101,8 +120,8 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Armor */}
       <NumericOption
         title={'Armor'}
-        options={options.armor}
-        state={defaultOptions.armor}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.armor}
+        defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.armor}
         passBack={(armor: number[] | 'any') =>
           passBack({...options, armor: armor})
         }
@@ -110,22 +129,24 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* HTT */}
       <NumericOption
         title={'HTT'}
-        options={options.htt}
-        state={defaultOptions.htt}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.htt}
+        defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.htt}
         passBack={(htt: number[] | 'any') => passBack({...options, htt: htt})}
       />
       {/* SST */}
       <NumericOption
         title={'SST'}
-        options={options.sst}
-        state={defaultOptions.sst}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.sst}
+        defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.sst}
         passBack={(sst: number[] | 'any') => passBack({...options, sst: sst})}
       />
       {/* Sensor */}
       <MultiSelectOption
         title={'Sensors'}
-        options={options.sensors}
-        state={dbState.vehicles.ranges}
+        state={options.sensors}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.sensors
+        }
         passBack={(sensors: CategoryLike[] | 'any') =>
           passBack({...options, sensors: sensors})
         }
@@ -135,8 +156,8 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Crew */}
       <NumericOption
         title={'Crew'}
-        options={options.crew}
-        state={defaultOptions.crew}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.crew}
+        defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.crew}
         passBack={(crew: number[] | 'any') =>
           passBack({...options, crew: crew})
         }
@@ -144,8 +165,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Encumbrance */}
       <NumericOption
         title={'Encumbrance'}
-        options={options.encumbrance}
-        state={defaultOptions.encumbrance}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.encumbrance}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.encumbrance
+        }
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -153,8 +176,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Passengers */}
       <NumericOption
         title={'Passengers'}
-        options={options.passengers}
-        state={defaultOptions.passengers}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.passengers}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.passengers
+        }
         passBack={(passengers: number[] | 'any') =>
           passBack({...options, passengers: passengers})
         }
@@ -162,8 +187,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        options={options.hardpoints}
-        state={defaultOptions.hardpoints}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.hardpoints}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.hardpoints
+        }
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }
@@ -171,8 +198,10 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
       {/* Weapons */}
       <NumericOption
         title={'Weapons'}
-        options={options.weapons}
-        state={defaultOptions.weapons}
+        state={defaultOptions.inventoryOptions.planetaryVehicles.weapons}
+        defaultOption={
+          defaultOptions.inventoryOptions.planetaryVehicles.weapons
+        }
         passBack={(weapons: number[] | 'any') =>
           passBack({...options, weapons: weapons})
         }
@@ -182,12 +211,13 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}) => {
   return (
     <ScrollView>
       <Option
-        title={'PlanetaryVehicles'}
+        title={'Planetary Vehicles'}
         options={options}
         passBack={passBack}
-        defaultOption={defaultOptions}
+        defaultOption={defaultOptions.inventoryOptions.planetaryVehicles}
         canBeNone={true}
         childComponent={childComponent}
+        startLimited={options.limit}
       />
     </ScrollView>
   );

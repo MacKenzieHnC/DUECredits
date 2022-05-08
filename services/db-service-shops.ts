@@ -41,3 +41,169 @@ export const getAllShops = async (db: SQLiteDatabase): Promise<Shop[]> => {
     throw Error('Failed to get initial database state !!!');
   }
 };
+
+export const resetRules = async (db: SQLiteDatabase, shopID: number) => {
+  try {
+    var json = JSONToString(hardcodedShopRules);
+    await db.executeSql(
+      `UPDATE Shops SET rules = "${json}" WHERE id = ${shopID}`,
+    );
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get initial database state !!!');
+  }
+};
+
+// TODO: Hardcoded shop
+const hardcodedShopRules = {
+  location: 4,
+  inventoryOptions: {
+    general: {
+      limit: 'any',
+      restricted: 'any',
+      price: 'any',
+      rarity: 'any',
+      is_unique: 'any',
+    },
+    armor: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      defense: 'any',
+      soak: 'any',
+      encumbrance: 'any',
+      hardpoints: 'any',
+    },
+    attachments: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      categories: 'any',
+      encumbrance: 'any',
+      hardpoints: 'any',
+    },
+    gear: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      categories: 'any',
+      encumbrance: 'any',
+    },
+    planetaryVehicles: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      type: 'any',
+      categories: 'any',
+      manufacturer: 'any',
+      model: 'any',
+      silhouette: 'any',
+      speed: 'any',
+      handling: 'any',
+      armor: 'any',
+      htt: 'any',
+      sst: 'any',
+      defense: 'any',
+      sensors: 'any',
+      crew: 'any',
+      encumbrance: 'any',
+      passengers: 'any',
+      hardpoints: 'any',
+      weapons: 'any',
+    },
+    starships: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      type: 'any',
+      categories: 'any',
+      manufacturer: 'any',
+      model: 'any',
+      silhouette: 'any',
+      speed: 'any',
+      handling: 'any',
+      armor: 'any',
+      htt: 'any',
+      sst: 'any',
+      defense: 'any',
+      sensors: 'any',
+      crew: 'any',
+      encumbrance: 'any',
+      passengers: 'any',
+      hardpoints: 'any',
+      weapons: 'any',
+      navicomputer: 'any',
+      additionalRules: 'any',
+    },
+    vehicleAttachments: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      hardpoints: 'any',
+    },
+    vehicleWeapons: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      categories: 'any',
+      ranges: 'any',
+      damage: 'any',
+      crit: 'any',
+      compatibleSilhouette: 'any',
+      effects: 'any',
+    },
+    weapons: {
+      limit: 'any',
+      general: {
+        limit: 'any',
+        restricted: 'any',
+        price: 'any',
+        rarity: 'any',
+        is_unique: 'any',
+      },
+      categories: 'any',
+      skills: 'any',
+      damage: 'any',
+      crit: 'any',
+      ranges: 'any',
+      effects: 'any',
+      encumbrance: 'any',
+      hardpoints: 'any',
+    },
+  },
+};

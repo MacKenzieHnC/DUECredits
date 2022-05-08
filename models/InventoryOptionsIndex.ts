@@ -1,6 +1,7 @@
 import {AdditionalRule, CategoryLike, WeaponEffect} from './ItemIndex';
 
 export type GeneralOptions = {
+  limit: 'limit' | 'any';
   restricted: boolean | 'any';
   price: number[] | 'any';
   rarity: number[] | 'any';
@@ -10,29 +11,29 @@ export type GeneralOptions = {
 export type InventoryOptions = {
   general: GeneralOptions;
   armor: {
-    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
+    general: GeneralOptions;
     defense: number[] | 'any';
     soak: number[] | 'any';
     encumbrance: number[] | 'any';
     hardpoints: number[] | 'any';
   };
   attachments: {
-    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
+    general: GeneralOptions;
     categories: CategoryLike[] | 'any'; // Key from db
     encumbrance: number[] | 'any';
     hardpoints: number[] | 'any';
   };
   gear: {
-    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
+    general: GeneralOptions;
     categories: CategoryLike[] | 'any'; // Key from db
     encumbrance: number[] | 'any';
   };
   planetaryVehicles: {
+    limit: 'limit' | 'any' | 'none';
     general: GeneralOptions;
-    type: number[] | 'any';
     categories: CategoryLike[] | 'any';
     manufacturer: CategoryLike[] | 'any';
     model: string | 'any';
@@ -51,8 +52,8 @@ export type InventoryOptions = {
     weapons: number[] | 'any';
   };
   starships: {
+    limit: 'limit' | 'any' | 'none';
     general: GeneralOptions;
-    type: number[] | 'any';
     categories: CategoryLike[] | 'any';
     manufacturer: CategoryLike[] | 'any';
     model: string | 'any';
@@ -73,13 +74,13 @@ export type InventoryOptions = {
     additionalRules: AdditionalRule[] | 'any';
   };
   vehicleAttachments: {
-    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
+    general: GeneralOptions;
     hardpoints: number[] | 'any';
   };
   vehicleWeapons: {
-    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
+    general: GeneralOptions;
     categories: CategoryLike[] | 'any';
     ranges: CategoryLike[] | 'any';
     damage: number[] | 'any';
@@ -88,8 +89,8 @@ export type InventoryOptions = {
     effects: WeaponEffect[] | 'any';
   };
   weapons: {
-    general: GeneralOptions;
     limit: 'limit' | 'any' | 'none';
+    general: GeneralOptions;
     categories: CategoryLike[] | 'any'; // Key from db
     skills: CategoryLike[] | 'any'; // Key from db
     damage: number[] | 'any';

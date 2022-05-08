@@ -11,8 +11,8 @@ import MultiPicker from './MultiPicker/MultiPicker';
 
 interface MultiSelectOptionProps {
   title: string;
-  options: any;
   state: CategoryLike[] | WeaponEffect[] | AdditionalRule[] | 'any';
+  defaultOption: CategoryLike[] | WeaponEffect[] | AdditionalRule[] | 'any';
   passBack: Function;
   items: CategoryLike[] | WeaponEffect[] | AdditionalRule[];
   features: string[];
@@ -21,8 +21,8 @@ interface MultiSelectOptionProps {
 // Specialized component for boolean options (is restricted/unique)
 export const MultiSelectOption = ({
   title,
-  options,
   state,
+  defaultOption,
   passBack: passBack,
   items,
   features,
@@ -43,11 +43,12 @@ export const MultiSelectOption = ({
     <SafeAreaView>
       <Option
         title={title}
-        options={options}
+        options={state}
         passBack={passBack}
-        defaultOption={items}
+        defaultOption={defaultOption === 'any' ? items : defaultOption}
         canBeNone={false}
         childComponent={childComponent}
+        startLimited={state === 'any' ? 'any' : 'limit'}
       />
     </SafeAreaView>
   );

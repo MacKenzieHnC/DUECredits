@@ -5,19 +5,18 @@ import {Option} from './Option';
 
 interface NumericOptionProps {
   title: string;
-  options: any;
   state: number[] | 'any';
+  defaultOption: number[] | 'any';
   passBack: Function;
 }
 
 // Specialized component for numeric options (price, rarity, etc.)
 export const NumericOption = ({
   title,
-  options,
   state,
+  defaultOption,
   passBack: passBack,
 }: NumericOptionProps) => {
-  const defaultOption = [0, 1000000000000];
   const childComponent = (
     <HStack style={{flexDirection: 'row'}}>
       <Box
@@ -57,11 +56,12 @@ export const NumericOption = ({
   return (
     <Option
       title={title}
-      options={options}
+      options={state}
       passBack={passBack}
-      defaultOption={defaultOption}
+      defaultOption={defaultOption === 'any' ? [0, 10000] : defaultOption}
       canBeNone={false}
       childComponent={childComponent}
+      startLimited={state === 'any' ? 'any' : 'limit'}
     />
   );
 };

@@ -20,12 +20,22 @@ import {getStarshipItems} from '../../services/db_service-starships';
 import {getVehicleAttachmentItems} from '../../services/db-service-vehicleAttachments';
 import {getVehicleWeaponItems} from '../../services/db-service-vehicleWeapons';
 import {getWeaponItems} from '../../services/db-service-weapons';
-import {getAllShops} from '../../services/db-service-shops';
-import {Shop} from '../../models/InventoryOptionsIndex';
+import {
+  getAllShops,
+  resetRules,
+  updateRules,
+} from '../../services/db-service-shops';
+import {Shop, ShopOptions} from '../../models/InventoryOptionsIndex';
+
+export interface MutateShopProps {
+  id: number;
+  options: ShopOptions;
+}
 
 export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),
   reducerPath: 'database',
+  tagTypes: ['Shops'],
   endpoints: build => ({
     getAllArmor: build.query<ArmorItem[], string | undefined>({
       async queryFn(tableName) {
@@ -142,6 +152,31 @@ export const databaseSlice = createApi({
           return {error: {data: "Can't get Shop", status: 500}};
         }
       },
+      providesTags: ['Shops'],
+    }),
+    updateShopRules: build.mutation<null, {id: number; data: ShopOptions}>({
+      queryFn: async ({id, data}) => {
+        try {
+          const db = await getDBConnection();
+          updateRules(db, id, data);
+        } catch (error) {
+        } finally {
+          return {data: null};
+        }
+      },
+      invalidatesTags: ['Shops'],
+    }),
+    resetShopRules: build.mutation<null, number>({
+      queryFn: async id => {
+        try {
+          const db = await getDBConnection();
+          resetRules(db, id);
+        } catch (error) {
+        } finally {
+          return {data: null};
+        }
+      },
+      invalidatesTags: ['Shops'],
     }),
   }),
 });
@@ -159,6 +194,8 @@ export const selectShop = (shopID: number) =>
 export const {
   useGetDBStateQuery,
   useGetAllShopsQuery,
+  useUpdateShopRulesMutation,
+  useResetShopRulesMutation,
   useGetAllArmorQuery,
   useGetAllAttachmentsQuery,
   useGetAllGearQuery,

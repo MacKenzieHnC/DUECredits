@@ -24,8 +24,8 @@ export const GeneralOptionsComponent = ({
       {/* Restricted */}
       <BooleanOption
         title={'Restricted'}
-        options={options}
         state={options.restricted}
+        defaultOption={defaultOptions.restricted}
         passBack={(restricted: boolean | 'any') =>
           passBack({...options, restricted: restricted})
         }
@@ -33,8 +33,8 @@ export const GeneralOptionsComponent = ({
       {/* Price */}
       <NumericOption
         title={'Price'}
-        options={options}
         state={options.price}
+        defaultOption={defaultOptions.price}
         passBack={(price: number[] | 'any') =>
           passBack({...options, price: price})
         }
@@ -42,8 +42,8 @@ export const GeneralOptionsComponent = ({
       {/* Rarity */}
       <NumericOption
         title={'Rarity'}
-        options={options}
         state={options.rarity}
+        defaultOption={defaultOptions.rarity}
         passBack={(rarity: number[] | 'any') =>
           passBack({...options, rarity: rarity})
         }
@@ -51,8 +51,8 @@ export const GeneralOptionsComponent = ({
       {/* Restricted */}
       <BooleanOption
         title={'Unique'}
-        options={options}
         state={options.is_unique}
+        defaultOption={defaultOptions.is_unique}
         passBack={(is_unique: boolean | 'any') =>
           passBack({...options, is_unique: is_unique})
         }
@@ -67,6 +67,7 @@ export const GeneralOptionsComponent = ({
       defaultOption={defaultOptions}
       canBeNone={false}
       childComponent={childComponent}
+      startLimited={options.limit}
     />
   );
 };

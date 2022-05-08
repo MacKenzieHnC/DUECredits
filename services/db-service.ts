@@ -12,7 +12,7 @@ import {getDBGearState} from './db-service-gear';
 import {getDBVehiclesState} from './db-service-vehicles';
 
 export const JSONToString = (someJSON: any) => {
-  return JSON.stringify(someJSON).split('"').join("'");
+  return JSON.stringify(someJSON, null, '\t').split('"').join("'");
 };
 
 export const StringToJSON = (someString: string) => {

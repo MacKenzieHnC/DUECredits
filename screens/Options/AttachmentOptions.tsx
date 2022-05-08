@@ -3,6 +3,8 @@ import {View} from 'react-native';
 import {
   InventoryOptions,
   GeneralOptions,
+  Shop,
+  ShopOptions,
 } from '../../models/InventoryOptionsIndex';
 import {CategoryLike} from '../../models/ItemIndex';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
@@ -16,13 +18,13 @@ import {selectCurrentShop} from '../../store/slices/appSlice';
 import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
 
-export const AttachmentOptionsScreen = ({navigation}) => {
+export const AttachmentOptionsScreen = ({navigation}: any) => {
   // Initialize
-  const defaultOptions = useAppSelector(
-    selectShop(useAppSelector(selectCurrentShop)),
-  ).options.inventoryOptions;
+  const defaultOptions: ShopOptions = (
+    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
+  ).options;
   const [options, setOptions] = useState<InventoryOptions['attachments']>(
-    defaultOptions.attachments,
+    defaultOptions.inventoryOptions.attachments,
   );
   const {data: dbState, isLoading} = useGetDBStateQuery();
   if (isLoading || !dbState || !options) {
@@ -34,8 +36,15 @@ export const AttachmentOptionsScreen = ({navigation}) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {...defaultOptions, attachments: newOptions}},
-      merge: true,
+      params: {
+        options: {
+          ...defaultOptions,
+          inventoryOptions: {
+            ...defaultOptions.inventoryOptions,
+            attachments: newOptions,
+          },
+        },
+      },
     });
   };
 
@@ -47,13 +56,13 @@ export const AttachmentOptionsScreen = ({navigation}) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.general}
+        defaultOptions={defaultOptions.inventoryOptions.general}
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
-        options={options.categories}
-        state={dbState.attachments.categories}
+        state={options.categories}
+        defaultOption={defaultOptions.inventoryOptions.attachments.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -63,8 +72,8 @@ export const AttachmentOptionsScreen = ({navigation}) => {
       {/* Damage */}
       <NumericOption
         title={'Encumbrance'}
-        options={options.encumbrance}
-        state={defaultOptions.encumbrance}
+        state={defaultOptions.inventoryOptions.attachments.encumbrance}
+        defaultOption={defaultOptions.inventoryOptions.attachments.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -72,8 +81,8 @@ export const AttachmentOptionsScreen = ({navigation}) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        options={options.hardpoints}
-        state={defaultOptions.hardpoints}
+        state={defaultOptions.inventoryOptions.attachments.hardpoints}
+        defaultOption={defaultOptions.inventoryOptions.attachments.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }
@@ -89,6 +98,7 @@ export const AttachmentOptionsScreen = ({navigation}) => {
         defaultOption={defaultOptions}
         canBeNone={true}
         childComponent={childComponent}
+        startLimited={options.limit}
       />
     </ScrollView>
   );

@@ -2,9 +2,12 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import React, {useState} from 'react';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {ShopOptions} from '../../models/InventoryOptionsIndex';
+import {Shop, ShopOptions} from '../../models/InventoryOptionsIndex';
 import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {
+  selectShop,
+  useUpdateShopRulesMutation,
+} from '../../store/slices/databaseSlice';
 import {ArmorOptionsScreen} from './ArmorOptions';
 import {AttachmentOptionsScreen} from './AttachmentOptions';
 import {GearOptionsScreen} from './GearOptions';
@@ -14,18 +17,66 @@ import {StarshipOptionsScreen} from './StarshipOptions';
 import {VehicleAttachmentOptionsScreen} from './VehicleAttachmentOptions';
 import {VehicleWeaponOptionsScreen} from './VehicleWeaponOptions';
 import {WeaponOptionsScreen} from './WeaponOptions';
+import {HeaderBackButton} from '@react-navigation/elements';
+import {Alert} from 'react-native';
+import {StackActions} from '@react-navigation/native';
 
-export const ShopOptionsScreen = ({navigation, route}) => {
+const confirm = (
+  navigation: any,
+  update: any,
+  options: ShopOptions,
+  id: number,
+) => {
+  Alert.alert('Save changes?', 'Would you like to save your changes?', [
+    {
+      text: 'Cancel',
+      onPress: () => null,
+      style: 'cancel',
+    },
+    {
+      text: 'No',
+      onPress: () => {
+        navigation.dispatch(StackActions.popToTop());
+      },
+    },
+    {
+      text: 'Yes',
+      onPress: () => {
+        update({id: id, data: options});
+        navigation.dispatch(StackActions.popToTop());
+      },
+    },
+  ]);
+};
+
+export const ShopOptionsScreen = ({navigation, route}: any) => {
   //Initialize
-  const defaultOptions = useAppSelector(
-    selectShop(useAppSelector(selectCurrentShop)),
+  const currentShopID = useAppSelector(selectCurrentShop);
+  const defaultOptions: ShopOptions = (
+    useAppSelector(selectShop(currentShopID)) as Shop
   ).options;
   const [options, setOptions] = useState<ShopOptions>(defaultOptions);
+  const [update] = useUpdateShopRulesMutation();
+
+  // Override back button to save
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <HeaderBackButton
+          onPress={() => confirm(navigation, update, options, currentShopID)}
+        />
+      ),
+    });
+  }, [currentShopID, navigation, options, update]);
+
+  // Update local copy of options
   React.useEffect(() => {
-    if (route.params?.newOptions) {
-      setOptions(route.params.newOptions);
+    if (route.params?.options) {
+      setOptions(route.params.options);
     }
-  }, [route.params?.newOptions]);
+  }, [route.params?.options]);
+
+  // Wait
   if (!options) {
     return <LoadingScreen text="Loading options..." />;
   }

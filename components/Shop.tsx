@@ -14,6 +14,7 @@ export const ShopComponent = () => {
   if (isLoading || !shop) {
     return <LoadingScreen text="Initializing DB..." />;
   }
+
   return (
     <View flex={1}>
       <Stack.Navigator>

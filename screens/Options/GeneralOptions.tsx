@@ -6,13 +6,17 @@ import {useAppSelector} from '../../hooks/redux';
 import {selectCurrentShop} from '../../store/slices/appSlice';
 import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
-import {GeneralOptions, ShopOptions} from '../../models/InventoryOptionsIndex';
+import {
+  GeneralOptions,
+  Shop,
+  ShopOptions,
+} from '../../models/InventoryOptionsIndex';
 import {SelectOption} from '../../components/options/SelectOption';
 
-export const GeneralOptionsScreen = ({navigation}) => {
+export const GeneralOptionsScreen = ({navigation}: any) => {
   // Initialize
-  const defaultOptions = useAppSelector(
-    selectShop(useAppSelector(selectCurrentShop)),
+  const defaultOptions: ShopOptions = (
+    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
   ).options;
   const [options, setOptions] = useState<ShopOptions>(defaultOptions);
   const {data: dbState, isLoading} = useGetDBStateQuery();
@@ -25,8 +29,8 @@ export const GeneralOptionsScreen = ({navigation}) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {newOptions}},
-      merge: true,
+      params: {options: newOptions},
+      merge: false,
     });
   };
 
@@ -36,7 +40,10 @@ export const GeneralOptionsScreen = ({navigation}) => {
         title="Location"
         state={options.location}
         passBack={(location: number) =>
-          passBack({...options, location: location})
+          passBack({
+            ...defaultOptions,
+            location: location,
+          })
         }
         items={dbState.locations}
         features={['name', 'price_modifier', 'rarity_modifier']}
@@ -47,8 +54,11 @@ export const GeneralOptionsScreen = ({navigation}) => {
         options={options.inventoryOptions.general}
         passBack={(general: GeneralOptions) =>
           passBack({
-            ...options,
-            inventoryOptions: {...options.inventoryOptions, general: general},
+            ...defaultOptions,
+            inventoryOptions: {
+              ...defaultOptions.inventoryOptions,
+              general: general,
+            },
           })
         }
         defaultOptions={defaultOptions.inventoryOptions.general}

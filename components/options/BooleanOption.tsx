@@ -5,16 +5,16 @@ import {Option} from './Option';
 
 interface BooleanOptionProps {
   title: string;
-  options: any;
   state: boolean | 'any';
+  defaultOption: boolean | 'any';
   passBack: Function;
 }
 
 // Specialized component for boolean options (is restricted/unique)
 export const BooleanOption = ({
   title,
-  options,
   state,
+  defaultOption,
   passBack,
 }: BooleanOptionProps) => {
   const childComponent = (
@@ -36,11 +36,12 @@ export const BooleanOption = ({
   return (
     <Option
       title={title}
-      options={options}
+      options={state}
       passBack={passBack}
-      defaultOption={false}
+      defaultOption={defaultOption === 'any' ? false : defaultOption}
       canBeNone={false}
       childComponent={childComponent}
+      startLimited={state === 'any' ? 'any' : 'limit'}
     />
   );
 };

@@ -3,6 +3,8 @@ import {View} from 'react-native';
 import {
   InventoryOptions,
   GeneralOptions,
+  Shop,
+  ShopOptions,
 } from '../../models/InventoryOptionsIndex';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {NumericOption} from '../../components/options/NumericOption';
@@ -14,14 +16,14 @@ import {selectCurrentShop} from '../../store/slices/appSlice';
 import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
 
-export const VehicleAttachmentOptionsScreen = ({navigation}) => {
+export const VehicleAttachmentOptionsScreen = ({navigation}: any) => {
   // Initialize
-  const defaultOptions = useAppSelector(
-    selectShop(useAppSelector(selectCurrentShop)),
-  ).options.inventoryOptions;
+  const defaultOptions: ShopOptions = (
+    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
+  ).options;
   const [options, setOptions] = useState<
     InventoryOptions['vehicleAttachments']
-  >(defaultOptions.vehicleAttachments);
+  >(defaultOptions.inventoryOptions.vehicleAttachments);
   const {data: dbState, isLoading} = useGetDBStateQuery();
   if (isLoading || !dbState || !options) {
     return <LoadingScreen text="Loading shop" />;
@@ -32,8 +34,15 @@ export const VehicleAttachmentOptionsScreen = ({navigation}) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {...defaultOptions, vehicleAttachments: newOptions}},
-      merge: true,
+      params: {
+        options: {
+          ...defaultOptions,
+          inventoryOptions: {
+            ...defaultOptions.inventoryOptions,
+            vehicleAttachments: newOptions,
+          },
+        },
+      },
     });
   };
 
@@ -45,13 +54,17 @@ export const VehicleAttachmentOptionsScreen = ({navigation}) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.general}
+        defaultOptions={
+          defaultOptions.inventoryOptions.vehicleAttachments.general
+        }
       />
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        options={options.hardpoints}
-        state={defaultOptions.hardpoints}
+        state={defaultOptions.inventoryOptions.vehicleAttachments.hardpoints}
+        defaultOption={
+          defaultOptions.inventoryOptions.vehicleAttachments.hardpoints
+        }
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }
@@ -64,9 +77,10 @@ export const VehicleAttachmentOptionsScreen = ({navigation}) => {
         title={'VehicleAttachments'}
         options={options}
         passBack={passBack}
-        defaultOption={defaultOptions}
+        defaultOption={defaultOptions.inventoryOptions.vehicleAttachments}
         canBeNone={true}
         childComponent={childComponent}
+        startLimited={options.limit}
       />
     </ScrollView>
   );

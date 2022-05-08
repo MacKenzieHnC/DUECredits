@@ -1,7 +1,7 @@
 import {Button, View, VStack} from 'native-base';
 import React from 'react';
 
-export const ShopScreen = ({navigation}) => {
+export const ShopScreen = ({navigation}: any) => {
   return (
     <View>
       <VStack space={5}>

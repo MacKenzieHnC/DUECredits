@@ -10,6 +10,8 @@ interface OptionProps {
   defaultOption: any;
   canBeNone: boolean;
   childComponent: Element;
+  startLimited: string;
+  setAnySideEffect?: Function;
 }
 
 // Generic shared component between options
@@ -20,8 +22,9 @@ export const Option = ({
   defaultOption,
   canBeNone,
   childComponent,
+  startLimited,
 }: OptionProps) => {
-  const [limitedState, setLimited] = useState('any');
+  const [limitedState, setLimited] = useState(startLimited);
   return (
     <Box
       width="100%"
@@ -47,21 +50,11 @@ export const Option = ({
             selectedValue={limitedState}
             onValueChange={itemValue => {
               setLimited(itemValue);
-              switch (itemValue) {
-                case 'any':
-                  canBeNone
-                    ? passBack({...options, limit: 'any'})
-                    : passBack('any');
-                  break;
-                case 'none':
-                  passBack({...options, limit: 'none'});
-                  break;
-                case 'limit':
-                  canBeNone
-                    ? passBack({...options, limit: 'limit'})
-                    : passBack(defaultOption);
-                  break;
-              }
+              options.limit
+                ? passBack({...options, limit: itemValue})
+                : itemValue === 'limit'
+                ? passBack(defaultOption)
+                : passBack('any');
             }}>
             <Picker.Item label={'any'} value={'any'} />
             {canBeNone ? <Picker.Item label={'none'} value={'none'} /> : false}

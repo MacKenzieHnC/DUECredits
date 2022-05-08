@@ -3,6 +3,8 @@ import {View} from 'react-native';
 import {
   InventoryOptions,
   GeneralOptions,
+  Shop,
+  ShopOptions,
 } from '../../models/InventoryOptionsIndex';
 import {AdditionalRule, CategoryLike} from '../../models/ItemIndex';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
@@ -16,13 +18,13 @@ import {selectCurrentShop} from '../../store/slices/appSlice';
 import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
 
-export const StarshipOptionsScreen = ({navigation}) => {
+export const StarshipOptionsScreen = ({navigation}: any) => {
   // Initialize
-  const defaultOptions = useAppSelector(
-    selectShop(useAppSelector(selectCurrentShop)),
-  ).options.inventoryOptions;
+  const defaultOptions: ShopOptions = (
+    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
+  ).options;
   const [options, setOptions] = useState<InventoryOptions['starships']>(
-    defaultOptions.starships,
+    defaultOptions.inventoryOptions.starships,
   );
   const {data: dbState, isLoading} = useGetDBStateQuery();
   if (isLoading || !dbState || !options) {
@@ -34,8 +36,15 @@ export const StarshipOptionsScreen = ({navigation}) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {newOptions: {...defaultOptions, starships: newOptions}},
-      merge: true,
+      params: {
+        options: {
+          ...defaultOptions,
+          inventoryOptions: {
+            ...defaultOptions.inventoryOptions,
+            starships: newOptions,
+          },
+        },
+      },
     });
   };
 
@@ -47,13 +56,13 @@ export const StarshipOptionsScreen = ({navigation}) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.general}
+        defaultOptions={defaultOptions.inventoryOptions.starships.general}
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
-        options={options.categories}
-        state={dbState.vehicles.categories}
+        state={options.categories}
+        defaultOption={defaultOptions.inventoryOptions.starships.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -63,8 +72,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Manufacturer */}
       <MultiSelectOption
         title={'Manufacturers'}
-        options={options.manufacturer}
-        state={dbState.vehicles.manufacturers}
+        state={options.manufacturer}
+        defaultOption={defaultOptions.inventoryOptions.starships.manufacturer}
         passBack={(manufacturer: CategoryLike[] | 'any') =>
           passBack({...options, manufacturer: manufacturer})
         }
@@ -74,8 +83,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Silhouette */}
       <NumericOption
         title={'Silhouette'}
-        options={options.silhouette}
-        state={defaultOptions.silhouette}
+        state={defaultOptions.inventoryOptions.starships.silhouette}
+        defaultOption={defaultOptions.inventoryOptions.starships.silhouette}
         passBack={(silhouette: number[] | 'any') =>
           passBack({...options, silhouette: silhouette})
         }
@@ -83,8 +92,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Speed */}
       <NumericOption
         title={'Speed'}
-        options={options.speed}
-        state={defaultOptions.speed}
+        state={defaultOptions.inventoryOptions.starships.speed}
+        defaultOption={defaultOptions.inventoryOptions.starships.speed}
         passBack={(speed: number[] | 'any') =>
           passBack({...options, speed: speed})
         }
@@ -92,8 +101,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Handling */}
       <NumericOption
         title={'Handling'}
-        options={options.handling}
-        state={defaultOptions.handling}
+        state={defaultOptions.inventoryOptions.starships.handling}
+        defaultOption={defaultOptions.inventoryOptions.starships.handling}
         passBack={(handling: number[] | 'any') =>
           passBack({...options, handling: handling})
         }
@@ -101,8 +110,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Armor */}
       <NumericOption
         title={'Armor'}
-        options={options.armor}
-        state={defaultOptions.armor}
+        state={defaultOptions.inventoryOptions.starships.armor}
+        defaultOption={defaultOptions.inventoryOptions.starships.armor}
         passBack={(armor: number[] | 'any') =>
           passBack({...options, armor: armor})
         }
@@ -110,22 +119,22 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* HTT */}
       <NumericOption
         title={'HTT'}
-        options={options.htt}
-        state={defaultOptions.htt}
+        state={defaultOptions.inventoryOptions.starships.htt}
+        defaultOption={defaultOptions.inventoryOptions.starships.htt}
         passBack={(htt: number[] | 'any') => passBack({...options, htt: htt})}
       />
       {/* SST */}
       <NumericOption
         title={'SST'}
-        options={options.sst}
-        state={defaultOptions.sst}
+        state={defaultOptions.inventoryOptions.starships.sst}
+        defaultOption={defaultOptions.inventoryOptions.starships.sst}
         passBack={(sst: number[] | 'any') => passBack({...options, sst: sst})}
       />
       {/* Sensor */}
       <MultiSelectOption
         title={'Sensors'}
-        options={options.sensors}
-        state={dbState.vehicles.ranges}
+        state={options.sensors}
+        defaultOption={defaultOptions.inventoryOptions.starships.sensors}
         passBack={(sensors: CategoryLike[] | 'any') =>
           passBack({...options, sensors: sensors})
         }
@@ -135,8 +144,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Crew */}
       <NumericOption
         title={'Crew'}
-        options={options.crew}
-        state={defaultOptions.crew}
+        state={defaultOptions.inventoryOptions.starships.crew}
+        defaultOption={defaultOptions.inventoryOptions.starships.crew}
         passBack={(crew: number[] | 'any') =>
           passBack({...options, crew: crew})
         }
@@ -144,8 +153,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Encumbrance */}
       <NumericOption
         title={'Encumbrance'}
-        options={options.encumbrance}
-        state={defaultOptions.encumbrance}
+        state={defaultOptions.inventoryOptions.starships.encumbrance}
+        defaultOption={defaultOptions.inventoryOptions.starships.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -153,8 +162,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Passengers */}
       <NumericOption
         title={'Passengers'}
-        options={options.passengers}
-        state={defaultOptions.passengers}
+        state={defaultOptions.inventoryOptions.starships.passengers}
+        defaultOption={defaultOptions.inventoryOptions.starships.passengers}
         passBack={(passengers: number[] | 'any') =>
           passBack({...options, passengers: passengers})
         }
@@ -162,8 +171,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        options={options.hardpoints}
-        state={defaultOptions.hardpoints}
+        state={defaultOptions.inventoryOptions.starships.hardpoints}
+        defaultOption={defaultOptions.inventoryOptions.starships.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }
@@ -171,8 +180,8 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Weapons */}
       <NumericOption
         title={'Weapons'}
-        options={options.weapons}
-        state={defaultOptions.weapons}
+        state={defaultOptions.inventoryOptions.starships.weapons}
+        defaultOption={defaultOptions.inventoryOptions.starships.weapons}
         passBack={(weapons: number[] | 'any') =>
           passBack({...options, weapons: weapons})
         }
@@ -180,19 +189,21 @@ export const StarshipOptionsScreen = ({navigation}) => {
       {/* Navicomputer */}
       <MultiSelectOption
         title={'Navicomputer'}
-        options={options.navicomputer}
-        state={dbState.starships.navicomputer}
+        state={options.navicomputer}
+        defaultOption={defaultOptions.inventoryOptions.starships.navicomputer}
         passBack={(navicomputer: CategoryLike[] | 'any') =>
           passBack({...options, navicomputer: navicomputer})
         }
         items={dbState.vehicles.ranges}
         features={['name']}
       />
-      {/* Manufacturer */}
+      {/* Additional Rules */}
       <MultiSelectOption
-        title={'AdditionalRules'}
-        options={options.additionalRules}
-        state={dbState.additionalRules}
+        title={'Additional Rules'}
+        state={options.additionalRules}
+        defaultOption={
+          defaultOptions.inventoryOptions.starships.additionalRules
+        }
         passBack={(additionalRules: AdditionalRule[] | 'any') =>
           passBack({...options, additionalRules: additionalRules})
         }
@@ -207,9 +218,10 @@ export const StarshipOptionsScreen = ({navigation}) => {
         title={'Starships'}
         options={options}
         passBack={passBack}
-        defaultOption={defaultOptions}
+        defaultOption={defaultOptions.inventoryOptions.starships}
         canBeNone={true}
         childComponent={childComponent}
+        startLimited={options.limit}
       />
     </ScrollView>
   );
