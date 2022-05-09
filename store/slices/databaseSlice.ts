@@ -37,11 +37,11 @@ export const databaseSlice = createApi({
   reducerPath: 'database',
   tagTypes: ['Shops'],
   endpoints: build => ({
-    getAllArmor: build.query<ArmorItem[], string | undefined>({
-      async queryFn(tableName) {
+    getAllArmor: build.query<ArmorItem[], Shop>({
+      async queryFn(shop) {
         try {
           const db = await getDBConnection();
-          const data = await getArmorItems(db, tableName);
+          const data = await getArmorItems(db, shop);
           return {data};
         } catch (error) {
           return {error: {data: "Can't get Armor", status: 500}};

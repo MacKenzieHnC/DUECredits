@@ -1,20 +1,22 @@
 import SQLite from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
+import {Shop} from '../models/InventoryOptionsIndex';
 import {ArmorItem} from '../models/ItemIndex';
 import {extractItemProps} from './db-service';
+import {getConstraints} from './db-service-constraints';
 
 export const getArmorItems = async (
   db: SQLite.SQLiteDatabase,
-  tableName: string | undefined,
+  shop: Shop,
 ): Promise<ArmorItem[]> => {
+  const constraints = getConstraints(shop.options)[ITEM_TYPE.Armor.id];
   try {
     const items: ArmorItem[] = [];
-    const results = await db.executeSql(
-      `SELECT *
+    const query = `SELECT *
         FROM ${ITEM_TYPE.Armor.tableName} x
         JOIN Item_View i ON i.id = x.item
-        ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
-    );
+        ${constraints !== '' ? ` WHERE ${constraints}` : ''}`;
+    const results = await db.executeSql(query);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);

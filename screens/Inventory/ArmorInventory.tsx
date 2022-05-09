@@ -2,10 +2,17 @@ import {FlatList, View} from 'native-base';
 import React from 'react';
 import {ArmorItemComponent} from '../../components/ListComponents/ArmorItem';
 import {LoadingScreen} from '../../components/LoadingScreen';
-import {useGetAllArmorQuery} from '../../store/slices/databaseSlice';
+import {useAppSelector} from '../../hooks/redux';
+import {selectCurrentShop} from '../../store/slices/appSlice';
+import {
+  selectAllShops,
+  useGetAllArmorQuery,
+} from '../../store/slices/databaseSlice';
 
 export const ArmorInventory = () => {
-  const {data, isLoading} = useGetAllArmorQuery(undefined);
+  const shop =
+    useAppSelector(selectAllShops)[useAppSelector(selectCurrentShop)];
+  const {data, isLoading} = useGetAllArmorQuery(shop);
 
   if (isLoading || !data) {
     return <LoadingScreen text={'Loading armor...'} />;
