@@ -1,13 +1,17 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
 import {
-  AppliedEffect,
+  Special,
   CategoryLike,
   DBState,
   WeaponEffect,
   WeaponItem,
 } from '../models/ItemIndex';
-import {extractItemProps, getCategoryList} from './db-service';
+import {
+  extractItemProps,
+  extractSpecialProp,
+  getCategoryList,
+} from './db-service';
 export const getWeaponItems = async (
   db: SQLite.SQLiteDatabase,
   tableName: string | undefined,
@@ -18,7 +22,7 @@ export const getWeaponItems = async (
     const results = await db.executeSql(
       `SELECT *
         FROM ${ITEM_TYPE.Weapons.tableName} x
-        JOIN Item_View i ON i.id = x.item
+        JOIN Item_View i ON i.id = x.id
         ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
     );
     results.forEach(result => {
@@ -57,7 +61,8 @@ const getWeaponEffects = async (db: SQLite.SQLiteDatabase) => {
       for (let index = 0; index < result.rows.length; index++) {
         const item = result.rows.item(index);
         list.push!({
-          effect: {id: item.id, item: item.name},
+          id: item.id,
+          name: item.name,
           active: item.active,
           ranked: item.ranked,
           desc: item.description,
@@ -104,11 +109,6 @@ export const getDBWeaponsState = async (
   }
 };
 
-export const extractWeaponEffects = (item: any): AppliedEffect[] => {
-  return item.effects
-    ? item.effects.split(',').map((effect: string) => {
-        const final = effect.split(':');
-        return {id: final[0], rank: final[1]};
-      })
-    : [];
+export const extractWeaponEffects = (item: any): Special[] => {
+  return item.effects ? extractSpecialProp(item.effects) : [];
 };

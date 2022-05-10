@@ -40,7 +40,7 @@ export type Item = {
   rarity: number;
   notes: string;
   unique: boolean;
-  sources: Source[];
+  sources: Special[];
 };
 
 export type CategoryLike = {
@@ -52,11 +52,6 @@ export type AdditionalRule = {
   id: number;
   name: string;
   desc: string;
-};
-
-export type AppliedEffect = {
-  id: number;
-  rank: string | undefined;
 };
 
 export type Location = {
@@ -97,17 +92,12 @@ export type Rulebook = {
   abbrev: string;
 };
 
-export type Source = {
-  rulebook: number;
-  page: number;
-};
-
 export type StarshipItem = {
   itemProps: Item;
   vehicle: Vehicle;
   hyperdrive: string;
   navicomputer: number;
-  additionalRules: AppliedEffect[];
+  additionalRules: Special[];
 };
 
 export type Vehicle = {
@@ -142,7 +132,7 @@ export type VehicleWeaponItem = {
   damage: number;
   crit: number;
   compatibleSilhouette: number;
-  effects: AppliedEffect[];
+  effects: Special[];
 };
 
 export type WeaponItem = {
@@ -154,12 +144,18 @@ export type WeaponItem = {
   range: number;
   encumbrance: number;
   hardpoints: number;
-  effects: AppliedEffect[];
+  effects: Special[];
 };
 
 export type WeaponEffect = {
-  effect: CategoryLike;
+  id: number;
+  name: string;
   active: boolean;
   ranked: boolean;
   desc: string | undefined;
+};
+
+export type Special = {
+  id: number;
+  modifier: string | undefined;
 };

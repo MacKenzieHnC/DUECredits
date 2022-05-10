@@ -14,7 +14,7 @@ export const getArmorItems = async (
     const items: ArmorItem[] = [];
     const query = `SELECT *
         FROM ${ITEM_TYPE.Armor.tableName} x
-        JOIN Item_View i ON i.id = x.item
+        JOIN Item_View i ON i.id = x.id
         ${constraints !== '' ? ` WHERE ${constraints}` : ''}`;
     const results = await db.executeSql(query);
     results.forEach(result => {

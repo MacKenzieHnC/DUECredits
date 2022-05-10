@@ -13,7 +13,7 @@ export const getVehicleWeaponItems = async (
     const results = await db.executeSql(
       `SELECT *
         FROM ${ITEM_TYPE.VehicleWeapons.tableName} x
-        JOIN Item_View i ON i.id = x.item
+        JOIN Item_View i ON i.id = x.id
         ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
     );
     results.forEach(result => {

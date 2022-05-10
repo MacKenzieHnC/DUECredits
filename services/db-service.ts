@@ -29,11 +29,17 @@ export const getDBConnection = async () => {
 
 SQLite.enablePromise(true);
 
-export const extractItemProps = (item: any) => {
-  const sources = item.sources.split(',').map((source: string) => {
+export const extractSpecialProp = (prop: string) => {
+  if (prop === undefined) {
+    throw Error('Here!');
+  }
+  return prop.split(',').map((source: string) => {
     const final = source.split(':');
-    return {rulebook: final[0], page: final[1]};
+    return {id: parseInt(final[0], 10), modifier: final[1]};
   });
+};
+
+export const extractItemProps = (item: any) => {
   return {
     id: item.id,
     restricted: item.restricted,
@@ -43,7 +49,7 @@ export const extractItemProps = (item: any) => {
     rarity: item.rarity,
     notes: item.notes,
     unique: item.is_unique,
-    sources: sources,
+    sources: extractSpecialProp(item.rulebooks),
   };
 };
 

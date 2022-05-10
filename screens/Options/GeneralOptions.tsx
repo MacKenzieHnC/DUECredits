@@ -24,6 +24,10 @@ export const GeneralOptionsScreen = ({navigation}: any) => {
     return <LoadingScreen text="Loading shop" />;
   }
 
+  if (options === undefined) {
+    throw Error('HERE');
+  }
+
   // Function to alert shop of changes
   const passBack = (newOptions: ShopOptions) => {
     setOptions(newOptions);

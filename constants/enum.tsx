@@ -25,5 +25,5 @@ export const ITEM_TYPE = {
     tableName: 'Vehicle_Attachments',
   },
   VehicleWeapons: {id: 6, tableName: 'Vehicle_Weapons'},
-  Weapons: {id: 7, tableName: 'Weapons'},
+  Weapons: {id: 7, tableName: 'Weapons_View'},
 };
