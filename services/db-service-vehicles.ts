@@ -16,7 +16,7 @@ export const getPlanetaryVehicleItems = async (
     const items: PlanetaryVehicleItem[] = [];
     const results = await db.executeSql(
       `SELECT *
-        FROM ${ITEM_TYPE.Vehicles.tableName} x
+        FROM ${ITEM_TYPE.PlanetaryVehicles.tableName} x
         JOIN Item_View i ON i.id = x.id
         ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
     );

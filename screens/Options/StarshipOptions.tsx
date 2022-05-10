@@ -37,13 +37,9 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
     navigation.navigate({
       name: 'Options',
       params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            starships: newOptions,
-          },
-        },
+        key: 'starships',
+        isInventory: true,
+        options: newOptions,
       },
     });
   };
@@ -83,7 +79,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Silhouette */}
       <NumericOption
         title={'Silhouette'}
-        state={defaultOptions.inventoryOptions.starships.silhouette}
+        state={options.silhouette}
         defaultOption={defaultOptions.inventoryOptions.starships.silhouette}
         passBack={(silhouette: number[] | 'any') =>
           passBack({...options, silhouette: silhouette})
@@ -92,7 +88,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Speed */}
       <NumericOption
         title={'Speed'}
-        state={defaultOptions.inventoryOptions.starships.speed}
+        state={options.speed}
         defaultOption={defaultOptions.inventoryOptions.starships.speed}
         passBack={(speed: number[] | 'any') =>
           passBack({...options, speed: speed})
@@ -101,7 +97,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Handling */}
       <NumericOption
         title={'Handling'}
-        state={defaultOptions.inventoryOptions.starships.handling}
+        state={options.handling}
         defaultOption={defaultOptions.inventoryOptions.starships.handling}
         passBack={(handling: number[] | 'any') =>
           passBack({...options, handling: handling})
@@ -110,7 +106,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Armor */}
       <NumericOption
         title={'Armor'}
-        state={defaultOptions.inventoryOptions.starships.armor}
+        state={options.armor}
         defaultOption={defaultOptions.inventoryOptions.starships.armor}
         passBack={(armor: number[] | 'any') =>
           passBack({...options, armor: armor})
@@ -119,14 +115,14 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* HTT */}
       <NumericOption
         title={'HTT'}
-        state={defaultOptions.inventoryOptions.starships.htt}
+        state={options.htt}
         defaultOption={defaultOptions.inventoryOptions.starships.htt}
         passBack={(htt: number[] | 'any') => passBack({...options, htt: htt})}
       />
       {/* SST */}
       <NumericOption
         title={'SST'}
-        state={defaultOptions.inventoryOptions.starships.sst}
+        state={options.sst}
         defaultOption={defaultOptions.inventoryOptions.starships.sst}
         passBack={(sst: number[] | 'any') => passBack({...options, sst: sst})}
       />
@@ -144,7 +140,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Crew */}
       <NumericOption
         title={'Crew'}
-        state={defaultOptions.inventoryOptions.starships.crew}
+        state={options.crew}
         defaultOption={defaultOptions.inventoryOptions.starships.crew}
         passBack={(crew: number[] | 'any') =>
           passBack({...options, crew: crew})
@@ -153,7 +149,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Encumbrance */}
       <NumericOption
         title={'Encumbrance'}
-        state={defaultOptions.inventoryOptions.starships.encumbrance}
+        state={options.encumbrance}
         defaultOption={defaultOptions.inventoryOptions.starships.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
@@ -162,7 +158,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Passengers */}
       <NumericOption
         title={'Passengers'}
-        state={defaultOptions.inventoryOptions.starships.passengers}
+        state={options.passengers}
         defaultOption={defaultOptions.inventoryOptions.starships.passengers}
         passBack={(passengers: number[] | 'any') =>
           passBack({...options, passengers: passengers})
@@ -171,7 +167,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        state={defaultOptions.inventoryOptions.starships.hardpoints}
+        state={options.hardpoints}
         defaultOption={defaultOptions.inventoryOptions.starships.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
@@ -180,7 +176,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
       {/* Weapons */}
       <NumericOption
         title={'Weapons'}
-        state={defaultOptions.inventoryOptions.starships.weapons}
+        state={options.weapons}
         defaultOption={defaultOptions.inventoryOptions.starships.weapons}
         passBack={(weapons: number[] | 'any') =>
           passBack({...options, weapons: weapons})

@@ -20,6 +20,7 @@ import {WeaponOptionsScreen} from './WeaponOptions';
 import {HeaderBackButton} from '@react-navigation/elements';
 import {Alert} from 'react-native';
 import {StackActions} from '@react-navigation/native';
+import {JSONToString} from '../../services/db-service';
 
 const confirm = (
   navigation: any,
@@ -71,10 +72,23 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
 
   // Update local copy of options
   React.useEffect(() => {
-    if (route.params?.options) {
-      setOptions(route.params.options);
+    if (route.params) {
+      if (route.params.isInventory) {
+        setOptions({
+          ...options,
+          inventoryOptions: {
+            ...options.inventoryOptions,
+            [route.params.key]: route.params.options,
+          },
+        });
+      } else {
+        setOptions({
+          ...options,
+          [route.params.key]: route.params.options,
+        });
+      }
     }
-  }, [route.params?.options]);
+  }, [route.params]);
 
   // Wait
   if (!options) {

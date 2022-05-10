@@ -37,13 +37,9 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
     navigation.navigate({
       name: 'Options',
       params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            weapons: newOptions,
-          },
-        },
+        key: 'weapons',
+        isInventory: true,
+        options: newOptions,
       },
     });
   };

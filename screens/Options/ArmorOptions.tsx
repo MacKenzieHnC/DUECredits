@@ -31,15 +31,7 @@ export const ArmorOptionsScreen = ({navigation}: any) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            armor: newOptions,
-          },
-        },
-      },
+      params: {key: 'armor', isInventory: true, options: newOptions},
     });
   };
 

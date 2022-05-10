@@ -37,13 +37,9 @@ export const GearOptionsScreen = ({navigation}: any) => {
     navigation.navigate({
       name: 'Options',
       params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            gear: newOptions,
-          },
-        },
+        key: 'gear',
+        isInventory: true,
+        options: newOptions,
       },
     });
   };
@@ -72,7 +68,7 @@ export const GearOptionsScreen = ({navigation}: any) => {
       {/* Encumbrance */}
       <NumericOption
         title={'Encumbrance'}
-        state={defaultOptions.inventoryOptions.gear.encumbrance}
+        state={options.encumbrance}
         defaultOption={defaultOptions.inventoryOptions.gear.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})

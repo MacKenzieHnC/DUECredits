@@ -12,13 +12,13 @@ export const ITEM_TYPE = {
   Armor: {id: 0, tableName: 'Armor'},
   Attachments: {id: 1, tableName: 'Attachments'},
   Gear: {id: 2, tableName: 'Gear'},
-  Starships: {
-    id: 2,
-    tableName: 'Starships_View',
-  },
-  Vehicles: {
-    id: 4,
+  PlanetaryVehicles: {
+    id: 3,
     tableName: 'Planetary_Vehicles_View',
+  },
+  Starships: {
+    id: 4,
+    tableName: 'Starships_View',
   },
   VehicleAttachments: {
     id: 5,

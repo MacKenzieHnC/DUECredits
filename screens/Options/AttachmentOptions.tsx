@@ -36,15 +36,7 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
     setOptions(newOptions);
     navigation.navigate({
       name: 'Options',
-      params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            attachments: newOptions,
-          },
-        },
-      },
+      params: {key: 'attachments', isInventory: true, options: newOptions},
     });
   };
 
@@ -72,7 +64,7 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
       {/* Damage */}
       <NumericOption
         title={'Encumbrance'}
-        state={defaultOptions.inventoryOptions.attachments.encumbrance}
+        state={options.encumbrance}
         defaultOption={defaultOptions.inventoryOptions.attachments.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
@@ -81,7 +73,7 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        state={defaultOptions.inventoryOptions.attachments.hardpoints}
+        state={options.hardpoints}
         defaultOption={defaultOptions.inventoryOptions.attachments.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})

@@ -37,13 +37,9 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
     navigation.navigate({
       name: 'Options',
       params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            planetaryVehicles: newOptions,
-          },
-        },
+        key: 'planetaryVehicles',
+        isInventory: true,
+        options: newOptions,
       },
     });
   };
@@ -89,7 +85,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Silhouette */}
       <NumericOption
         title={'Silhouette'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.silhouette}
+        state={options.silhouette}
         defaultOption={
           defaultOptions.inventoryOptions.planetaryVehicles.silhouette
         }
@@ -100,7 +96,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Speed */}
       <NumericOption
         title={'Speed'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.speed}
+        state={options.speed}
         defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.speed}
         passBack={(speed: number[] | 'any') =>
           passBack({...options, speed: speed})
@@ -109,7 +105,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Handling */}
       <NumericOption
         title={'Handling'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.handling}
+        state={options.handling}
         defaultOption={
           defaultOptions.inventoryOptions.planetaryVehicles.handling
         }
@@ -120,7 +116,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Armor */}
       <NumericOption
         title={'Armor'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.armor}
+        state={options.armor}
         defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.armor}
         passBack={(armor: number[] | 'any') =>
           passBack({...options, armor: armor})
@@ -129,14 +125,14 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* HTT */}
       <NumericOption
         title={'HTT'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.htt}
+        state={options.htt}
         defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.htt}
         passBack={(htt: number[] | 'any') => passBack({...options, htt: htt})}
       />
       {/* SST */}
       <NumericOption
         title={'SST'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.sst}
+        state={options.sst}
         defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.sst}
         passBack={(sst: number[] | 'any') => passBack({...options, sst: sst})}
       />
@@ -156,7 +152,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Crew */}
       <NumericOption
         title={'Crew'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.crew}
+        state={options.crew}
         defaultOption={defaultOptions.inventoryOptions.planetaryVehicles.crew}
         passBack={(crew: number[] | 'any') =>
           passBack({...options, crew: crew})
@@ -165,7 +161,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Encumbrance */}
       <NumericOption
         title={'Encumbrance'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.encumbrance}
+        state={options.encumbrance}
         defaultOption={
           defaultOptions.inventoryOptions.planetaryVehicles.encumbrance
         }
@@ -176,7 +172,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Passengers */}
       <NumericOption
         title={'Passengers'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.passengers}
+        state={options.passengers}
         defaultOption={
           defaultOptions.inventoryOptions.planetaryVehicles.passengers
         }
@@ -187,7 +183,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.hardpoints}
+        state={options.hardpoints}
         defaultOption={
           defaultOptions.inventoryOptions.planetaryVehicles.hardpoints
         }
@@ -198,7 +194,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
       {/* Weapons */}
       <NumericOption
         title={'Weapons'}
-        state={defaultOptions.inventoryOptions.planetaryVehicles.weapons}
+        state={options.weapons}
         defaultOption={
           defaultOptions.inventoryOptions.planetaryVehicles.weapons
         }

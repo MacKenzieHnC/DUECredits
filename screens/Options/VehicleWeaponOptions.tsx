@@ -37,13 +37,9 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
     navigation.navigate({
       name: 'Options',
       params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            vehicleWeapons: newOptions,
-          },
-        },
+        key: 'vehicleWeapons',
+        isInventory: true,
+        options: newOptions,
       },
     });
   };

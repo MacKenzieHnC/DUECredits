@@ -35,13 +35,9 @@ export const VehicleAttachmentOptionsScreen = ({navigation}: any) => {
     navigation.navigate({
       name: 'Options',
       params: {
-        options: {
-          ...defaultOptions,
-          inventoryOptions: {
-            ...defaultOptions.inventoryOptions,
-            vehicleAttachments: newOptions,
-          },
-        },
+        key: 'vehicleAttachments',
+        isInventory: true,
+        options: newOptions,
       },
     });
   };
@@ -61,7 +57,7 @@ export const VehicleAttachmentOptionsScreen = ({navigation}: any) => {
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
-        state={defaultOptions.inventoryOptions.vehicleAttachments.hardpoints}
+        state={options.hardpoints}
         defaultOption={
           defaultOptions.inventoryOptions.vehicleAttachments.hardpoints
         }

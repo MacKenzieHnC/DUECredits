@@ -24,47 +24,51 @@ export const GeneralOptionsScreen = ({navigation}: any) => {
     return <LoadingScreen text="Loading shop" />;
   }
 
-  if (options === undefined) {
-    throw Error('HERE');
-  }
-
   // Function to alert shop of changes
-  const passBack = (newOptions: ShopOptions) => {
-    setOptions(newOptions);
+  const passBackLocation = (newOptions: ShopOptions['location']) => {
+    setOptions({...options, location: newOptions});
     navigation.navigate({
       name: 'Options',
-      params: {options: newOptions},
-      merge: false,
+      params: {
+        key: 'location',
+        isInventory: false,
+        options: newOptions,
+      },
+    });
+  };
+
+  // Function to alert shop of changes
+  const passBackGeneral = (newOptions: GeneralOptions) => {
+    setOptions({
+      ...options,
+      inventoryOptions: {...options.inventoryOptions, general: newOptions},
+    });
+    navigation.navigate({
+      name: 'Options',
+      params: {
+        key: 'general',
+        isInventory: true,
+        options: newOptions,
+      },
     });
   };
 
   return (
     <ScrollView>
       <SelectOption
+        key={0}
         title="Location"
         state={options.location}
-        passBack={(location: number) =>
-          passBack({
-            ...defaultOptions,
-            location: location,
-          })
-        }
+        passBack={(location: number) => passBackLocation(location)}
         items={dbState.locations}
         features={['name', 'price_modifier', 'rarity_modifier']}
         featureNames={['', 'Price Modifier', 'Rarity Modifier']}
       />
       <GeneralOptionsComponent
+        key={1}
         title={'General Options'}
         options={options.inventoryOptions.general}
-        passBack={(general: GeneralOptions) =>
-          passBack({
-            ...defaultOptions,
-            inventoryOptions: {
-              ...defaultOptions.inventoryOptions,
-              general: general,
-            },
-          })
-        }
+        passBack={(general: GeneralOptions) => passBackGeneral(general)}
         defaultOptions={defaultOptions.inventoryOptions.general}
       />
     </ScrollView>

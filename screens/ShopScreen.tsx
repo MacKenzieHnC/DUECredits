@@ -19,9 +19,11 @@ export const ShopScreen = ({navigation}: any) => {
   }
 
   const constraints = getConstraints(shops[currentShop].options);
+  var i = 0;
   const blah = Object.keys(ITEM_TYPE).map(itemType => {
+    i += 1;
     return (
-      <View>
+      <View key={i}>
         <Text color="white" fontSize={20}>
           {'\n___' + ITEM_TYPE[itemType].tableName + '___'}
         </Text>
