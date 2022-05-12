@@ -94,7 +94,6 @@ const MultiPicker = ({
         transparent={true}
         visible={visible}
         onRequestClose={() => {
-          console.log('Modal has been closed.');
           setVisible(!visible);
         }}>
         <View style={styles.centeredView}>

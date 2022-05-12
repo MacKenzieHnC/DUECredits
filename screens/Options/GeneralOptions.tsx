@@ -27,7 +27,6 @@ export const GeneralOptionsScreen = ({navigation}: any) => {
     if (isLoadingShop === false && shop) {
       setDefaultOptions((shop as Shop).options);
       setOptions((shop as Shop).options);
-      console.log('Effect called');
     }
   }, [isLoadingShop, shop]);
   if (

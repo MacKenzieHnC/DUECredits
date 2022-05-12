@@ -63,11 +63,9 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
   const [defaultOptions, setDefaultOptions] = useState<ShopOptions>();
   const [options, setOptions] = useState<ShopOptions>();
   useEffect(() => {
-    console.log('Effect called');
     if (isLoadingShop === false && shop) {
       setDefaultOptions((shop as Shop).options);
       setOptions((shop as Shop).options);
-      console.log('Effect called');
     }
   }, [isLoadingShop, shop]);
   const [update] = useUpdateShopRulesMutation();
