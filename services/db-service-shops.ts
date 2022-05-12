@@ -77,7 +77,10 @@ export const resetRules = async (db: SQLiteDatabase, shopID: number) => {
   }
 };
 
-export const newShop = async (db: SQLiteDatabase, shopName: string) => {
+export const newShop = async (
+  db: SQLiteDatabase,
+  shopName: string,
+): Promise<number> => {
   try {
     const results = await db.executeSql(
       `INSERT INTO Shops (name, rules)

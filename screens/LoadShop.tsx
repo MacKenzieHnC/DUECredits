@@ -1,13 +1,11 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {Button, Center, Modal, View, VStack} from 'native-base';
-import {
-  useGetAllShopsQuery,
-  useNewShopMutation,
-} from '../store/slices/databaseSlice';
+import {useGetAllShopsQuery} from '../store/slices/databaseSlice';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {
   currentShopChanged,
+  saveNewShop,
   selectCurrentShopID,
 } from '../store/slices/appSlice';
 import {TextInput} from 'react-native';
@@ -22,18 +20,13 @@ export const LoadShop = ({navigation}: any) => {
     useAppSelector(selectCurrentShopID),
   );
   const [newShopName, setNewShopName] = useState('');
-  const [newShopMutation] = useNewShopMutation();
   const dispatch = useAppDispatch();
-  if (isLoading || !shops || !newShopMutation) {
+  if (isLoading || !shops) {
     return <LoadingScreen text="Initializing DB..." />;
   }
 
   const loadShop = (shopID: number) => {
     dispatch(currentShopChanged(shopID));
-  };
-
-  const saveNewShop = () => {
-    return newShopMutation(newShopName);
   };
 
   return (
@@ -76,7 +69,7 @@ export const LoadShop = ({navigation}: any) => {
                 flex={1}
                 onPress={() => {
                   if (selectedShop === 0) {
-                    loadShop(saveNewShop());
+                    saveNewShop(newShopName);
                   } else {
                     loadShop(selectedShop);
                   }

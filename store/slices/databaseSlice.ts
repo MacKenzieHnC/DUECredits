@@ -1,5 +1,4 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
-import {createSelector} from '@reduxjs/toolkit';
 import {
   ArmorItem,
   AttachmentItem,
@@ -23,7 +22,6 @@ import {getWeaponItems} from '../../services/db-service-weapons';
 import {
   getAllShops,
   getShop,
-  newShop,
   resetRules,
   updateRules,
 } from '../../services/db-service-shops';
@@ -168,18 +166,6 @@ export const databaseSlice = createApi({
       },
       providesTags: ['Shops'],
     }),
-    newShop: build.mutation<number, string>({
-      queryFn: async name => {
-        try {
-          const db = await getDBConnection();
-          return {data: await newShop(db, name)};
-        } catch (error) {
-        } finally {
-          return {data: -1};
-        }
-      },
-      invalidatesTags: ['Shops'],
-    }),
     updateShopRules: build.mutation<null, {id: number; data: ShopOptions}>({
       queryFn: async ({id, data}) => {
         try {
@@ -211,7 +197,6 @@ export const {
   useGetDBStateQuery,
   useGetShopQuery,
   useGetAllShopsQuery,
-  useNewShopMutation,
   useUpdateShopRulesMutation,
   useResetShopRulesMutation,
   useGetAllArmorQuery,
