@@ -4,21 +4,22 @@ import {LoadingScreen} from '../components/LoadingScreen';
 import {ITEM_TYPE} from '../constants/enum';
 import {useAppSelector} from '../hooks/redux';
 import {getConstraints} from '../services/db-service-constraints';
-import {selectCurrentShop} from '../store/slices/appSlice';
+import {selectCurrentShopID} from '../store/slices/appSlice';
 import {
-  useGetAllShopsQuery,
+  useGetShopQuery,
   useResetShopRulesMutation,
 } from '../store/slices/databaseSlice';
 
 export const ShopScreen = ({navigation}: any) => {
-  const {data: shops, isLoading} = useGetAllShopsQuery();
+  const {data: shop, isLoading} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
+  );
   const [reset] = useResetShopRulesMutation();
-  const currentShop = useAppSelector(selectCurrentShop);
-  if (isLoading || !shops) {
-    return <LoadingScreen text="Initializing DB..." />;
+  if (isLoading || !shop) {
+    return <LoadingScreen text="Fart..." />;
   }
 
-  const constraints = getConstraints(shops[currentShop].options);
+  const constraints = getConstraints(shop.options);
   var i = 0;
   const blah = Object.keys(ITEM_TYPE).map(itemType => {
     i += 1;
@@ -41,7 +42,7 @@ export const ShopScreen = ({navigation}: any) => {
         <Button onPress={() => navigation.navigate('Options')}>
           Go To Options!
         </Button>
-        <Button onPress={() => reset(0)}>RESET!</Button>
+        <Button onPress={() => reset(Shop.id)}>RESET</Button>
       </HStack>
       <Text color="white" fontSize={20}>
         SQL Constraints

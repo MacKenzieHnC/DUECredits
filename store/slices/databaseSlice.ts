@@ -22,6 +22,8 @@ import {getVehicleWeaponItems} from '../../services/db-service-vehicleWeapons';
 import {getWeaponItems} from '../../services/db-service-weapons';
 import {
   getAllShops,
+  getShop,
+  newShop,
   resetRules,
   updateRules,
 } from '../../services/db-service-shops';
@@ -142,6 +144,18 @@ export const databaseSlice = createApi({
         }
       },
     }),
+    getShop: build.query<Shop, number>({
+      async queryFn(id) {
+        try {
+          const db = await getDBConnection();
+          const data = await getShop(db, id);
+          return {data};
+        } catch (error) {
+          return {error: {data: "Can't get Shop", status: 500}};
+        }
+      },
+      providesTags: ['Shops'],
+    }),
     getAllShops: build.query<Shop[], void>({
       async queryFn() {
         try {
@@ -153,6 +167,18 @@ export const databaseSlice = createApi({
         }
       },
       providesTags: ['Shops'],
+    }),
+    newShop: build.mutation<number, string>({
+      queryFn: async name => {
+        try {
+          const db = await getDBConnection();
+          return {data: await newShop(db, name)};
+        } catch (error) {
+        } finally {
+          return {data: -1};
+        }
+      },
+      invalidatesTags: ['Shops'],
     }),
     updateShopRules: build.mutation<null, {id: number; data: ShopOptions}>({
       queryFn: async ({id, data}) => {
@@ -181,19 +207,11 @@ export const databaseSlice = createApi({
   }),
 });
 
-export const selectAllShops = createSelector(
-  databaseSlice.endpoints.getAllShops.select(),
-  database => database?.data,
-);
-
-export const selectShop = (shopID: number) =>
-  createSelector(databaseSlice.endpoints.getAllShops.select(), shops =>
-    shops?.data?.find(shop => shop.id === shopID),
-  );
-
 export const {
   useGetDBStateQuery,
+  useGetShopQuery,
   useGetAllShopsQuery,
+  useNewShopMutation,
   useUpdateShopRulesMutation,
   useResetShopRulesMutation,
   useGetAllArmorQuery,

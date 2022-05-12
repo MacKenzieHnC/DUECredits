@@ -1,4 +1,5 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
+import {useAppDispatch} from '../hooks/redux';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
 import {JSONToString, StringToJSON} from './db-service';
 
@@ -15,6 +16,28 @@ export const updateRules = async (
   } catch (error) {
     console.error(error);
     throw Error('Failed to get initial database state !!!');
+  }
+};
+
+export const getShop = async (
+  db: SQLiteDatabase,
+  id: number,
+): Promise<Shop> => {
+  try {
+    const results = await db.executeSql(
+      `SELECT *
+      FROM Shops
+      WHERE id = ${id}`,
+    );
+    const item = results[0].rows.item(0);
+    return {
+      id: item.id,
+      name: item.name,
+      options: StringToJSON(item.rules),
+    };
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get shop !!!');
   }
 };
 
@@ -38,7 +61,7 @@ export const getAllShops = async (db: SQLiteDatabase): Promise<Shop[]> => {
     return list;
   } catch (error) {
     console.error(error);
-    throw Error('Failed to get initial database state !!!');
+    throw Error('Failed to get shops !!!');
   }
 };
 
@@ -48,6 +71,20 @@ export const resetRules = async (db: SQLiteDatabase, shopID: number) => {
     await db.executeSql(
       `UPDATE Shops SET rules = "${json}" WHERE id = ${shopID}`,
     );
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get initial database state !!!');
+  }
+};
+
+export const newShop = async (db: SQLiteDatabase, shopName: string) => {
+  try {
+    const results = await db.executeSql(
+      `INSERT INTO Shops (name, rules)
+        VALUES( '${shopName}', (SELECT rules FROM Shops WHERE id = 0));
+      SELECT last_insert_rowid();`,
+    );
+    return results[0].rows.item(0);
   } catch (error) {
     console.error(error);
     throw Error('Failed to get initial database state !!!');

@@ -7,12 +7,12 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     currentShopChanged(state, action) {
-      state = action.payload;
+      state.entities = action.payload;
     },
   },
 });
 
-export const selectCurrentShop = createSelector(
+export const selectCurrentShopID = createSelector(
   (state: any) => state.appSlice.entities,
   currentShop => currentShop,
 );

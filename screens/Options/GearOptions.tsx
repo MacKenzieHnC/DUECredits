@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
   InventoryOptions,
@@ -11,23 +11,39 @@ import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {MultiSelectOption} from '../../components/options/MultiSelectOption';
 import {NumericOption} from '../../components/options/NumericOption';
 import {Option} from '../../components/options/Option';
-import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {
+  useGetDBStateQuery,
+  useGetShopQuery,
+} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {ScrollView} from 'native-base';
 
 export const GearOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<InventoryOptions['gear']>(
-    defaultOptions.inventoryOptions.gear,
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
   );
-  const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState || !options) {
+  const [defaultOptions, setDefaultOptions] =
+    useState<ShopOptions['inventoryOptions']['gear']>();
+  const [options, setOptions] =
+    useState<ShopOptions['inventoryOptions']['gear']>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions((shop as Shop).options.inventoryOptions.gear);
+      setOptions((shop as Shop).options.inventoryOptions.gear);
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 
@@ -52,13 +68,13 @@ export const GearOptionsScreen = ({navigation}: any) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.inventoryOptions.gear.general}
+        defaultOptions={defaultOptions.general}
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
         state={options.categories}
-        defaultOption={defaultOptions.inventoryOptions.gear.categories}
+        defaultOption={defaultOptions.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -69,7 +85,7 @@ export const GearOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Encumbrance'}
         state={options.encumbrance}
-        defaultOption={defaultOptions.inventoryOptions.gear.encumbrance}
+        defaultOption={defaultOptions.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -82,7 +98,7 @@ export const GearOptionsScreen = ({navigation}: any) => {
         title={'Gear'}
         options={options}
         passBack={passBack}
-        defaultOption={defaultOptions.inventoryOptions.gear}
+        defaultOption={defaultOptions}
         canBeNone={true}
         childComponent={childComponent}
         startLimited={options.limit}

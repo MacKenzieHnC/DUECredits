@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
   GeneralOptions,
@@ -11,23 +11,39 @@ import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {MultiSelectOption} from '../../components/options/MultiSelectOption';
 import {NumericOption} from '../../components/options/NumericOption';
 import {Option} from '../../components/options/Option';
-import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {
+  useGetDBStateQuery,
+  useGetShopQuery,
+} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {ScrollView} from 'native-base';
 
 export const WeaponOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<InventoryOptions['weapons']>(
-    defaultOptions.inventoryOptions.weapons,
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
   );
-  const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState || !options) {
+  const [defaultOptions, setDefaultOptions] =
+    useState<ShopOptions['inventoryOptions']['weapons']>();
+  const [options, setOptions] =
+    useState<ShopOptions['inventoryOptions']['weapons']>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions((shop as Shop).options.inventoryOptions.weapons);
+      setOptions((shop as Shop).options.inventoryOptions.weapons);
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 
@@ -52,13 +68,13 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.inventoryOptions.weapons.general}
+        defaultOptions={defaultOptions.general}
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
         state={options.categories}
-        defaultOption={defaultOptions.inventoryOptions.weapons.categories}
+        defaultOption={defaultOptions.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -69,7 +85,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <MultiSelectOption
         title={'Skills'}
         state={options.skills}
-        defaultOption={defaultOptions.inventoryOptions.weapons.skills}
+        defaultOption={defaultOptions.skills}
         passBack={(skills: CategoryLike[] | 'any') =>
           passBack({...options, skills: skills})
         }
@@ -80,7 +96,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Damage'}
         state={options.damage}
-        defaultOption={defaultOptions.inventoryOptions.weapons.damage}
+        defaultOption={defaultOptions.damage}
         passBack={(damage: number[] | 'any') =>
           passBack({...options, damage: damage})
         }
@@ -89,7 +105,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Crit'}
         state={options.crit}
-        defaultOption={defaultOptions.inventoryOptions.weapons.crit}
+        defaultOption={defaultOptions.crit}
         passBack={(crit: number[] | 'any') =>
           passBack({...options, crit: crit})
         }
@@ -98,7 +114,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <MultiSelectOption
         title={'Ranges'}
         state={options.ranges}
-        defaultOption={defaultOptions.inventoryOptions.weapons.ranges}
+        defaultOption={defaultOptions.ranges}
         passBack={(ranges: CategoryLike[] | 'any') =>
           passBack({...options, ranges: ranges})
         }
@@ -109,7 +125,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <MultiSelectOption
         title={'Effects'}
         state={options.effects}
-        defaultOption={defaultOptions.inventoryOptions.weapons.effects}
+        defaultOption={defaultOptions.effects}
         passBack={(effects: WeaponEffect[] | 'any') =>
           passBack({...options, effects: effects})
         }
@@ -120,7 +136,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Encumbrance'}
         state={options.encumbrance}
-        defaultOption={defaultOptions.inventoryOptions.weapons.encumbrance}
+        defaultOption={defaultOptions.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -129,7 +145,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Hardpoints'}
         state={options.hardpoints}
-        defaultOption={defaultOptions.inventoryOptions.weapons.hardpoints}
+        defaultOption={defaultOptions.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }

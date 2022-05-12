@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
-import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {
+  useGetDBStateQuery,
+  useGetShopQuery,
+} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
 import {ScrollView} from 'native-base';
 import {
   GeneralOptions,
@@ -12,15 +13,31 @@ import {
   ShopOptions,
 } from '../../models/InventoryOptionsIndex';
 import {SelectOption} from '../../components/options/SelectOption';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 
 export const GeneralOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<ShopOptions>(defaultOptions);
-  const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState || !options) {
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
+  );
+  const [defaultOptions, setDefaultOptions] = useState<ShopOptions>();
+  const [options, setOptions] = useState<ShopOptions>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions((shop as Shop).options);
+      setOptions((shop as Shop).options);
+      console.log('Effect called');
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 

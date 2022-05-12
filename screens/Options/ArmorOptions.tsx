@@ -1,5 +1,5 @@
 import {ScrollView, View} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {NumericOption} from '../../components/options/NumericOption';
@@ -11,18 +11,36 @@ import {
   ShopOptions,
 } from '../../models/InventoryOptionsIndex';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
+import {
+  useGetDBStateQuery,
+  useGetShopQuery,
+} from '../../store/slices/databaseSlice';
 
 export const ArmorOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<InventoryOptions['armor']>(
-    defaultOptions.inventoryOptions.armor,
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
   );
-  if (!options) {
+  const [defaultOptions, setDefaultOptions] =
+    useState<ShopOptions['inventoryOptions']['armor']>();
+  const [options, setOptions] =
+    useState<ShopOptions['inventoryOptions']['armor']>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions((shop as Shop).options.inventoryOptions.armor);
+      setOptions((shop as Shop).options.inventoryOptions.armor);
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 
@@ -43,13 +61,13 @@ export const ArmorOptionsScreen = ({navigation}: any) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.inventoryOptions.armor.general}
+        defaultOptions={defaultOptions.general}
       />
       {/* Defense */}
       <NumericOption
         title={'Defense'}
         state={options.defense}
-        defaultOption={defaultOptions.inventoryOptions.armor.defense}
+        defaultOption={defaultOptions.defense}
         passBack={(defense: number[] | 'any') =>
           passBack({...options, defense: defense})
         }
@@ -58,7 +76,7 @@ export const ArmorOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Soak'}
         state={options.soak}
-        defaultOption={defaultOptions.inventoryOptions.armor.soak}
+        defaultOption={defaultOptions.soak}
         passBack={(soak: number[] | 'any') =>
           passBack({...options, soak: soak})
         }
@@ -67,7 +85,7 @@ export const ArmorOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Encumbrance'}
         state={options.encumbrance}
-        defaultOption={defaultOptions.inventoryOptions.armor.encumbrance}
+        defaultOption={defaultOptions.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -76,7 +94,7 @@ export const ArmorOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Hardpoints'}
         state={options.hardpoints}
-        defaultOption={defaultOptions.inventoryOptions.armor.hardpoints}
+        defaultOption={defaultOptions.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }
@@ -89,7 +107,7 @@ export const ArmorOptionsScreen = ({navigation}: any) => {
         title={'Armor'}
         options={options}
         passBack={(armor: InventoryOptions['armor']) => passBack(armor)}
-        defaultOption={defaultOptions.inventoryOptions.armor}
+        defaultOption={defaultOptions}
         canBeNone={true}
         childComponent={childComponent}
         startLimited={options.limit}

@@ -3,7 +3,7 @@ import React from 'react';
 import {ArmorItemComponent} from '../../components/ListComponents/ArmorItem';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {
   selectAllShops,
   useGetAllArmorQuery,
@@ -11,7 +11,7 @@ import {
 
 export const ArmorInventory = () => {
   const shop =
-    useAppSelector(selectAllShops)[useAppSelector(selectCurrentShop)];
+    useAppSelector(selectAllShops)[useAppSelector(selectCurrentShopID)];
   const {data, isLoading} = useGetAllArmorQuery(shop);
 
   if (isLoading || !data) {

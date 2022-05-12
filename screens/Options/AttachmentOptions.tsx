@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
   InventoryOptions,
@@ -11,23 +11,39 @@ import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {MultiSelectOption} from '../../components/options/MultiSelectOption';
 import {NumericOption} from '../../components/options/NumericOption';
 import {Option} from '../../components/options/Option';
-import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {ScrollView} from 'native-base';
+import {
+  useGetShopQuery,
+  useGetDBStateQuery,
+} from '../../store/slices/databaseSlice';
 
 export const AttachmentOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<InventoryOptions['attachments']>(
-    defaultOptions.inventoryOptions.attachments,
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
   );
-  const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState || !options) {
+  const [defaultOptions, setDefaultOptions] =
+    useState<ShopOptions['inventoryOptions']['attachments']>();
+  const [options, setOptions] =
+    useState<ShopOptions['inventoryOptions']['attachments']>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions((shop as Shop).options.inventoryOptions.attachments);
+      setOptions((shop as Shop).options.inventoryOptions.attachments);
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 
@@ -48,13 +64,13 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.inventoryOptions.general}
+        defaultOptions={defaultOptions.general}
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
         state={options.categories}
-        defaultOption={defaultOptions.inventoryOptions.attachments.categories}
+        defaultOption={defaultOptions.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -65,7 +81,7 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Encumbrance'}
         state={options.encumbrance}
-        defaultOption={defaultOptions.inventoryOptions.attachments.encumbrance}
+        defaultOption={defaultOptions.encumbrance}
         passBack={(encumbrance: number[] | 'any') =>
           passBack({...options, encumbrance: encumbrance})
         }
@@ -74,7 +90,7 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Hardpoints'}
         state={options.hardpoints}
-        defaultOption={defaultOptions.inventoryOptions.attachments.hardpoints}
+        defaultOption={defaultOptions.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }

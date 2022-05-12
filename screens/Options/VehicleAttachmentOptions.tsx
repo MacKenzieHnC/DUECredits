@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
   InventoryOptions,
@@ -9,23 +9,41 @@ import {
 import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {NumericOption} from '../../components/options/NumericOption';
 import {Option} from '../../components/options/Option';
-import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {
+  useGetDBStateQuery,
+  useGetShopQuery,
+} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {ScrollView} from 'native-base';
 
 export const VehicleAttachmentOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<
-    InventoryOptions['vehicleAttachments']
-  >(defaultOptions.inventoryOptions.vehicleAttachments);
-  const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState || !options) {
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
+  );
+  const [defaultOptions, setDefaultOptions] =
+    useState<ShopOptions['inventoryOptions']['vehicleAttachments']>();
+  const [options, setOptions] =
+    useState<ShopOptions['inventoryOptions']['vehicleAttachments']>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions(
+        (shop as Shop).options.inventoryOptions.vehicleAttachments,
+      );
+      setOptions((shop as Shop).options.inventoryOptions.vehicleAttachments);
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 
@@ -50,17 +68,13 @@ export const VehicleAttachmentOptionsScreen = ({navigation}: any) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={
-          defaultOptions.inventoryOptions.vehicleAttachments.general
-        }
+        defaultOptions={defaultOptions.general}
       />
       {/* Hardpoints */}
       <NumericOption
         title={'Hardpoints'}
         state={options.hardpoints}
-        defaultOption={
-          defaultOptions.inventoryOptions.vehicleAttachments.hardpoints
-        }
+        defaultOption={defaultOptions.hardpoints}
         passBack={(hardpoints: number[] | 'any') =>
           passBack({...options, hardpoints: hardpoints})
         }
@@ -73,7 +87,7 @@ export const VehicleAttachmentOptionsScreen = ({navigation}: any) => {
         title={'VehicleAttachments'}
         options={options}
         passBack={passBack}
-        defaultOption={defaultOptions.inventoryOptions.vehicleAttachments}
+        defaultOption={defaultOptions}
         canBeNone={true}
         childComponent={childComponent}
         startLimited={options.limit}

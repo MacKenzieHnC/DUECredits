@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
   GeneralOptions,
@@ -11,23 +11,39 @@ import {GeneralOptionsComponent} from '../../components/options/GeneralOptions';
 import {MultiSelectOption} from '../../components/options/MultiSelectOption';
 import {NumericOption} from '../../components/options/NumericOption';
 import {Option} from '../../components/options/Option';
-import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {
+  useGetDBStateQuery,
+  useGetShopQuery,
+} from '../../store/slices/databaseSlice';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
-import {selectCurrentShop} from '../../store/slices/appSlice';
-import {selectShop} from '../../store/slices/databaseSlice';
+import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {ScrollView} from 'native-base';
 
 export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
-  // Initialize
-  const defaultOptions: ShopOptions = (
-    useAppSelector(selectShop(useAppSelector(selectCurrentShop))) as Shop
-  ).options;
-  const [options, setOptions] = useState<InventoryOptions['vehicleWeapons']>(
-    defaultOptions.inventoryOptions.vehicleWeapons,
+  //Initialize
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
   );
-  const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState || !options) {
+  const [defaultOptions, setDefaultOptions] =
+    useState<ShopOptions['inventoryOptions']['vehicleWeapons']>();
+  const [options, setOptions] =
+    useState<ShopOptions['inventoryOptions']['vehicleWeapons']>();
+  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  useEffect(() => {
+    if (isLoadingShop === false && shop) {
+      setDefaultOptions((shop as Shop).options.inventoryOptions.vehicleWeapons);
+      setOptions((shop as Shop).options.inventoryOptions.vehicleWeapons);
+    }
+  }, [isLoadingShop, shop]);
+  if (
+    isLoadingDB ||
+    !dbState ||
+    isLoadingShop ||
+    !shop ||
+    !options ||
+    !defaultOptions
+  ) {
     return <LoadingScreen text="Loading shop" />;
   }
 
@@ -52,15 +68,13 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
         passBack={(general: GeneralOptions) =>
           passBack({...options, general: general})
         }
-        defaultOptions={defaultOptions.inventoryOptions.vehicleWeapons.general}
+        defaultOptions={defaultOptions.general}
       />
       {/* Category */}
       <MultiSelectOption
         title={'Categories'}
         state={options.categories}
-        defaultOption={
-          defaultOptions.inventoryOptions.vehicleWeapons.categories
-        }
+        defaultOption={defaultOptions.categories}
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
@@ -71,7 +85,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
       <MultiSelectOption
         title={'Ranges'}
         state={options.ranges}
-        defaultOption={defaultOptions.inventoryOptions.vehicleWeapons.ranges}
+        defaultOption={defaultOptions.ranges}
         passBack={(ranges: CategoryLike[] | 'any') =>
           passBack({...options, ranges: ranges})
         }
@@ -82,7 +96,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Damage'}
         state={options.damage}
-        defaultOption={defaultOptions.inventoryOptions.vehicleWeapons.damage}
+        defaultOption={defaultOptions.damage}
         passBack={(damage: number[] | 'any') =>
           passBack({...options, damage: damage})
         }
@@ -91,7 +105,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Crit'}
         state={options.crit}
-        defaultOption={defaultOptions.inventoryOptions.vehicleWeapons.crit}
+        defaultOption={defaultOptions.crit}
         passBack={(crit: number[] | 'any') =>
           passBack({...options, crit: crit})
         }
@@ -100,9 +114,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
       <NumericOption
         title={'Compatible Silhouette'}
         state={options.compatibleSilhouette}
-        defaultOption={
-          defaultOptions.inventoryOptions.vehicleWeapons.compatibleSilhouette
-        }
+        defaultOption={defaultOptions.compatibleSilhouette}
         passBack={(compatibleSilhouette: number[] | 'any') =>
           passBack({...options, compatibleSilhouette: compatibleSilhouette})
         }
@@ -111,7 +123,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
       <MultiSelectOption
         title={'Effects'}
         state={options.effects}
-        defaultOption={defaultOptions.inventoryOptions.vehicleWeapons.effects}
+        defaultOption={defaultOptions.effects}
         passBack={(effects: WeaponEffect[] | 'any') =>
           passBack({...options, effects: effects})
         }
