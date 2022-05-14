@@ -25,7 +25,7 @@ interface ItemProps {
 }
 
 export const ItemComponent = ({item, children}: ItemProps) => {
-  const isRestricted = item.itemProps.restricted;
+  const isRestricted = item.restricted;
 
   return (
     <Box maxWidth="100%" p={5} rounded="md" backgroundColor="primary.900" m={2}>
@@ -33,17 +33,17 @@ export const ItemComponent = ({item, children}: ItemProps) => {
         <VStack space={2} flex={1}>
           <Text color="white" flexWrap={'wrap'}>
             {isRestricted ? '(R) ' : ''}
-            {item.itemProps.name}
+            {item.name}
           </Text>
           {children}
         </VStack>
         <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
-          <Text color="white">Price: {item.itemProps.price}</Text>
+          <Text color="white">Price: {item.price}</Text>
         </Box>
       </HStack>
-      {!!item.itemProps.notes && (
+      {!!item.notes && (
         <Box>
-          <Text color="white">Notes: {item.itemProps.notes}</Text>
+          <Text color="white">Notes: {item.notes}</Text>
         </Box>
       )}
     </Box>

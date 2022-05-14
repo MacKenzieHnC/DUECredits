@@ -1,18 +1,13 @@
 import {HStack, Text} from 'native-base';
 import React, {memo} from 'react';
-import {StarshipItem} from '../../models/ItemIndex';
 import {ItemComponent} from './Item';
 
-interface StarshipItemProps {
-  item: StarshipItem;
-}
-
-export const StarshipItemComponent = memo(({item}: StarshipItemProps) => {
+export const StarshipItemComponent = memo(({item}) => {
   return (
     <ItemComponent item={item}>
       <HStack space={3}>
-        <Text color="white">HP: {item.vehicle.hardpoints}</Text>
-        <Text color="white">Encum: {item.vehicle.encumbrance}</Text>
+        <Text color="white">HP: {item.hardpoints}</Text>
+        <Text color="white">Encum: {item.encumbrance}</Text>
       </HStack>
     </ItemComponent>
   );

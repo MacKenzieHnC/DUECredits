@@ -17,7 +17,6 @@ import {
 import {Shop, ShopOptions} from '../../models/InventoryOptionsIndex';
 import {getConstraints} from '../../services/db-service-constraints';
 import {currentShopChanged} from './appSlice';
-import {useAppDispatch} from '../../hooks/redux';
 import {store} from '..';
 
 export interface MutateShopProps {
@@ -104,12 +103,11 @@ export const databaseSlice = createApi({
       },
       invalidatesTags: ['Shops'],
     }),
-    getInventory: build.query<any, Shop>({
+    getInventory: build.query<any[][], Shop>({
       async queryFn(shop) {
         try {
           const db = await getDBConnection();
           const data = await getShopInventory(db, shop);
-          data.forEach(list => console.log(list.length));
           return {data: data};
         } catch (error) {
           return {error: {data: "Can't get Inventory", status: 500}};
@@ -130,15 +128,11 @@ export const databaseSlice = createApi({
       },
       invalidatesTags: ['Shops'],
     }),
-    setShopInventory: build.mutation<null, {shop: Shop; itemLists: any[]}>({
+    setShopInventory: build.mutation<null, {shop: Shop; itemLists: any[][]}>({
       queryFn: async props => {
         try {
           const db = await getDBConnection();
-          const items: any[] = [];
-          props.itemLists.forEach(list =>
-            list.forEach((item: any) => items.push!(item)),
-          );
-          setShopInventory(db, props.shop, items);
+          await setShopInventory(db, props.shop, props.itemLists);
         } catch (error) {
         } finally {
           return {data: null};

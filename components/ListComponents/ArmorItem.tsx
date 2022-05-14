@@ -1,13 +1,8 @@
 import {HStack, Text, VStack} from 'native-base';
 import React, {memo} from 'react';
-import {ArmorItem} from '../../models/ItemIndex';
 import {ItemComponent} from './Item';
 
-interface ArmorItemProps {
-  item: ArmorItem;
-}
-
-export const ArmorItemComponent = memo(({item}: ArmorItemProps) => {
+export const ArmorItemComponent = memo(({item}) => {
   return (
     <ItemComponent item={item}>
       <HStack space={3}>

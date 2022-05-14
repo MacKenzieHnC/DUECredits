@@ -97,24 +97,35 @@ export const newShop = async (
 export const setShopInventory = async (
   db: SQLiteDatabase,
   shop: Shop,
-  items: any[],
+  items: any[][],
 ): Promise<void> => {
-  console.log('Length according to setInventory: ', items.length);
-  const values = items
-    .map(
-      item =>
-        '(' + shop.id + ',' + item.id + ',"' + JSONToString(item.roll) + '")',
-    )
-    .join(',');
+  const values: string[] = [];
+
+  for (let i = 0; i < items.length; i++) {
+    for (let j = 0; j < items.length; j++) {
+      values.push!(
+        '(' +
+          shop.id +
+          ',' +
+          items[i][j].id +
+          ',"' +
+          JSONToString(items[i][j].roll) +
+          '")',
+      );
+    }
+  }
+  console.log(values);
   try {
     await db.executeSql(
       `DELETE FROM Shop_Inventory
         WHERE shop = ${shop.id}`,
     );
-    await db.executeSql(
-      `INSERT INTO Shop_Inventory (shop, item, roll)
-        VALUES ${values}`,
-    );
+    if (values.length > 0) {
+      await db.executeSql(
+        `INSERT INTO Shop_Inventory (shop, item, roll)
+        VALUES ${values.join(',')}`,
+      );
+    }
   } catch (error) {
     console.error(error);
     throw Error('Failed to set inventory !!!');
@@ -124,7 +135,7 @@ export const setShopInventory = async (
 export const getShopInventory = async (
   db: SQLiteDatabase,
   shop: Shop,
-): Promise<any> => {
+): Promise<any[][]> => {
   const itemLists: any = [];
   try {
     for (let i = 0; i < ITEM_TYPE.length; i++) {
@@ -133,7 +144,6 @@ export const getShopInventory = async (
         JOIN Items i ON i.id = x.id
         JOIN Shop_Inventory s ON s.item = x.id
         WHERE s.shop = ${shop.id}`;
-      console.log(query);
       const results = await db.executeSql(query);
       const items: any[] = [];
       results.forEach(result => {
@@ -141,10 +151,8 @@ export const getShopInventory = async (
           items.push!(result.rows.item(index));
         }
       });
-      console.log('Length according to sql: ', items.length);
       itemLists.push!(items);
     }
-    console.log('List length according to SQL: ', itemLists.length);
     return itemLists;
   } catch (error) {
     console.error(error);

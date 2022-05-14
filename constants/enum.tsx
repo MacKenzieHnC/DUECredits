@@ -4,26 +4,34 @@ export const VEHICLE_TYPE = {
 };
 
 export type ItemType = {
+  key: string;
   name: string;
   tableName: string;
 };
 
 export const ITEM_TYPE: ItemType[] = [
-  {name: 'armor', tableName: 'Armor'},
-  {name: 'attachments', tableName: 'Attachments'},
-  {name: 'gear', tableName: 'Gear'},
+  {key: 'armor', name: 'Armor', tableName: 'Armor'},
+  {key: 'attachments', name: 'Attachments', tableName: 'Attachments'},
+  {key: 'gear', name: 'Gear', tableName: 'Gear'},
   {
-    name: 'planetaryVehicles',
+    key: 'planetaryVehicles',
+    name: 'Planetary Vehicles',
     tableName: 'Planetary_Vehicles_View',
   },
   {
-    name: 'starships',
+    key: 'starships',
+    name: 'Starships',
     tableName: 'Starships_View',
   },
   {
-    name: 'vehicleAttachments',
+    key: 'vehicleAttachments',
+    name: 'Vehicle Attachments',
     tableName: 'Vehicle_Attachments',
   },
-  {name: 'vehicleWeapons', tableName: 'Vehicle_Weapons'},
-  {name: 'weapons', tableName: 'Weapons'},
+  {
+    key: 'vehicleWeapons',
+    name: 'Vehicle Weapons',
+    tableName: 'Vehicle_Weapons',
+  },
+  {key: 'weapons', name: 'Weapons', tableName: 'Weapons'},
 ];

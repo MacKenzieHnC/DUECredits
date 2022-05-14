@@ -1,4 +1,4 @@
-import {Button, Text, View} from 'native-base';
+import {Button} from 'native-base';
 import React from 'react';
 import {getDiceRoll, getDicePool} from '../Dice/Dice';
 import {useAppSelector} from '../hooks/redux';
@@ -14,7 +14,7 @@ export const GenerateShopButton = () => {
   const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
     useAppSelector(selectCurrentShopID),
   );
-  const {data: itemLists, isLoading} = useGetAllItemsQuery(shop);
+  const {data: itemLists, isLoading} = useGetAllItemsQuery(shop as Shop);
   const [setShopInventory] = useSetShopInventoryMutation();
   if (isLoadingShop || !shop || isLoading || !itemLists) {
     return <></>;
@@ -28,7 +28,7 @@ export const GenerateShopButton = () => {
     numSetbacks: 0,
   };
   const onPress = () => {
-    var myLists = JSON.parse(JSON.stringify(itemLists));
+    var myLists: any[][] = JSON.parse(JSON.stringify(itemLists));
     for (let i = 0; i < myLists.length; i++) {
       for (let j = 0; j < myLists[i].length; j++) {
         const characteristic = myLists[i][j].restricted
@@ -54,11 +54,9 @@ export const GenerateShopButton = () => {
       }
     }
     myLists = myLists.map(list => {
-      return list.filter(
-        (item: any) => item.roll.successes > item.roll.failures,
-      );
+      return list.filter(item => item.roll.successes > item.roll.failures);
     });
     setShopInventory({shop: shop as Shop, itemLists: myLists});
   };
-  return <Button onPress={onPress}>Generate Inventory!</Button>;
+  return <Button onPress={onPress}>Generate Shop!</Button>;
 };

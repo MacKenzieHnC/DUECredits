@@ -61,28 +61,24 @@ export type Location = {
   rarity_modifier: number;
 };
 
-export type ArmorItem = {
-  itemProps: Item;
+export type ArmorItem = Item & {
   defense: number;
   soak: number;
   encumbrance: number;
   hardpoints: number;
 };
 
-export type AttachmentItem = {
-  itemProps: Item;
+export type AttachmentItem = Item & {
   category: number;
   encumbrance: number;
   hardpoints: number;
 };
 
-export type GearItem = {
-  itemProps: Item;
+export type GearItem = Item & {
   category: number;
   encumbrance: number;
 };
-export type PlanetaryVehicleItem = {
-  itemProps: Item;
+export type PlanetaryVehicleItem = Item & {
   vehicle: Vehicle;
 };
 
@@ -92,8 +88,7 @@ export type Rulebook = {
   abbrev: string;
 };
 
-export type StarshipItem = {
-  itemProps: Item;
+export type StarshipItem = Item & {
   vehicle: Vehicle;
   hyperdrive: string;
   navicomputer: number;
@@ -120,13 +115,11 @@ export type Vehicle = {
   weapons: number;
 };
 
-export type VehicleAttachmentItem = {
-  itemProps: Item;
+export type VehicleAttachmentItem = Item & {
   hardpoints: number;
 };
 
-export type VehicleWeaponItem = {
-  itemProps: Item;
+export type VehicleWeaponItem = Item & {
   category: number;
   range: number;
   damage: number;
@@ -135,8 +128,7 @@ export type VehicleWeaponItem = {
   effects: Special[];
 };
 
-export type WeaponItem = {
-  itemProps: Item;
+export type WeaponItem = Item & {
   category: number;
   skill: number;
   damage: number;

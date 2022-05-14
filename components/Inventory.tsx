@@ -3,15 +3,9 @@ import React from 'react';
 
 import {useGetDBStateQuery} from '../store/slices/databaseSlice';
 import {LoadingScreen} from './LoadingScreen';
-import {ArmorInventory} from '../screens/Inventory/ArmorInventory';
-import {AttachmentInventory} from '../screens/Inventory/AttachmentInventory';
-import {GearInventory} from '../screens/Inventory/GearInventory';
-import {PlanetaryVehicleInventory} from '../screens/Inventory/PlanetaryVehicleInventory';
-import {StarshipInventory} from '../screens/Inventory/StarshipsInventory';
-import {VehicleAttachmentsInventory} from '../screens/Inventory/VehicleAttachmentsInventory';
-import {VehicleWeaponsInventory} from '../screens/Inventory/VehicleWeaponsInventory';
-import {WeaponInventory} from '../screens/Inventory/WeaponInventory';
 import {GenerateShopButton} from './GenerateInventoryButton';
+import {ITEM_TYPE} from '../constants/enum';
+import {ItemScreen} from '../screens/Inventory/ItemScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,23 +25,15 @@ export const Inventory = ({navigation}: any) => {
       detachInactiveScreens
       initialRouteName="Armor"
       defaultStatus="closed">
-      <Drawer.Screen name={'Armor'} component={ArmorInventory} />
-      <Drawer.Screen name={'Attachments'} component={AttachmentInventory} />
-      <Drawer.Screen name={'Gear'} component={GearInventory} />
-      <Drawer.Screen
-        name={'Planetary Vehicles'}
-        component={PlanetaryVehicleInventory}
-      />
-      <Drawer.Screen name={'Starships'} component={StarshipInventory} />
-      <Drawer.Screen
-        name={'Vehicle Attachments'}
-        component={VehicleAttachmentsInventory}
-      />
-      <Drawer.Screen
-        name={'Vehicle Weapons'}
-        component={VehicleWeaponsInventory}
-      />
-      <Drawer.Screen name={'Weapons'} component={WeaponInventory} />
+      {ITEM_TYPE.map(itemType => {
+        return (
+          <Drawer.Screen
+            name={itemType.name}
+            component={ItemScreen}
+            initialParams={{key: itemType.key}}
+          />
+        );
+      })}
     </Drawer.Navigator>
   );
 };

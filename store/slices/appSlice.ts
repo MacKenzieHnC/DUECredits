@@ -1,7 +1,4 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
-import {useAppSelector} from '../../hooks/redux';
-import {getDBConnection} from '../../services/db-service';
-import {newShop} from '../../services/db-service-shops';
 
 const initialState = {status: 'idle', entities: 0};
 
