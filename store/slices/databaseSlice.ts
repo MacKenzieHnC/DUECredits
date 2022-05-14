@@ -83,7 +83,7 @@ export const databaseSlice = createApi({
       queryFn: async ({id, data}) => {
         try {
           const db = await getDBConnection();
-          updateRules(db, id, data);
+          await updateRules(db, id, data);
         } catch (error) {
         } finally {
           return {data: null};
@@ -95,7 +95,7 @@ export const databaseSlice = createApi({
       queryFn: async id => {
         try {
           const db = await getDBConnection();
-          resetRules(db, id);
+          await resetRules(db, id);
         } catch (error) {
         } finally {
           return {data: null};
