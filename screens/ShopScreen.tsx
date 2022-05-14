@@ -16,7 +16,7 @@ export const ShopScreen = ({navigation}: any) => {
   );
   const [reset] = useResetShopRulesMutation();
   if (isLoading || !shop) {
-    return <LoadingScreen text="Fart..." />;
+    return <LoadingScreen text="Loading shop..." />;
   }
 
   const constraints = getConstraints(shop.options);

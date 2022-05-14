@@ -1,39 +1,54 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
-
-import {useGetDBStateQuery} from '../store/slices/databaseSlice';
+import {
+  useGetInventoryQuery,
+  useGetShopQuery,
+} from '../store/slices/databaseSlice';
 import {LoadingScreen} from './LoadingScreen';
 import {GenerateShopButton} from './GenerateInventoryButton';
 import {ITEM_TYPE} from '../constants/enum';
 import {ItemScreen} from '../screens/Inventory/ItemScreen';
+import {Shop} from '../models/InventoryOptionsIndex';
+import {useAppSelector} from '../hooks/redux';
+import {selectCurrentShopID} from '../store/slices/appSlice';
 
 const Drawer = createDrawerNavigator();
 
 export const Inventory = ({navigation}: any) => {
   //Initialize
-  const {data: dbState, isLoading: isLoadingDB} = useGetDBStateQuery();
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
+  );
+  const {data, isLoading} = useGetInventoryQuery(shop as Shop);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <GenerateShopButton />,
     });
   }, [navigation]);
-  if (isLoadingDB || !dbState) {
+  if (isLoading || !data || isLoadingShop || !shop) {
     return <LoadingScreen text="Loading shop" />;
   }
-  return (
+
+  const screens = ITEM_TYPE.map((itemType, index) => {
+    console.log('updating screens');
+    return data[index].length > 0 ? (
+      <Drawer.Screen
+        name={itemType.name}
+        component={ItemScreen}
+        initialParams={{key: itemType.key}}
+      />
+    ) : null;
+  });
+
+  return screens.some(x => x !== null) ? (
     <Drawer.Navigator
       detachInactiveScreens
       initialRouteName="Armor"
       defaultStatus="closed">
-      {ITEM_TYPE.map(itemType => {
-        return (
-          <Drawer.Screen
-            name={itemType.name}
-            component={ItemScreen}
-            initialParams={{key: itemType.key}}
-          />
-        );
-      })}
+      {screens}
     </Drawer.Navigator>
+  ) : (
+    <LoadingScreen text="No items yet!" />
   );
 };
