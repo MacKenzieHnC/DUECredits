@@ -7,7 +7,7 @@ import {
 import {LoadingScreen} from './LoadingScreen';
 import {GenerateShopButton} from './GenerateInventoryButton';
 import {ITEM_TYPE} from '../constants/enum';
-import {ItemScreen} from '../screens/Inventory/ItemScreen';
+import {ItemScreen} from '../screens/ItemScreen';
 import {Shop} from '../models/InventoryOptionsIndex';
 import {useAppSelector} from '../hooks/redux';
 import {selectCurrentShopID} from '../store/slices/appSlice';

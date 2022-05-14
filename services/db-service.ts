@@ -40,20 +40,6 @@ export const extractSpecialProp = (prop: string) => {
   });
 };
 
-export const extractItemProps = (item: any) => {
-  return {
-    id: item.id,
-    restricted: item.restricted,
-    item_type: item.item_type,
-    name: item.name,
-    price: item.price,
-    rarity: item.rarity,
-    notes: item.notes,
-    unique: item.is_unique,
-    sources: extractSpecialProp(item.rulebooks),
-  };
-};
-
 export const getItemsAndRarity = async (
   db: SQLite.SQLiteDatabase,
   itemType: ItemType,

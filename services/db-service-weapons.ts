@@ -1,53 +1,11 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {ITEM_TYPE} from '../constants/enum';
 import {
   Special,
   CategoryLike,
   DBState,
   WeaponEffect,
-  WeaponItem,
 } from '../models/ItemIndex';
-import {
-  extractItemProps,
-  extractSpecialProp,
-  getCategoryList,
-} from './db-service';
-export const getWeaponItems = async (
-  db: SQLite.SQLiteDatabase,
-  tableName: string | undefined,
-): Promise<WeaponItem[]> => {
-  try {
-    // GET WEAPONS
-    const items: WeaponItem[] = [];
-    const results = await db.executeSql(
-      `SELECT *
-        FROM ${ITEM_TYPE.Weapons.tableName} x
-        JOIN Item_View i ON i.id = x.id
-        ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
-    );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        items.push!({
-          itemProps: extractItemProps(item),
-          category: item.category,
-          skill: item.skill,
-          damage: item.damage,
-          crit: item.crit,
-          range: item.range,
-          encumbrance: item.encumbrance,
-          hardpoints: item.hardpoints,
-          effects: extractWeaponEffects(item),
-        });
-      }
-    });
-
-    return items;
-  } catch (error) {
-    console.error(error);
-    throw Error('Failed to get items !!!');
-  }
-};
+import {extractSpecialProp, getCategoryList} from './db-service';
 
 const getWeaponEffects = async (db: SQLite.SQLiteDatabase) => {
   try {

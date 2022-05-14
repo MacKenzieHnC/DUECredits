@@ -1,40 +1,6 @@
-import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {ITEM_TYPE} from '../constants/enum';
-import {
-  CategoryLike,
-  DBState,
-  PlanetaryVehicleItem,
-  Vehicle,
-} from '../models/ItemIndex';
-import {extractItemProps, getCategoryList} from './db-service';
-
-export const getPlanetaryVehicleItems = async (
-  db: SQLite.SQLiteDatabase,
-  tableName: string | undefined,
-): Promise<PlanetaryVehicleItem[]> => {
-  try {
-    const items: PlanetaryVehicleItem[] = [];
-    const results = await db.executeSql(
-      `SELECT *
-        FROM ${ITEM_TYPE.PlanetaryVehicles.tableName} x
-        JOIN Item_View i ON i.id = x.id
-        ${tableName ? ` JOIN ${tableName} limiter ON i.id = limiter.id` : ''}`,
-    );
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        const item = result.rows.item(index);
-        items.push!({
-          itemProps: extractItemProps(item),
-          vehicle: extractVehicleProps(item),
-        });
-      }
-    });
-    return items;
-  } catch (error) {
-    console.error(error);
-    throw Error('Failed to get items !!!');
-  }
-};
+import {SQLiteDatabase} from 'react-native-sqlite-storage';
+import {CategoryLike, DBState, Vehicle} from '../models/ItemIndex';
+import {getCategoryList} from './db-service';
 
 export const getDBVehiclesState = async (
   db: SQLiteDatabase,

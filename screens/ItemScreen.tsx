@@ -1,23 +1,22 @@
 import {FlatList, Text, View} from 'native-base';
 import React from 'react';
-import {ArmorItemComponent} from '../../components/ListComponents/ArmorItem';
-import {AttachmentItemComponent} from '../../components/ListComponents/AttachmentItem';
-import {GearItemComponent} from '../../components/ListComponents/GearItem';
-import {StarshipItemComponent} from '../../components/ListComponents/StarshipItem';
-import {VehicleAttachmentItemComponent} from '../../components/ListComponents/VehicleAttachmentItem';
-import {VehicleItemComponent} from '../../components/ListComponents/VehicleItem';
-import {VehicleWeaponItemComponent} from '../../components/ListComponents/VehicleWeaponItem';
-import {WeaponItemComponent} from '../../components/ListComponents/WeaponItem';
-import {LoadingScreen} from '../../components/LoadingScreen';
-import {ITEM_TYPE} from '../../constants/enum';
-import {useAppSelector} from '../../hooks/redux';
-import {Shop} from '../../models/InventoryOptionsIndex';
-import {Item} from '../../models/ItemIndex';
-import {selectCurrentShopID} from '../../store/slices/appSlice';
+import {ArmorItemComponent} from '../components/ListComponents/ArmorItem';
+import {AttachmentItemComponent} from '../components/ListComponents/AttachmentItem';
+import {GearItemComponent} from '../components/ListComponents/GearItem';
+import {StarshipItemComponent} from '../components/ListComponents/StarshipItem';
+import {VehicleAttachmentItemComponent} from '../components/ListComponents/VehicleAttachmentItem';
+import {VehicleItemComponent} from '../components/ListComponents/VehicleItem';
+import {VehicleWeaponItemComponent} from '../components/ListComponents/VehicleWeaponItem';
+import {WeaponItemComponent} from '../components/ListComponents/WeaponItem';
+import {LoadingScreen} from '../components/LoadingScreen';
+import {ITEM_TYPE} from '../constants/enum';
+import {useAppSelector} from '../hooks/redux';
+import {Shop} from '../models/InventoryOptionsIndex';
+import {selectCurrentShopID} from '../store/slices/appSlice';
 import {
   useGetInventoryQuery,
   useGetShopQuery,
-} from '../../store/slices/databaseSlice';
+} from '../store/slices/databaseSlice';
 
 export const ItemScreen = ({navigation, route}: any) => {
   const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
