@@ -2,7 +2,6 @@ import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {ITEM_TYPE} from '../constants/enum';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
 import {JSONToString, StringToJSON} from './db-service';
-import {getArmorItems} from './db-service-armor';
 
 export const updateRules = async (
   db: SQLiteDatabase,
@@ -98,8 +97,9 @@ export const newShop = async (
 export const setShopInventory = async (
   db: SQLiteDatabase,
   shop: Shop,
-  items: Array<any>,
+  items: any[],
 ): Promise<void> => {
+  console.log('Length according to setInventory: ', items.length);
   const values = items
     .map(
       item =>
@@ -111,25 +111,9 @@ export const setShopInventory = async (
       `DELETE FROM Shop_Inventory
         WHERE shop = ${shop.id}`,
     );
-    console.log(
-      'Count: ',
-      (
-        await db.executeSql(
-          `SELECT COUNT(*) as 'count' FROM Shop_Inventory WHERE shop = ${shop.id}`,
-        )
-      )[0].rows.item(0).count,
-    );
     await db.executeSql(
       `INSERT INTO Shop_Inventory (shop, item, roll)
         VALUES ${values}`,
-    );
-    console.log(
-      'Count: ',
-      (
-        await db.executeSql(
-          `SELECT COUNT(*) as 'count' FROM Shop_Inventory WHERE shop = ${shop.id}`,
-        )
-      )[0].rows.item(0).count,
     );
   } catch (error) {
     console.error(error);
@@ -140,18 +124,28 @@ export const setShopInventory = async (
 export const getShopInventory = async (
   db: SQLiteDatabase,
   shop: Shop,
-): Promise<Array<any>> => {
+): Promise<any> => {
+  const itemLists: any = [];
   try {
-    return Promise.all(
-      Object.keys(ITEM_TYPE).map(itemType => {
-        switch (itemType) {
-          case 'armor':
-            return getArmorItems(db, shop);
-          default:
-            return null;
+    for (let i = 0; i < ITEM_TYPE.length; i++) {
+      const query = `SELECT *
+        FROM ${ITEM_TYPE[i].tableName} x
+        JOIN Items i ON i.id = x.id
+        JOIN Shop_Inventory s ON s.item = x.id
+        WHERE s.shop = ${shop.id}`;
+      console.log(query);
+      const results = await db.executeSql(query);
+      const items: any[] = [];
+      results.forEach(result => {
+        for (let index = 0; index < result.rows.length; index++) {
+          items.push!(result.rows.item(index));
         }
-      }),
-    );
+      });
+      console.log('Length according to sql: ', items.length);
+      itemLists.push!(items);
+    }
+    console.log('List length according to SQL: ', itemLists.length);
+    return itemLists;
   } catch (error) {
     console.error(error);
     throw Error('Failed to get inventory !!!');

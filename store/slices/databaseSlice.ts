@@ -1,40 +1,24 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
-import {
-  ArmorItem,
-  AttachmentItem,
-  DBState,
-  GearItem,
-  StarshipItem,
-  VehicleAttachmentItem,
-  WeaponItem,
-  PlanetaryVehicleItem,
-  VehicleWeaponItem,
-} from '../../models/ItemIndex';
+import {DBState} from '../../models/ItemIndex';
 import {
   getAllPossibleItems,
   getDBConnection,
   getDBState,
-  JSONToString,
 } from '../../services/db-service';
-import {getArmorItems} from '../../services/db-service-armor';
-import {getAttachmentItems} from '../../services/db-service-attachments';
-import {getGearItems} from '../../services/db-service-gear';
-import {getPlanetaryVehicleItems} from '../../services/db-service-vehicles';
-import {getStarshipItems} from '../../services/db_service-starships';
-import {getVehicleAttachmentItems} from '../../services/db-service-vehicleAttachments';
-import {getVehicleWeaponItems} from '../../services/db-service-vehicleWeapons';
-import {getWeaponItems} from '../../services/db-service-weapons';
 import {
   getAllShops,
   getShop,
   getShopInventory,
+  newShop,
   resetRules,
   setShopInventory,
   updateRules,
 } from '../../services/db-service-shops';
 import {Shop, ShopOptions} from '../../models/InventoryOptionsIndex';
 import {getConstraints} from '../../services/db-service-constraints';
-import {getDicePool, getDiceRoll} from '../../Dice/Dice';
+import {currentShopChanged} from './appSlice';
+import {useAppDispatch} from '../../hooks/redux';
+import {store} from '..';
 
 export interface MutateShopProps {
   id: number;
@@ -44,109 +28,22 @@ export interface MutateShopProps {
 export const databaseSlice = createApi({
   baseQuery: fakeBaseQuery(),
   reducerPath: 'database',
-  tagTypes: ['Shops', 'Inventory'],
+  tagTypes: ['Shops', 'Inventory', 'Items'],
   endpoints: build => ({
-    getAllArmor: build.query<ArmorItem[], Shop>({
+    getAllItems: build.query<any, Shop>({
       async queryFn(shop) {
         try {
           const db = await getDBConnection();
-          const data = await getArmorItems(db, shop);
-          return {data};
+          const data = await getAllPossibleItems(
+            db,
+            getConstraints(shop.options),
+          );
+          return {data: data};
         } catch (error) {
-          return {error: {data: "Can't get Armor", status: 500}};
+          return {error: {data: "Can't get Items", status: 500}};
         }
       },
-      providesTags: ['Inventory'],
-    }),
-    getAllAttachments: build.query<AttachmentItem[], string | undefined>({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getAttachmentItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Attachments", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
-    }),
-    getAllGear: build.query<GearItem[], string | undefined>({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getGearItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Gear", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
-    }),
-    getAllPlanetaryVehicles: build.query<
-      PlanetaryVehicleItem[],
-      string | undefined
-    >({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getPlanetaryVehicleItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Vehicles", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
-    }),
-    getAllStarships: build.query<StarshipItem[], string | undefined>({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getStarshipItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Starships", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
-    }),
-    getAllVehicleAttachments: build.query<
-      VehicleAttachmentItem[],
-      string | undefined
-    >({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getVehicleAttachmentItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Vehicle Attachments", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
-    }),
-    getAllVehicleWeapons: build.query<VehicleWeaponItem[], string | undefined>({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getVehicleWeaponItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Vehicle Weapons", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
-    }),
-    getAllWeapons: build.query<WeaponItem[], string | undefined>({
-      async queryFn(tableName) {
-        try {
-          const db = await getDBConnection();
-          const data = await getWeaponItems(db, tableName);
-          return {data};
-        } catch (error) {
-          return {error: {data: "Can't get Weapons", status: 500}};
-        }
-      },
-      providesTags: ['Inventory'],
+      providesTags: ['Inventory', 'Shops', 'Items'],
     }),
     getDBState: build.query<DBState, void>({
       queryFn: async () => {
@@ -207,71 +104,39 @@ export const databaseSlice = createApi({
       },
       invalidatesTags: ['Shops'],
     }),
-    getInventory: build.query<Array<any>, Shop>({
+    getInventory: build.query<any, Shop>({
       async queryFn(shop) {
         try {
           const db = await getDBConnection();
           const data = await getShopInventory(db, shop);
-          return {data};
+          data.forEach(list => console.log(list.length));
+          return {data: data};
         } catch (error) {
-          return {error: {data: "Can't get Shop", status: 500}};
+          return {error: {data: "Can't get Inventory", status: 500}};
         }
       },
-      providesTags: ['Shops'],
+      providesTags: ['Shops', 'Inventory'],
     }),
-    generateInventory: build.mutation<
-      null,
-      {
-        shop: Shop;
-        character: {
-          legalCharacteristic: number;
-          legalStat: number;
-          illegalCharacteristic: number;
-          illegalStat: number;
-          numBoosts: number;
-          numSetbacks: number;
-        };
-      }
-    >({
+    saveNewShop: build.mutation<null, string>({
+      queryFn: async name => {
+        try {
+          const db = await getDBConnection();
+          const data = await newShop(db, name);
+          store.dispatch(currentShopChanged(data));
+        } catch (error) {
+        } finally {
+          return {data: null};
+        }
+      },
+      invalidatesTags: ['Shops'],
+    }),
+    setShopInventory: build.mutation<null, {shop: Shop; itemLists: any[]}>({
       queryFn: async props => {
         try {
           const db = await getDBConnection();
-          var items = await getAllPossibleItems(
-            db,
-            getConstraints(props.shop.options),
-          );
-          console.log('List length: ', items.length);
-          for (let i = 0; i < items.length; i++) {
-            const characteristic = items[i].restricted
-              ? props.character.illegalCharacteristic
-              : props.character.legalCharacteristic;
-            const stat = items[i].restricted
-              ? props.character.illegalStat
-              : props.character.legalStat;
-            items[i].roll = getDiceRoll(
-              getDicePool(
-                stat,
-                characteristic,
-                items[i].rarity,
-                props.character.numBoosts,
-                props.character.numSetbacks,
-              ),
-            );
-            console.log(
-              'Dicepool: ',
-              JSONToString(
-                getDicePool(
-                  stat,
-                  characteristic,
-                  items[i].rarity,
-                  props.character.numBoosts,
-                  props.character.numSetbacks,
-                ),
-              ),
-            );
-          }
-          items = items.filter(
-            item => item.roll.successes > item.roll.failures,
+          const items: any[] = [];
+          props.itemLists.forEach(list =>
+            list.forEach((item: any) => items.push!(item)),
           );
           setShopInventory(db, props.shop, items);
         } catch (error) {
@@ -285,19 +150,13 @@ export const databaseSlice = createApi({
 });
 
 export const {
+  useGetAllItemsQuery,
   useGetDBStateQuery,
+  useSaveNewShopMutation,
   useGetShopQuery,
   useGetAllShopsQuery,
   useUpdateShopRulesMutation,
   useResetShopRulesMutation,
-  useGenerateInventoryMutation,
   useGetInventoryQuery,
-  useGetAllArmorQuery,
-  useGetAllAttachmentsQuery,
-  useGetAllGearQuery,
-  useGetAllPlanetaryVehiclesQuery,
-  useGetAllStarshipsQuery,
-  useGetAllVehicleAttachmentsQuery,
-  useGetAllVehicleWeaponsQuery,
-  useGetAllWeaponsQuery,
+  useSetShopInventoryMutation,
 } = databaseSlice;

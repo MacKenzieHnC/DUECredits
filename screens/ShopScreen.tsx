@@ -21,14 +21,16 @@ export const ShopScreen = ({navigation}: any) => {
 
   const constraints = getConstraints(shop.options);
   var i = 0;
-  const blah = Object.keys(ITEM_TYPE).map(itemType => {
+  const blah = ITEM_TYPE.map(itemType => {
     i += 1;
     return (
       <View key={i}>
         <Text color="white" fontSize={20}>
-          {'\n___' + ITEM_TYPE[itemType].tableName + '___'}
+          {'\n___' + itemType.tableName + '___'}
         </Text>
-        <Text color="white">{constraints[ITEM_TYPE[itemType].id]}</Text>
+        <Text color="white">
+          {constraints[ITEM_TYPE.findIndex(x => x === itemType)]}
+        </Text>
       </View>
     );
   });
