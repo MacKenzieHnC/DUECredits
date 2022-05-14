@@ -1,6 +1,8 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
+import {ITEM_TYPE} from '../constants/enum';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
 import {JSONToString, StringToJSON} from './db-service';
+import {getArmorItems} from './db-service-armor';
 
 export const updateRules = async (
   db: SQLiteDatabase,
@@ -87,6 +89,69 @@ export const newShop = async (
     );
     const results = await db.executeSql(`SELECT last_insert_rowid() AS id;`);
     return results[0].rows.item(0).id;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to add shop !!!');
+  }
+};
+
+export const setShopInventory = async (
+  db: SQLiteDatabase,
+  shop: Shop,
+  items: Array<any>,
+): Promise<void> => {
+  const values = items
+    .map(
+      item =>
+        '(' + shop.id + ',' + item.id + ',"' + JSONToString(item.roll) + '")',
+    )
+    .join(',');
+  try {
+    await db.executeSql(
+      `DELETE FROM Shop_Inventory
+        WHERE shop = ${shop.id}`,
+    );
+    console.log(
+      'Count: ',
+      (
+        await db.executeSql(
+          `SELECT COUNT(*) as 'count' FROM Shop_Inventory WHERE shop = ${shop.id}`,
+        )
+      )[0].rows.item(0).count,
+    );
+    await db.executeSql(
+      `INSERT INTO Shop_Inventory (shop, item, roll)
+        VALUES ${values}`,
+    );
+    console.log(
+      'Count: ',
+      (
+        await db.executeSql(
+          `SELECT COUNT(*) as 'count' FROM Shop_Inventory WHERE shop = ${shop.id}`,
+        )
+      )[0].rows.item(0).count,
+    );
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to set inventory !!!');
+  }
+};
+
+export const getShopInventory = async (
+  db: SQLiteDatabase,
+  shop: Shop,
+): Promise<Array<any>> => {
+  try {
+    return Promise.all(
+      Object.keys(ITEM_TYPE).map(itemType => {
+        switch (itemType) {
+          case 'armor':
+            return getArmorItems(db, shop);
+          default:
+            return null;
+        }
+      }),
+    );
   } catch (error) {
     console.error(error);
     throw Error('Failed to get inventory !!!');

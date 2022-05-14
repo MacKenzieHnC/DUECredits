@@ -1,28 +1,31 @@
-import {FlatList, View} from 'native-base';
+import {FlatList, Text, View} from 'native-base';
 import React from 'react';
 import {ArmorItemComponent} from '../../components/ListComponents/ArmorItem';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {useAppSelector} from '../../hooks/redux';
+import {Shop} from '../../models/InventoryOptionsIndex';
 import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {
-  selectAllShops,
   useGetAllArmorQuery,
+  useGetShopQuery,
 } from '../../store/slices/databaseSlice';
 
 export const ArmorInventory = () => {
-  const shop =
-    useAppSelector(selectAllShops)[useAppSelector(selectCurrentShopID)];
-  const {data, isLoading} = useGetAllArmorQuery(shop);
+  const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
+    useAppSelector(selectCurrentShopID),
+  );
+  const {data, isLoading} = useGetAllArmorQuery(shop as Shop);
 
-  if (isLoading || !data) {
+  if (isLoading || !data || isLoadingShop || !shop) {
     return <LoadingScreen text={'Loading armor...'} />;
   }
 
   return (
     <View>
+      <Text>{data.length}</Text>
       <FlatList
         data={data}
-        keyExtractor={(item, index) => `${item.itemProps.id}-${index}`}
+        keyExtractor={item => `${item.itemProps.id}`}
         renderItem={({item}) => (
           <ArmorItemComponent key={item.itemProps.id} item={item} />
         )}

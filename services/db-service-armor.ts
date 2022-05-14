@@ -3,19 +3,21 @@ import {ITEM_TYPE} from '../constants/enum';
 import {Shop} from '../models/InventoryOptionsIndex';
 import {ArmorItem} from '../models/ItemIndex';
 import {extractItemProps} from './db-service';
-import {getConstraints} from './db-service-constraints';
 
 export const getArmorItems = async (
   db: SQLite.SQLiteDatabase,
-  shop: Shop,
+  shop?: Shop,
 ): Promise<ArmorItem[]> => {
-  const constraints = getConstraints(shop.options)[ITEM_TYPE.Armor.id];
   try {
     const items: ArmorItem[] = [];
     const query = `SELECT *
         FROM ${ITEM_TYPE.Armor.tableName} x
         JOIN Item_View i ON i.id = x.id
-        ${constraints !== '' ? ` WHERE ${constraints}` : ''}`;
+        ${
+          shop
+            ? ` JOIN Shop_Inventory s ON x.id = s.item WHERE s.shop = ${shop.id}`
+            : ''
+        }`;
     const results = await db.executeSql(query);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {

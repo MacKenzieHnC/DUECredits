@@ -39,7 +39,7 @@ export const LoadShop = ({navigation}: any) => {
           isOpen={saveVisible}
           onClose={() => setSaveVisible(false)}
           size="lg">
-          <Modal.Content maxWidth="350">
+          <Modal.Content maxWidth="350" backgroundColor={'black'}>
             <Modal.CloseButton />
             <Modal.Header>Load Shop</Modal.Header>
             <Modal.Body>
@@ -69,7 +69,7 @@ export const LoadShop = ({navigation}: any) => {
                 flex={1}
                 onPress={() => {
                   if (selectedShop === 0) {
-                    saveNewShop(newShopName);
+                    dispatch(saveNewShop(newShopName));
                   } else {
                     loadShop(selectedShop);
                   }

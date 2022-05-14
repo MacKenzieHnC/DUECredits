@@ -1,91 +1,100 @@
-import {NegativeDie, PositiveDie} from '.';
+import {floor, max, min} from 'lodash';
+import {
+  DicePool,
+  DiceRoll,
+  AbilityDie,
+  ProficiencyDie,
+  BoostDie,
+  DifficultyDie,
+  ChallengeDie,
+  SetbackDie,
+} from '.';
 
-export const AbilityDie: PositiveDie = {
-  faces: [
-    {success: 0, advantage: 0, triumph: 0},
-    {success: 1, advantage: 0, triumph: 0},
-    {success: 1, advantage: 0, triumph: 0},
-    {success: 2, advantage: 0, triumph: 0},
+export const getDicePool = (
+  stat: number,
+  characteristic: number,
+  rarity: number,
+  numBoosts: number,
+  numSetbacks: number,
+): DicePool => {
+  rarity = max([rarity, 0]) as number;
 
-    {success: 0, advantage: 1, triumph: 0},
-    {success: 0, advantage: 1, triumph: 0},
-    {success: 1, advantage: 1, triumph: 0},
-    {success: 0, advantage: 2, triumph: 0},
-  ],
+  const betterNum = max([stat, characteristic]) as number;
+  const worseNum = min([stat, characteristic]) as number;
+  const abilities = betterNum - worseNum;
+
+  return {
+    boosts: numBoosts,
+    abilities: abilities,
+    proficiencies: betterNum - abilities,
+    setbacks: numSetbacks,
+    difficulties: floor(rarity / 2),
+    challenges: 0,
+  };
 };
 
-export const ProficiencyDie: PositiveDie = {
-  faces: [
-    {success: 0, advantage: 0, triumph: 0},
-    {success: 1, advantage: 0, triumph: 0},
-    {success: 1, advantage: 0, triumph: 0},
-    {success: 2, advantage: 0, triumph: 0},
+export const getDiceRoll = (pool: DicePool) => {
+  const roll: DiceRoll = {
+    successes: 0,
+    advantages: 0,
+    triumphs: 0,
+    failures: 0,
+    threats: 0,
+    despairs: 0,
+  };
 
-    {success: 2, advantage: 0, triumph: 0},
-    {success: 0, advantage: 1, triumph: 0},
-    {success: 1, advantage: 1, triumph: 0},
-    {success: 1, advantage: 1, triumph: 0},
+  // Roll Ability
+  var arrayLength = AbilityDie.faces.length;
+  for (let i = 0; i < pool.abilities; i++) {
+    const face = AbilityDie.faces[Math.floor(Math.random() * arrayLength)];
+    roll.successes += face.successes;
+    roll.advantages += face.advantages;
+    roll.triumphs += face.triumphs;
+  }
 
-    {success: 1, advantage: 1, triumph: 0},
-    {success: 0, advantage: 2, triumph: 0},
-    {success: 0, advantage: 2, triumph: 0},
-    {success: 0, advantage: 0, triumph: 1},
-  ],
-};
+  // Roll Proficiency
+  var arrayLength = ProficiencyDie.faces.length;
+  for (let i = 0; i < pool.proficiencies; i++) {
+    const face = ProficiencyDie.faces[Math.floor(Math.random() * arrayLength)];
+    roll.successes += face.successes;
+    roll.advantages += face.advantages;
+    roll.triumphs += face.triumphs;
+  }
 
-export const BoostDie: PositiveDie = {
-  faces: [
-    {success: 0, advantage: 0, triumph: 0},
-    {success: 0, advantage: 0, triumph: 0},
-    {success: 0, advantage: 2, triumph: 0},
+  // Roll Boost
+  var arrayLength = BoostDie.faces.length;
+  for (let i = 0; i < pool.boosts; i++) {
+    const face = BoostDie.faces[Math.floor(Math.random() * arrayLength)];
+    roll.successes += face.successes;
+    roll.advantages += face.advantages;
+    roll.triumphs += face.triumphs;
+  }
 
-    {success: 0, advantage: 1, triumph: 0},
-    {success: 1, advantage: 1, triumph: 0},
-    {success: 1, advantage: 0, triumph: 0},
-  ],
-};
+  // Roll Difficulty
+  var arrayLength = DifficultyDie.faces.length;
+  for (let i = 0; i < pool.difficulties; i++) {
+    const face = DifficultyDie.faces[Math.floor(Math.random() * arrayLength)];
+    roll.failures += face.failures;
+    roll.threats += face.threats;
+    roll.despairs += face.despairs;
+  }
 
-export const DifficultyDie: NegativeDie = {
-  faces: [
-    {failure: 0, threat: 0, despair: 0},
-    {failure: 1, threat: 0, despair: 0},
-    {failure: 2, threat: 0, despair: 0},
-    {failure: 0, threat: 1, despair: 0},
+  // Roll Challenge
+  var arrayLength = ChallengeDie.faces.length;
+  for (let i = 0; i < pool.challenges; i++) {
+    const face = ChallengeDie.faces[Math.floor(Math.random() * arrayLength)];
+    roll.failures += face.failures;
+    roll.threats += face.threats;
+    roll.despairs += face.despairs;
+  }
 
-    {failure: 0, threat: 1, despair: 0},
-    {failure: 0, threat: 1, despair: 0},
-    {failure: 0, threat: 2, despair: 0},
-    {failure: 1, threat: 1, despair: 0},
-  ],
-};
-
-export const ChallengeDie: NegativeDie = {
-  faces: [
-    {failure: 0, threat: 0, despair: 0},
-    {failure: 1, threat: 0, despair: 0},
-    {failure: 1, threat: 0, despair: 0},
-    {failure: 2, threat: 0, despair: 0},
-
-    {failure: 2, threat: 0, despair: 0},
-    {failure: 0, threat: 1, despair: 0},
-    {failure: 0, threat: 1, despair: 0},
-    {failure: 1, threat: 1, despair: 0},
-
-    {failure: 1, threat: 1, despair: 0},
-    {failure: 0, threat: 2, despair: 0},
-    {failure: 0, threat: 2, despair: 0},
-    {failure: 0, threat: 0, despair: 1},
-  ],
-};
-
-export const SetbackDie: NegativeDie = {
-  faces: [
-    {failure: 0, threat: 0, despair: 0},
-    {failure: 0, threat: 0, despair: 0},
-    {failure: 1, threat: 0, despair: 0},
-
-    {failure: 1, threat: 0, despair: 0},
-    {failure: 0, threat: 1, despair: 0},
-    {failure: 0, threat: 1, despair: 0},
-  ],
+  // Roll Setback
+  var arrayLength = SetbackDie.faces.length;
+  for (let i = 0; i < pool.setbacks; i++) {
+    const face = SetbackDie.faces[Math.floor(Math.random() * arrayLength)];
+    roll.failures += face.failures;
+    roll.threats += face.threats;
+    roll.despairs += face.despairs;
+  }
+  return roll;
 };

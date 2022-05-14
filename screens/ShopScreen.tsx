@@ -42,7 +42,7 @@ export const ShopScreen = ({navigation}: any) => {
         <Button onPress={() => navigation.navigate('Options')}>
           Go To Options!
         </Button>
-        <Button onPress={() => reset(Shop.id)}>RESET</Button>
+        <Button onPress={() => reset(shop.id)}>RESET</Button>
       </HStack>
       <Text color="white" fontSize={20}>
         SQL Constraints

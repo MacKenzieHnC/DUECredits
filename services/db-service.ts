@@ -10,6 +10,7 @@ import {getDBWeaponsState} from './db-service-weapons';
 import {getDBAttachmentsState} from './db-service-attachments';
 import {getDBGearState} from './db-service-gear';
 import {getDBVehiclesState} from './db-service-vehicles';
+import {ITEM_TYPE} from '../constants/enum';
 
 export const JSONToString = (someJSON: any) => {
   return JSON.stringify(someJSON, null, '\t').split('"').join("'");
@@ -51,6 +52,52 @@ export const extractItemProps = (item: any) => {
     unique: item.is_unique,
     sources: extractSpecialProp(item.rulebooks),
   };
+};
+
+export const getItemsAndRarity = async (
+  db: SQLite.SQLiteDatabase,
+  itemType: any,
+  constraints: string,
+  items: any[],
+) => {
+  try {
+    const query = `SELECT *
+        FROM ${itemType.tableName} x
+        JOIN Item_View i ON i.id = x.id
+        ${constraints !== '' ? ` WHERE ${constraints}` : ''}`;
+    const results = await db.executeSql(query);
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        const item = result.rows.item(index);
+        items.push!({
+          id: item.id,
+          name: item.name,
+          rarity: item.rarity,
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get items !!!');
+  }
+};
+
+export const getAllPossibleItems = async (
+  db: SQLite.SQLiteDatabase,
+  constraints: Array<string>,
+) => {
+  const keys = Object.keys(ITEM_TYPE);
+  const items: any[] = [];
+  for (let i = 0; i < keys.length; i++) {
+    const itemType = keys[i];
+    await getItemsAndRarity(
+      db,
+      ITEM_TYPE[itemType],
+      constraints[ITEM_TYPE[itemType].id],
+      items,
+    );
+  }
+  return items;
 };
 
 export const getCategoryList = async (
