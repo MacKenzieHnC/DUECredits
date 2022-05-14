@@ -1,5 +1,4 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {useAppDispatch} from '../hooks/redux';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
 import {JSONToString, StringToJSON} from './db-service';
 
@@ -82,15 +81,15 @@ export const newShop = async (
   shopName: string,
 ): Promise<number> => {
   try {
-    const results = await db.executeSql(
-      `INSERT INTO Shops (name, rules)
-        VALUES( '${shopName}', (SELECT rules FROM Shops WHERE id = 0));
-      SELECT last_insert_rowid();`,
+    await db.executeSql(
+      `INSERT INTO Shops (name, rules) 
+      VALUES( '${shopName}', (SELECT rules FROM Shops WHERE id = 0));`,
     );
-    return results[0].rows.item(0);
+    const results = await db.executeSql(`SELECT last_insert_rowid() AS id;`);
+    return results[0].rows.item(0).id;
   } catch (error) {
     console.error(error);
-    throw Error('Failed to get initial database state !!!');
+    throw Error('Failed to get inventory !!!');
   }
 };
 
