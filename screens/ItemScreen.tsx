@@ -9,16 +9,16 @@ import {VehicleItemComponent} from '../components/ListComponents/VehicleItem';
 import {VehicleWeaponItemComponent} from '../components/ListComponents/VehicleWeaponItem';
 import {WeaponItemComponent} from '../components/ListComponents/WeaponItem';
 import {LoadingScreen} from '../components/LoadingScreen';
-import {ITEM_TYPE} from '../constants/enum';
 import {useAppSelector} from '../hooks/redux';
 import {Shop} from '../models/InventoryOptionsIndex';
+import {ITEM_TYPE} from '../models/ItemIndex';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {
   useGetInventoryQuery,
   useGetShopQuery,
 } from '../store/slices/databaseSlice';
 
-export const ItemScreen = ({navigation, route}: any) => {
+export const ItemScreen = ({route}: any) => {
   const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
     useAppSelector(selectCurrentShopID),
   );

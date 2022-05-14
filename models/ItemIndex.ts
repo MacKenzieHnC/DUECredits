@@ -1,3 +1,36 @@
+export type ItemType = {
+  key: string;
+  name: string;
+  tableName: string;
+};
+
+export const ITEM_TYPE: ItemType[] = [
+  {key: 'armor', name: 'Armor', tableName: 'Armor'},
+  {key: 'attachments', name: 'Attachments', tableName: 'Attachments'},
+  {key: 'gear', name: 'Gear', tableName: 'Gear'},
+  {
+    key: 'planetaryVehicles',
+    name: 'Planetary Vehicles',
+    tableName: 'Planetary_Vehicles_View',
+  },
+  {
+    key: 'starships',
+    name: 'Starships',
+    tableName: 'Starships_View',
+  },
+  {
+    key: 'vehicleAttachments',
+    name: 'Vehicle Attachments',
+    tableName: 'Vehicle_Attachments',
+  },
+  {
+    key: 'vehicleWeapons',
+    name: 'Vehicle Weapons',
+    tableName: 'Vehicle_Weapons',
+  },
+  {key: 'weapons', name: 'Weapons', tableName: 'Weapons'},
+];
+
 export type DBState = {
   additionalRules: AdditionalRule[];
 
@@ -31,18 +64,6 @@ export type DBState = {
   };
 };
 
-export type Item = {
-  id: number;
-  restricted: boolean;
-  item_type: number;
-  name: string;
-  price: number;
-  rarity: number;
-  notes: string;
-  unique: boolean;
-  sources: Special[];
-};
-
 export type CategoryLike = {
   id: number;
   name: string;
@@ -61,82 +82,10 @@ export type Location = {
   rarity_modifier: number;
 };
 
-export type ArmorItem = Item & {
-  defense: number;
-  soak: number;
-  encumbrance: number;
-  hardpoints: number;
-};
-
-export type AttachmentItem = Item & {
-  category: number;
-  encumbrance: number;
-  hardpoints: number;
-};
-
-export type GearItem = Item & {
-  category: number;
-  encumbrance: number;
-};
-export type PlanetaryVehicleItem = Item & {
-  vehicle: Vehicle;
-};
-
 export type Rulebook = {
   id: number;
   name: string;
   abbrev: string;
-};
-
-export type StarshipItem = Item & {
-  vehicle: Vehicle;
-  hyperdrive: string;
-  navicomputer: number;
-  additionalRules: Special[];
-};
-
-export type Vehicle = {
-  type: number;
-  category: number;
-  manufacturer: number;
-  model: string;
-  silhouette: number;
-  speed: number;
-  handling: number;
-  armor: number;
-  htt: number;
-  sst: number;
-  defense: string;
-  sensors: number;
-  crew: number;
-  encumbrance: number;
-  passengers: number;
-  hardpoints: number;
-  weapons: number;
-};
-
-export type VehicleAttachmentItem = Item & {
-  hardpoints: number;
-};
-
-export type VehicleWeaponItem = Item & {
-  category: number;
-  range: number;
-  damage: number;
-  crit: number;
-  compatibleSilhouette: number;
-  effects: Special[];
-};
-
-export type WeaponItem = Item & {
-  category: number;
-  skill: number;
-  damage: number;
-  crit: string;
-  range: number;
-  encumbrance: number;
-  hardpoints: number;
-  effects: Special[];
 };
 
 export type WeaponEffect = {

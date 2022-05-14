@@ -1,8 +1,8 @@
 import {Button, HStack, ScrollView, Text, View} from 'native-base';
 import React from 'react';
 import {LoadingScreen} from '../components/LoadingScreen';
-import {ITEM_TYPE} from '../constants/enum';
 import {useAppSelector} from '../hooks/redux';
+import {ITEM_TYPE} from '../models/ItemIndex';
 import {getConstraints} from '../services/db-service-constraints';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {

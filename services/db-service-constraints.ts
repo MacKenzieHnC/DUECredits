@@ -11,7 +11,11 @@
     and then we can just loop through all of the other props and apply the
     rules based on the 3 possible types.
 */
-import {ShopOptions} from '../models/InventoryOptionsIndex';
+import {
+  GeneralOptions,
+  InventoryOptions,
+  ShopOptions,
+} from '../models/InventoryOptionsIndex';
 
 const getBooleanConstraint = (name: string, value: boolean) => {
   var constraint = '';
@@ -62,9 +66,11 @@ export const getConstraints = (rules: ShopOptions) => {
     '',
   );
 
-  const genProps = Object.keys(inventoryOptions.general);
+  const genProps = Object.keys(
+    inventoryOptions.general,
+  ) as (keyof GeneralOptions)[];
   for (let i = 0; i < itemTypes.length; i++) {
-    const itemType = itemTypes[i]; // The name of the item type
+    const itemType = itemTypes[i] as keyof InventoryOptions; // The name of the item type
 
     // TODO: Handle general props
     for (let j = 1; j < genProps.length; j++) {

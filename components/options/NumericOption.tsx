@@ -1,7 +1,6 @@
 import {Box, HStack, Text, VStack} from 'native-base';
 import React from 'react';
 import {TextInput} from 'react-native';
-import {formatNumber} from '../../Utils/FormatNumber';
 import {Option} from './Option';
 
 interface NumericOptionProps {

@@ -1,6 +1,6 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {ITEM_TYPE} from '../constants/enum';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
+import {ITEM_TYPE} from '../models/ItemIndex';
 import {JSONToString, StringToJSON} from './db-service';
 
 export const updateRules = async (

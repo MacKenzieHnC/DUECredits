@@ -4,13 +4,14 @@ import {
   AdditionalRule,
   Location,
   Rulebook,
+  ItemType,
+  ITEM_TYPE,
 } from '../models/ItemIndex';
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {getDBWeaponsState} from './db-service-weapons';
 import {getDBAttachmentsState} from './db-service-attachments';
 import {getDBGearState} from './db-service-gear';
 import {getDBVehiclesState} from './db-service-vehicles';
-import {ItemType, ITEM_TYPE} from '../constants/enum';
 
 export const JSONToString = (someJSON: any) => {
   return JSON.stringify(someJSON, null, '\t').split('"').join("'");

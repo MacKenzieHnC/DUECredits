@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {LoadingScreen} from '../../components/LoadingScreen';
 import {Shop, ShopOptions} from '../../models/InventoryOptionsIndex';
 import {
-  useGetAllShopsQuery,
   useGetShopQuery,
   useUpdateShopRulesMutation,
 } from '../../store/slices/databaseSlice';
@@ -11,7 +10,6 @@ import {HeaderBackButton} from '@react-navigation/elements';
 import {Alert} from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import {JSONToString} from '../../services/db-service';
-import {Text} from 'native-base';
 import {useAppSelector} from '../../hooks/redux';
 import {selectCurrentShopID} from '../../store/slices/appSlice';
 import {ArmorOptionsScreen} from './ArmorOptions';

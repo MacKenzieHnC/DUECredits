@@ -6,11 +6,11 @@ import {
 } from '../store/slices/databaseSlice';
 import {LoadingScreen} from './LoadingScreen';
 import {GenerateShopButton} from './GenerateInventoryButton';
-import {ITEM_TYPE} from '../constants/enum';
 import {ItemScreen} from '../screens/ItemScreen';
 import {Shop} from '../models/InventoryOptionsIndex';
 import {useAppSelector} from '../hooks/redux';
 import {selectCurrentShopID} from '../store/slices/appSlice';
+import {ITEM_TYPE} from '../models/ItemIndex';
 
 const Drawer = createDrawerNavigator();
 

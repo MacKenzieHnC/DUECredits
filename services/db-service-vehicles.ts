@@ -1,5 +1,5 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {CategoryLike, DBState, Vehicle} from '../models/ItemIndex';
+import {CategoryLike, DBState} from '../models/ItemIndex';
 import {getCategoryList} from './db-service';
 
 export const getDBVehiclesState = async (
@@ -31,26 +31,4 @@ export const getDBVehiclesState = async (
     console.error(error);
     throw Error('Failed to get initial vehicles state !!!');
   }
-};
-
-export const extractVehicleProps = (item: any): Vehicle => {
-  return {
-    type: item.type,
-    category: item.category,
-    manufacturer: item.manufacturer,
-    model: item.model,
-    silhouette: item.silhouette,
-    speed: item.speed,
-    handling: item.handling,
-    armor: item.armor,
-    htt: item.htt,
-    sst: item.sst,
-    defense: item.defense,
-    sensors: item.sensors,
-    crew: item.crew,
-    encumbrance: item.encumbrance,
-    passengers: item.passengers,
-    hardpoints: item.hardpoints,
-    weapons: item.weapons,
-  };
 };
