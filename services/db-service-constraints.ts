@@ -17,41 +17,60 @@ import {
   ShopOptions,
 } from '../models/InventoryOptionsIndex';
 
-const getBooleanConstraint = (name: string, value: boolean) => {
+const getBooleanConstraint = (name: string, value: boolean, prefix: string) => {
   var constraint = '';
-  constraint += value ? name : 'NOT ' + name;
+  constraint += value ? prefix + name : 'NOT ' + prefix + name;
   return constraint;
 };
 
-const getNumericConstraint = (name: string, value: number[]) => {
-  return name + ' >= ' + value[0] + ' AND ' + name + ' <= ' + value[1];
+const getNumericConstraint = (
+  name: string,
+  value: number[],
+  prefix: string,
+) => {
+  return (
+    prefix +
+    name +
+    ' >= ' +
+    value[0] +
+    ' AND ' +
+    prefix +
+    name +
+    ' <= ' +
+    value[1]
+  );
 };
 
-const getNamedConstraint = (name: string, values: any) => {
+const getNamedConstraint = (name: string, values: any, prefix: string) => {
   var constraint = '(';
   for (let k = 0; k < values.length; k++) {
     k > 0 ? (constraint += '\n\t\tOR ') : null;
-    constraint += name + ' = ' + values[k].name;
+    constraint += prefix + name + ' = ' + values[k].name;
   }
   constraint += ')';
   return constraint;
 };
 
-const getConstraint = (constraint: string, prop: any, category: any) => {
+const getConstraint = (
+  constraint: string,
+  prop: any,
+  category: any,
+  prefix: string,
+) => {
   // If value is 'any' we don't have to do anything
   if (category !== 'any') {
     constraint !== '' ? (constraint += '\n\tAND ') : null;
 
     if (typeof category === 'boolean') {
-      constraint += getBooleanConstraint(prop, category);
+      constraint += getBooleanConstraint(prop, category, prefix);
     }
     // If option is an array of numbers
     else if (typeof category[0] === 'number') {
-      constraint += getNumericConstraint(prop, category);
+      constraint += getNumericConstraint(prop, category, prefix);
     }
     // If option is an array of named somethings
     else if (category[0].name !== undefined) {
-      constraint += getNamedConstraint(prop, category);
+      constraint += getNamedConstraint(prop, category, prefix);
     } else {
       throw Error('Unrecognized item category "' + prop + '"');
     }
@@ -71,24 +90,38 @@ export const getConstraints = (rules: ShopOptions) => {
   ) as (keyof GeneralOptions)[];
   for (let i = 0; i < itemTypes.length; i++) {
     const itemType = itemTypes[i] as keyof InventoryOptions; // The name of the item type
-
-    // TODO: Handle general props
-    for (let j = 1; j < genProps.length; j++) {
-      var category = inventoryOptions.general[genProps[j]];
-      if (inventoryOptions[itemType].general[genProps[j]] !== 'any') {
-        category = inventoryOptions[itemType].general[genProps[j]];
+    if (inventoryOptions[itemType].limit === 'none') {
+      constraints[i] = 'false';
+    } else {
+      // TODO: Handle general props
+      for (let j = 1; j < genProps.length; j++) {
+        var category = inventoryOptions.general[genProps[j]];
+        if (
+          inventoryOptions[itemType].limit !== 'any' &&
+          inventoryOptions[itemType].general[genProps[j]] !== 'any'
+        ) {
+          category = inventoryOptions[itemType].general[genProps[j]];
+        }
+        constraints[i] = getConstraint(
+          constraints[i],
+          genProps[j],
+          category,
+          'i.',
+        );
       }
-      constraints[i] = getConstraint(constraints[i], genProps[j], category);
-    }
 
-    // Loop through every prop that isn't shared with other itemTypes
-    const props = Object.keys(inventoryOptions[itemType]);
-    for (let j = 2; j < props.length; j++) {
-      constraints[i] = getConstraint(
-        constraints[i],
-        props[j],
-        inventoryOptions[itemType][props[j]],
-      );
+      // Loop through every prop that isn't shared with other itemTypes
+      if (inventoryOptions[itemType].limit !== 'any') {
+        const props = Object.keys(inventoryOptions[itemType]);
+        for (let j = 2; j < props.length; j++) {
+          constraints[i] = getConstraint(
+            constraints[i],
+            props[j],
+            inventoryOptions[itemType][props[j]],
+            'x.',
+          );
+        }
+      }
     }
   }
   return constraints;

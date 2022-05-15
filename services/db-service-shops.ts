@@ -102,7 +102,7 @@ export const setShopInventory = async (
   const values: string[] = [];
 
   for (let i = 0; i < items.length; i++) {
-    for (let j = 0; j < items.length; j++) {
+    for (let j = 0; j < items[i].length; j++) {
       values.push!(
         '(' +
           shop.id +
@@ -114,7 +114,6 @@ export const setShopInventory = async (
       );
     }
   }
-  console.log(values);
   try {
     await db.executeSql(
       `DELETE FROM Shop_Inventory

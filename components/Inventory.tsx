@@ -31,7 +31,6 @@ export const Inventory = ({navigation}: any) => {
   }
 
   const screens = ITEM_TYPE.map((itemType, index) => {
-    console.log('updating screens');
     return data[index].length > 0 ? (
       <Drawer.Screen
         name={itemType.name}

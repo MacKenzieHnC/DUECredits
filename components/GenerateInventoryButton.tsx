@@ -20,9 +20,9 @@ export const GenerateShopButton = () => {
     return <></>;
   }
   const character = {
-    legalCharacteristic: 3,
+    legalCharacteristic: 1,
     legalStat: 1,
-    illegalCharacteristic: 3,
+    illegalCharacteristic: 1,
     illegalStat: 1,
     numBoosts: 0,
     numSetbacks: 0,
