@@ -20,8 +20,6 @@ export const ItemComponent = ({item, children}: ItemProps) => {
     return <></>;
   }
 
-  const childrenCount = children ? children.length : 0;
-
   return (
     <View key={item.id}>
       <TouchableOpacity onPress={() => setOpen(!open)}>

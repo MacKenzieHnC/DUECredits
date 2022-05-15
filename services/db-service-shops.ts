@@ -167,7 +167,6 @@ export const getShopInventory = async (
             } else {
               item[prop] = result.rows.item(index)[prop];
             }
-            console.log(prop);
           });
           items.push!(item);
         }
