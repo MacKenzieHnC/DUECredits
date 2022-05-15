@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {Button, Center, Modal, View, VStack} from 'native-base';
+import {Button, Center, Modal, Text, View, VStack} from 'native-base';
 import {
   useGetAllShopsQuery,
   useSaveNewShopMutation,
@@ -10,10 +10,11 @@ import {
   currentShopChanged,
   selectCurrentShopID,
 } from '../store/slices/appSlice';
-import {TextInput} from 'react-native';
+import {TextInput, useColorScheme} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {LoadingScreen} from '../components/LoadingScreen';
 import {Shop} from '../models/InventoryOptionsIndex';
+import {useTheme} from '../components/Theme';
 
 export const LoadShop = ({navigation}: any) => {
   const {data: shops, isLoading} = useGetAllShopsQuery();
@@ -24,16 +25,23 @@ export const LoadShop = ({navigation}: any) => {
   const [newShopName, setNewShopName] = useState('');
   const [save] = useSaveNewShopMutation();
   const dispatch = useAppDispatch();
-  if (isLoading || !shops || !save) {
-    return <LoadingScreen text="Initializing DB..." />;
-  }
+
+  // Stylize
+  const theme = useTheme();
 
   const loadShop = (shopID: number) => {
     dispatch(currentShopChanged(shopID));
   };
+  if (isLoading || !shops || !save) {
+    return <LoadingScreen text="Initializing DB..." />;
+  }
 
   return (
-    <View flex={1} justifyContent="center" alignItems="center">
+    <View
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
+      backgroundColor={theme.bg}>
       <Center>
         <Button onPress={() => setSaveVisible(true)}>
           Load or Create Shop
@@ -42,17 +50,27 @@ export const LoadShop = ({navigation}: any) => {
           isOpen={saveVisible}
           onClose={() => setSaveVisible(false)}
           size="lg">
-          <Modal.Content maxWidth="350" backgroundColor={'black'}>
+          <Modal.Content maxWidth="350" backgroundColor={theme.bg}>
             <Modal.CloseButton />
-            <Modal.Header>Load Shop</Modal.Header>
+            <Modal.Header style={{backgroundColor: theme.card}}>
+              <Text color={theme.text}>Load Shop</Text>
+            </Modal.Header>
             <Modal.Body>
               <VStack space={3}>
                 <Picker
                   selectedValue={selectedShop}
                   onValueChange={itemValue => setSelectedShop(itemValue)}
-                  numberOfLines={50}>
+                  numberOfLines={50}
+                  dropdownIconColor={theme.text}
+                  dropdownIconRippleColor={theme.primary}>
                   {shops?.map((shop: Shop) => {
-                    return <Picker.Item label={shop.name} value={shop.id} />;
+                    return (
+                      <Picker.Item
+                        color={theme.text}
+                        label={shop.name}
+                        value={shop.id}
+                      />
+                    );
                   })}
                 </Picker>
                 {selectedShop === 0 ? (
@@ -67,7 +85,7 @@ export const LoadShop = ({navigation}: any) => {
                 )}
               </VStack>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={{backgroundColor: theme.card}}>
               <Button
                 flex={1}
                 onPress={() => {

@@ -8,6 +8,7 @@ import {
 import {Option} from './Option';
 import {SafeAreaView} from 'react-native';
 import MultiPicker from './MultiPicker/MultiPicker';
+import {useTheme} from '../Theme';
 
 interface MultiSelectOptionProps {
   title: string;
@@ -27,8 +28,11 @@ export const MultiSelectOption = ({
   items,
   features,
 }: MultiSelectOptionProps) => {
+  // Stylize
+  const theme = useTheme();
+
   const childComponent = (
-    <View borderColor="primary.800">
+    <View borderColor={theme.border}>
       <MultiPicker
         items={items}
         placeholder={title}

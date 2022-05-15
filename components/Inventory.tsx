@@ -11,6 +11,7 @@ import {Shop} from '../models/InventoryOptionsIndex';
 import {useAppSelector} from '../hooks/redux';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {ITEM_TYPE} from '../models/ItemIndex';
+import {useTheme} from './Theme';
 
 const Drawer = createDrawerNavigator();
 
@@ -26,6 +27,10 @@ export const Inventory = ({navigation}: any) => {
       headerRight: () => <GenerateShopButton />,
     });
   }, [navigation]);
+
+  // Stylize
+  const theme = useTheme();
+
   if (isLoading || !inventory || isLoadingShop || !shop) {
     return <LoadingScreen text="Loading shop" />;
   }
@@ -39,13 +44,13 @@ export const Inventory = ({navigation}: any) => {
       />
     ) : null;
   });
-
   return screens.some(x => x !== null) ? (
     <Drawer.Navigator
       detachInactiveScreens
       initialRouteName="Armor"
       defaultStatus="closed"
-      useLegacyImplementation={true}>
+      useLegacyImplementation={true}
+      screenOptions={{headerTintColor: theme.text}}>
       {screens}
     </Drawer.Navigator>
   ) : (

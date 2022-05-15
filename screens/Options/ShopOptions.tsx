@@ -21,6 +21,8 @@ import {StarshipOptionsScreen} from './StarshipOptions';
 import {VehicleAttachmentOptionsScreen} from './VehicleAttachmentOptions';
 import {VehicleWeaponOptionsScreen} from './VehicleWeaponOptions';
 import {WeaponOptionsScreen} from './WeaponOptions';
+import {useTheme} from '../../components/Theme';
+import {View} from 'native-base';
 
 const confirm = (
   navigation: any,
@@ -102,6 +104,9 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route.params]);
 
+  // Stylize
+  const theme = useTheme();
+
   // Wait
   if (isLoadingShop || !shop || !options) {
     return <LoadingScreen text="Loading options..." />;
@@ -109,8 +114,10 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
 
   const Drawer = createDrawerNavigator();
   return (
-    <>
-      <Drawer.Navigator useLegacyImplementation={true}>
+    <View backgroundColor={theme.bg} flex={1}>
+      <Drawer.Navigator
+        useLegacyImplementation={true}
+        screenOptions={{headerTintColor: theme.text}}>
         <Drawer.Screen name="General" component={GeneralOptionsScreen} />
         <Drawer.Screen name="Armor" component={ArmorOptionsScreen} />
         <Drawer.Screen name="Attachments" component={AttachmentOptionsScreen} />
@@ -130,6 +137,6 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
           component={VehicleWeaponOptionsScreen}
         />
       </Drawer.Navigator>
-    </>
+    </View>
   );
 };

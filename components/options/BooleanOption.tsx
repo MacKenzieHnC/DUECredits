@@ -1,6 +1,7 @@
 import {Picker} from '@react-native-picker/picker';
 import {Box} from 'native-base';
 import React from 'react';
+import {useTheme} from '../Theme';
 import {Option} from './Option';
 
 interface BooleanOptionProps {
@@ -17,6 +18,9 @@ export const BooleanOption = ({
   defaultOption,
   passBack,
 }: BooleanOptionProps) => {
+  // Stylize
+  const theme = useTheme();
+
   const childComponent = (
     <Box
       width="100%"
@@ -24,7 +28,7 @@ export const BooleanOption = ({
       rounded="md"
       mb={2}
       borderWidth={1}
-      borderColor="primary.800">
+      borderColor={theme.border}>
       <Picker
         selectedValue={state}
         onValueChange={itemValue => passBack(itemValue)}>

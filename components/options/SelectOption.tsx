@@ -2,6 +2,7 @@ import {Picker} from '@react-native-picker/picker';
 import {Box, Text, View} from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import {useTheme} from '../Theme';
 
 interface SelectOptionProps {
   title: string;
@@ -37,18 +38,22 @@ export const SelectOption = ({
     }
     values.push!(<Picker.Item label={label} value={items[i].id} />);
   }
+
+  // Stylize
+  const theme = useTheme();
+
   return (
     <Box
       width="100%"
       p={5}
       rounded="md"
-      backgroundColor="primary.900"
+      backgroundColor={theme.card}
       mb={2}
       borderWidth={1}
-      borderColor="primary.800">
+      borderColor={theme.border}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.optionTitle}>
-          <Text color="white">{title}:</Text>
+          <Text color={theme.text}>{title}:</Text>
         </View>
         <Box
           flex={1}
@@ -56,7 +61,7 @@ export const SelectOption = ({
           rounded="md"
           mb={2}
           borderWidth={1}
-          borderColor="primary.800">
+          borderColor={theme.border}>
           <Picker
             selectedValue={state}
             onValueChange={itemValue => passBack(itemValue)}

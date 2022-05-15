@@ -1,6 +1,7 @@
 import {Box, HStack, Text, VStack} from 'native-base';
 import React from 'react';
 import {TextInput} from 'react-native';
+import {useTheme} from '../Theme';
 import {Option} from './Option';
 
 interface NumericOptionProps {
@@ -35,6 +36,10 @@ export const NumericOption = ({
     isNegative ? (output *= -1) : null;
     return output;
   };
+
+  // Stylize
+  const theme = useTheme();
+
   const childComponent = (
     <VStack>
       <HStack style={{flexDirection: 'row'}}>
@@ -44,7 +49,7 @@ export const NumericOption = ({
           minHeight={75}
           rounded="md"
           borderWidth={1}
-          borderColor="primary.800">
+          borderColor={theme.border}>
           <TextInput
             style={{flex: 1}}
             keyboardType="numeric"
@@ -64,7 +69,7 @@ export const NumericOption = ({
           minHeight={75}
           rounded="md"
           borderWidth={1}
-          borderColor="primary.800">
+          borderColor={theme.border}>
           <TextInput
             style={{flex: 1}}
             keyboardType="numeric"

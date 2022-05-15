@@ -2,6 +2,7 @@ import {Picker} from '@react-native-picker/picker';
 import {Box, View} from 'native-base';
 import React, {useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
+import {useTheme} from '../Theme';
 
 interface OptionProps {
   title: string;
@@ -25,15 +26,19 @@ export const Option = ({
   startLimited,
 }: OptionProps) => {
   const [limitedState, setLimited] = useState(startLimited);
+
+  // Stylize
+  const theme = useTheme();
+
   return (
     <Box
       width="100%"
       p={5}
       rounded="md"
-      backgroundColor="primary.900"
+      backgroundColor={theme.card}
       mb={2}
       borderWidth={1}
-      borderColor="primary.800">
+      borderColor={theme.border}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.optionTitle}>
           <Text>{title}:</Text>
@@ -44,7 +49,7 @@ export const Option = ({
           rounded="md"
           mb={2}
           borderWidth={1}
-          borderColor="primary.800">
+          borderColor={theme.border}>
           <Picker
             style={styles.picker}
             selectedValue={limitedState}

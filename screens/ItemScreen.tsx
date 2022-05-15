@@ -9,6 +9,7 @@ import {VehicleItemComponent} from '../components/ListComponents/VehicleItem';
 import {VehicleWeaponItemComponent} from '../components/ListComponents/VehicleWeaponItem';
 import {WeaponItemComponent} from '../components/ListComponents/WeaponItem';
 import {LoadingScreen} from '../components/LoadingScreen';
+import {useTheme} from '../components/Theme';
 import {useAppSelector} from '../hooks/redux';
 import {Shop} from '../models/InventoryOptionsIndex';
 import {ITEM_TYPE} from '../models/ItemIndex';
@@ -23,6 +24,10 @@ export const ItemScreen = ({route}: any) => {
     useAppSelector(selectCurrentShopID),
   );
   const {data, isLoading} = useGetInventoryQuery(shop as Shop);
+
+  // Stylize
+  const theme = useTheme();
+
   if (isLoading || !data || isLoadingShop || !shop) {
     return <LoadingScreen text={'Loading armor...'} />;
   }
@@ -52,7 +57,7 @@ export const ItemScreen = ({route}: any) => {
   };
 
   return (
-    <View flex={1}>
+    <View flex={1} backgroundColor={theme.bg}>
       {data[index].length > 0 ? (
         <FlatList
           data={data[index]}

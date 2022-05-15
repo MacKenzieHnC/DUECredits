@@ -10,6 +10,7 @@ import {useAppSelector} from '../hooks/redux';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {useGetShopQuery} from '../store/slices/databaseSlice';
 import {LoadingScreen} from './LoadingScreen';
+import {useTheme} from './Theme';
 
 export const ShopComponent = () => {
   const Stack = createNativeStackNavigator();
