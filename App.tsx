@@ -31,18 +31,6 @@ const App = () => {
       </Provider>
     </NavigationContainer>
   );
-
-  // return (
-  //   <NavigationContainer>
-  //     <Provider store={store}>
-  //       <NativeBaseProvider>
-  //         <View p={1} flex="1">
-  //           <Inventory />
-  //         </View>
-  //       </NativeBaseProvider>
-  //     </Provider>
-  //   </NavigationContainer>
-  // );
 };
 
 export default App;
