@@ -110,7 +110,7 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
   const Drawer = createDrawerNavigator();
   return (
     <>
-      <Drawer.Navigator>
+      <Drawer.Navigator useLegacyImplementation={true}>
         <Drawer.Screen name="General" component={GeneralOptionsScreen} />
         <Drawer.Screen name="Armor" component={ArmorOptionsScreen} />
         <Drawer.Screen name="Attachments" component={AttachmentOptionsScreen} />

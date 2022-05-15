@@ -44,7 +44,8 @@ export const Inventory = ({navigation}: any) => {
     <Drawer.Navigator
       detachInactiveScreens
       initialRouteName="Armor"
-      defaultStatus="closed">
+      defaultStatus="closed"
+      useLegacyImplementation={true}>
       {screens}
     </Drawer.Navigator>
   ) : (
