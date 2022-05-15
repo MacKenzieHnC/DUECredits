@@ -1,4 +1,4 @@
-import {Box, HStack, VStack, Text, Modal, Divider} from 'native-base';
+import {Box, HStack, VStack, Text, Modal, Divider, View} from 'native-base';
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
@@ -6,7 +6,7 @@ import {useTheme} from '../Theme';
 
 interface ItemProps {
   item: any;
-  children: React.ReactNode;
+  children: React.ReactNode[];
 }
 
 export const ItemComponent = ({item, children}: ItemProps) => {
@@ -20,8 +20,10 @@ export const ItemComponent = ({item, children}: ItemProps) => {
     return <></>;
   }
 
+  const childrenCount = children ? children.length : 0;
+
   return (
-    <>
+    <View key={item.id}>
       <TouchableOpacity onPress={() => setOpen(!open)}>
         <Box
           maxWidth="100%"
@@ -38,7 +40,7 @@ export const ItemComponent = ({item, children}: ItemProps) => {
                   {isRestricted ? '(R) ' : ''}
                   {item.name}
                 </Text>
-                {children}
+                {children.length > 1 ? children[0] : children}
               </VStack>
               <Box
                 flexDirection={'row'}
@@ -47,6 +49,7 @@ export const ItemComponent = ({item, children}: ItemProps) => {
                 <Text color={theme.text}>Price: {item.price}</Text>
               </Box>
             </HStack>
+            {children.length > 1 ? children.slice(1) : null}
             {!!item.notes && (
               <Box>
                 <Text color={theme.text}>Notes: {item.notes}</Text>
@@ -82,6 +85,6 @@ export const ItemComponent = ({item, children}: ItemProps) => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-    </>
+    </View>
   );
 };

@@ -7,7 +7,7 @@ import {
 } from '../models/ItemIndex';
 import {extractSpecialProp, getCategoryList} from './db-service';
 
-const getWeaponEffects = async (db: SQLite.SQLiteDatabase) => {
+export const getWeaponEffects = async (db: SQLite.SQLiteDatabase) => {
   try {
     const list: WeaponEffect[] = [];
     var results = await db.executeSql(
@@ -53,13 +53,11 @@ export const getDBWeaponsState = async (
       'Ranges_Local_Scale',
       'id',
     );
-    const effects: WeaponEffect[] = await getWeaponEffects(db);
 
     return {
       categories: categories,
       skills: skills,
       ranges: ranges,
-      effects: effects,
     };
   } catch (error) {
     console.error(error);

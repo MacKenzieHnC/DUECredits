@@ -129,7 +129,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
         passBack={(effects: WeaponEffect[] | 'any') =>
           passBack({...options, effects: effects})
         }
-        items={dbState.weapons.effects}
+        items={dbState.weapon_effects}
         features={['name']}
       />
       {/* Encumbrance */}

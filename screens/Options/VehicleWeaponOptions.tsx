@@ -89,7 +89,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
         passBack={(ranges: CategoryLike[] | 'any') =>
           passBack({...options, ranges: ranges})
         }
-        items={dbState.vehicles.ranges}
+        items={dbState.vehicles.sensors}
         features={['name']}
       />
       {/* Damage */}
@@ -127,7 +127,7 @@ export const VehicleWeaponOptionsScreen = ({navigation}: any) => {
         passBack={(effects: WeaponEffect[] | 'any') =>
           passBack({...options, effects: effects})
         }
-        items={dbState.weapons.effects}
+        items={dbState.weapon_effects}
         features={['name']}
       />
     </View>

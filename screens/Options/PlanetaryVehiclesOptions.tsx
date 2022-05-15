@@ -152,7 +152,7 @@ export const PlanetaryVehicleOptionsScreen = ({navigation}: any) => {
         passBack={(sensors: CategoryLike[] | 'any') =>
           passBack({...options, sensors: sensors})
         }
-        items={dbState.vehicles.ranges}
+        items={dbState.vehicles.sensors}
         features={['name']}
       />
       {/* Crew */}

@@ -25,7 +25,7 @@ export const getDBVehiclesState = async (
     return {
       categories: categories,
       manufacturers: manufacturers,
-      ranges: ranges,
+      sensors: ranges,
     };
   } catch (error) {
     console.error(error);

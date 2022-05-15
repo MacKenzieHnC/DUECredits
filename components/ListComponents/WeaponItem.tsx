@@ -1,11 +1,16 @@
 import {HStack, Text, VStack} from 'native-base';
 import React, {memo} from 'react';
+import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
 export const WeaponItemComponent = memo(({item}) => {
+  const {data: dbState, isLoading} = useGetDBStateQuery();
   // Stylize
   const theme = useTheme();
+  if (isLoading || !dbState) {
+    return <></>;
+  }
 
   return (
     <ItemComponent item={item}>
@@ -21,6 +26,21 @@ export const WeaponItemComponent = memo(({item}) => {
           <Text color={theme.text}>Encum.: {item.encumbrance}</Text>
         </VStack>
       </HStack>
+
+      <VStack flex={1}>
+        {item.weapon_effects ? (
+          <Text color={theme.text}>
+            {'Effects: ' +
+              item.weapon_effects
+                .map(
+                  effect =>
+                    dbState.weapon_effects.find(x => x.id === effect.id).name + // Won't be undefined or should fail
+                    (effect.modifier !== '' ? ': ' + effect.modifier : ''),
+                )
+                .join(', ')}
+          </Text>
+        ) : null}
+      </VStack>
     </ItemComponent>
   );
 });

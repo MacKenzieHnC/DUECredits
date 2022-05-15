@@ -6,9 +6,10 @@ import {
   Rulebook,
   ItemType,
   ITEM_TYPE,
+  WeaponEffect,
 } from '../models/ItemIndex';
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {getDBWeaponsState} from './db-service-weapons';
+import {getDBWeaponsState, getWeaponEffects} from './db-service-weapons';
 import {getDBAttachmentsState} from './db-service-attachments';
 import {getDBGearState} from './db-service-gear';
 import {getDBVehiclesState} from './db-service-vehicles';
@@ -189,22 +190,24 @@ const getLocations = async (db: SQLiteDatabase): Promise<Location[]> => {
 
 export const getDBState = async (db: SQLiteDatabase): Promise<DBState> => {
   try {
-    const additionalRules = await getAdditionalRules(db);
-    const attachments = await getDBAttachmentsState(db);
-    const gear = await getDBGearState(db);
     const locations = await getLocations(db);
     const rulebooks = await getRulebooks(db);
+    const additional_rules = await getAdditionalRules(db);
+    const weapon_effects: WeaponEffect[] = await getWeaponEffects(db);
+    const attachments = await getDBAttachmentsState(db);
+    const gear = await getDBGearState(db);
     const vehicles = await getDBVehiclesState(db);
     const starships = {
       navicomputer: await getCategoryList(db, 'Navicomputer', undefined),
     };
     const weapons = await getDBWeaponsState(db);
     return {
-      additionalRules: additionalRules,
-      attachments: attachments,
       locations: locations,
-      gear: gear,
       rulebooks: rulebooks,
+      additional_rules: additional_rules,
+      weapon_effects: weapon_effects,
+      attachments: attachments,
+      gear: gear,
       starships: starships,
       vehicles: vehicles,
       weapons: weapons,

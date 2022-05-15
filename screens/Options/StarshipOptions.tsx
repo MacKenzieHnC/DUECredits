@@ -150,7 +150,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(sensors: CategoryLike[] | 'any') =>
           passBack({...options, sensors: sensors})
         }
-        items={dbState.vehicles.ranges}
+        items={dbState.vehicles.sensors}
         features={['name']}
       />
       {/* Crew */}
@@ -206,7 +206,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(navicomputer: CategoryLike[] | 'any') =>
           passBack({...options, navicomputer: navicomputer})
         }
-        items={dbState.vehicles.ranges}
+        items={dbState.vehicles.sensors}
         features={['name']}
       />
       {/* Additional Rules */}
@@ -217,7 +217,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(additionalRules: AdditionalRule[] | 'any') =>
           passBack({...options, additionalRules: additionalRules})
         }
-        items={dbState.additionalRules}
+        items={dbState.additional_rules}
         features={['name']}
       />
     </View>

@@ -136,8 +136,8 @@ const isSpecial = (itemType: ItemType, prop: string) => {
     if (itemType.specials[i].key === prop) {
       return true;
     }
-    return false;
   }
+  return false;
 };
 
 export const getShopInventory = async (
@@ -159,11 +159,15 @@ export const getShopInventory = async (
           const item = {};
           const props = Object.keys(result.rows.item(index));
           props.forEach(prop => {
-            if (isSpecial(ITEM_TYPE[i], prop)) {
+            if (
+              isSpecial(ITEM_TYPE[i], prop) &&
+              result.rows.item(index)[prop]
+            ) {
               item[prop] = extractSpecialProp(result.rows.item(index)[prop]);
             } else {
               item[prop] = result.rows.item(index)[prop];
             }
+            console.log(prop);
           });
           items.push!(item);
         }
