@@ -1,6 +1,7 @@
-import {Box, HStack, VStack, Text, Modal} from 'native-base';
+import {Box, HStack, VStack, Text, Modal, Divider} from 'native-base';
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 
 interface ItemProps {
@@ -14,6 +15,10 @@ export const ItemComponent = ({item, children}: ItemProps) => {
   // Stylize
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const {data: dbState, isLoading} = useGetDBStateQuery();
+  if (isLoading || !dbState) {
+    return <></>;
+  }
 
   return (
     <>
@@ -26,23 +31,28 @@ export const ItemComponent = ({item, children}: ItemProps) => {
           m={2}
           borderColor={theme.border}
           borderWidth={1}>
-          <HStack alignItems="center">
-            <VStack space={2} flex={1}>
-              <Text color={theme.text} flexWrap={'wrap'}>
-                {isRestricted ? '(R) ' : ''}
-                {item.name}
-              </Text>
-              {children}
-            </VStack>
-            <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
-              <Text color={theme.text}>Price: {item.price}</Text>
-            </Box>
-          </HStack>
-          {!!item.notes && (
-            <Box>
-              <Text color={theme.text}>Notes: {item.notes}</Text>
-            </Box>
-          )}
+          <VStack space={5} flex={1}>
+            <HStack alignItems="center">
+              <VStack space={2} flex={1}>
+                <Text color={theme.text} flexWrap={'wrap'}>
+                  {isRestricted ? '(R) ' : ''}
+                  {item.name}
+                </Text>
+                {children}
+              </VStack>
+              <Box
+                flexDirection={'row'}
+                justifyContent={'flex-end'}
+                width={150}>
+                <Text color={theme.text}>Price: {item.price}</Text>
+              </Box>
+            </HStack>
+            {!!item.notes && (
+              <Box>
+                <Text color={theme.text}>Notes: {item.notes}</Text>
+              </Box>
+            )}
+          </VStack>
         </Box>
       </TouchableOpacity>
       <Modal isOpen={open} onClose={() => setOpen(false)} size="lg">
@@ -52,7 +62,23 @@ export const ItemComponent = ({item, children}: ItemProps) => {
             <Text color={theme.text}>{item.name}</Text>
           </Modal.Header>
           <Modal.Body>
-            <Text color={theme.text}>Hi!</Text>
+            <>
+              <Text
+                color={theme.text}
+                borderColor={theme.border}
+                borderLeftWidth={1}
+                paddingLeft={1}>
+                Sources
+              </Text>
+              <Divider />
+              {item.rulebooks.map(source => (
+                <Text color={theme.text}>
+                  {dbState.rulebooks.find(x => x.id === source.id).name + // Won't be undefined or should fail
+                    ': ' +
+                    source.modifier}
+                </Text>
+              ))}
+            </>
           </Modal.Body>
         </Modal.Content>
       </Modal>

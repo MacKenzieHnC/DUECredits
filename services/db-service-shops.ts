@@ -1,7 +1,7 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
-import {ITEM_TYPE} from '../models/ItemIndex';
-import {JSONToString, StringToJSON} from './db-service';
+import {ItemType, ITEM_TYPE} from '../models/ItemIndex';
+import {extractSpecialProp, JSONToString, StringToJSON} from './db-service';
 
 export const updateRules = async (
   db: SQLiteDatabase,
@@ -131,6 +131,15 @@ export const setShopInventory = async (
   }
 };
 
+const isSpecial = (itemType: ItemType, prop: string) => {
+  for (let i = 0; i < itemType.specials.length; i++) {
+    if (itemType.specials[i].key === prop) {
+      return true;
+    }
+    return false;
+  }
+};
+
 export const getShopInventory = async (
   db: SQLiteDatabase,
   shop: Shop,
@@ -140,14 +149,23 @@ export const getShopInventory = async (
     for (let i = 0; i < ITEM_TYPE.length; i++) {
       const query = `SELECT *
         FROM ${ITEM_TYPE[i].tableName} x
-        JOIN Items i ON i.id = x.id
+        JOIN Item_View i ON i.id = x.id
         JOIN Shop_Inventory s ON s.item = x.id
         WHERE s.shop = ${shop.id}`;
       const results = await db.executeSql(query);
       const items: any[] = [];
       results.forEach(result => {
         for (let index = 0; index < result.rows.length; index++) {
-          items.push!(result.rows.item(index));
+          const item = {};
+          const props = Object.keys(result.rows.item(index));
+          props.forEach(prop => {
+            if (isSpecial(ITEM_TYPE[i], prop)) {
+              item[prop] = extractSpecialProp(result.rows.item(index)[prop]);
+            } else {
+              item[prop] = result.rows.item(index)[prop];
+            }
+          });
+          items.push!(item);
         }
       });
       itemLists.push!(items);
