@@ -44,7 +44,7 @@ const getNumericConstraint = (
 const getNamedConstraint = (name: string, values: any, prefix: string) => {
   var constraint = '(';
   for (let k = 0; k < values.length; k++) {
-    k > 0 ? (constraint += '\n\t\tOR ') : null;
+    k > 0 && (constraint += '\n\t\tOR ');
     constraint += prefix + name + ' = ' + values[k].name;
   }
   constraint += ')';
@@ -59,7 +59,7 @@ const getConstraint = (
 ) => {
   // If value is 'any' we don't have to do anything
   if (category !== 'any') {
-    constraint !== '' ? (constraint += '\n\tAND ') : null;
+    constraint !== '' && (constraint += '\n\tAND ');
 
     if (typeof category === 'boolean') {
       constraint += getBooleanConstraint(prop, category, prefix);

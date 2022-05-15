@@ -12,6 +12,7 @@ import {useAppSelector} from '../hooks/redux';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {ITEM_TYPE} from '../models/ItemIndex';
 import {useTheme} from './Theme';
+import {Text, View} from 'native-base';
 
 const Drawer = createDrawerNavigator();
 
@@ -36,13 +37,15 @@ export const Inventory = ({navigation}: any) => {
   }
 
   const screens = ITEM_TYPE.map((itemType, index) => {
-    return inventory[index].length > 0 ? (
-      <Drawer.Screen
-        name={itemType.name}
-        component={ItemScreen}
-        initialParams={{key: itemType.key}}
-      />
-    ) : null;
+    return (
+      inventory[index].length > 0 && (
+        <Drawer.Screen
+          name={itemType.name}
+          component={ItemScreen}
+          initialParams={{key: itemType.key}}
+        />
+      )
+    );
   });
   return screens.some(x => x !== null) ? (
     <Drawer.Navigator
@@ -54,6 +57,12 @@ export const Inventory = ({navigation}: any) => {
       {screens}
     </Drawer.Navigator>
   ) : (
-    <LoadingScreen text="No items yet!" />
+    <View
+      flex={1}
+      backgroundColor={theme.bg}
+      alignItems={'center'}
+      justifyContent={'center'}>
+      <Text color={theme.text}>No items yet!</Text>
+    </View>
   );
 };

@@ -33,7 +33,7 @@ export const NumericOption = ({
     str === '' || str === '-'
       ? (output = 0)
       : (output = parseInt(str.replace(/[^0-9]/g, ''), 10));
-    isNegative ? (output *= -1) : null;
+    isNegative && (output *= -1);
     return output;
   };
 
@@ -84,11 +84,11 @@ export const NumericOption = ({
           />
         </Box>
       </HStack>
-      {state[1] < state[0] ? (
+      {state[1] < state[0] && (
         <Text>
           WARNING: Maximum less than minimum! This item type won't show up!
         </Text>
-      ) : null}
+      )}
     </VStack>
   );
   return (

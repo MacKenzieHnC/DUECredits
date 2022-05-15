@@ -24,7 +24,7 @@ export const GenerateShopButton = () => {
     legalStat: 1,
     illegalCharacteristic: 1,
     illegalStat: 1,
-    numBoosts: 0,
+    numBoosts: 50,
     numSetbacks: 0,
   };
   const onPress = () => {

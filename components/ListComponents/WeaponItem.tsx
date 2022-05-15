@@ -27,8 +27,8 @@ export const WeaponItemComponent = memo(({item}) => {
         </VStack>
       </HStack>
 
-      <VStack flex={1}>
-        {item.weapon_effects ? (
+      {item.weapon_effects && (
+        <VStack flex={1}>
           <Text color={theme.text}>
             {'Effects: ' +
               item.weapon_effects
@@ -39,8 +39,8 @@ export const WeaponItemComponent = memo(({item}) => {
                 )
                 .join(', ')}
           </Text>
-        ) : null}
-      </VStack>
+        </VStack>
+      )}
     </ItemComponent>
   );
 });

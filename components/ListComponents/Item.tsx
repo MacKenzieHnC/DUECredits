@@ -47,7 +47,7 @@ export const ItemComponent = ({item, children}: ItemProps) => {
                 <Text color={theme.text}>Price: {item.price}</Text>
               </Box>
             </HStack>
-            {children.length > 1 ? children.slice(1) : null}
+            {children.length > 1 && children.slice(1)}
             {!!item.notes && (
               <Box>
                 <Text color={theme.text}>Notes: {item.notes}</Text>
