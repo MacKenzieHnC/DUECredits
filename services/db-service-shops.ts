@@ -84,7 +84,7 @@ export const newShop = async (
   try {
     await db.executeSql(
       `INSERT INTO Shops (name, rules) 
-      VALUES( '${shopName}', (SELECT rules FROM Shops WHERE id = 0));`,
+      VALUES( "${shopName}", (SELECT rules FROM Shops WHERE id = 0));`,
     );
     const results = await db.executeSql(`SELECT last_insert_rowid() AS id;`);
     return results[0].rows.item(0).id;
