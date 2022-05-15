@@ -19,19 +19,19 @@ export const Inventory = ({navigation}: any) => {
   const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
     useAppSelector(selectCurrentShopID),
   );
-  const {data, isLoading} = useGetInventoryQuery(shop as Shop);
+  const {data: inventory, isLoading} = useGetInventoryQuery(shop as Shop);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <GenerateShopButton />,
     });
   }, [navigation]);
-  if (isLoading || !data || isLoadingShop || !shop) {
+  if (isLoading || !inventory || isLoadingShop || !shop) {
     return <LoadingScreen text="Loading shop" />;
   }
 
   const screens = ITEM_TYPE.map((itemType, index) => {
-    return data[index].length > 0 ? (
+    return inventory[index].length > 0 ? (
       <Drawer.Screen
         name={itemType.name}
         component={ItemScreen}
