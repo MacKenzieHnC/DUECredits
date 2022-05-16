@@ -7,8 +7,13 @@ export const store = configureStore({
     appSlice,
     [databaseSlice.reducerPath]: databaseSlice.reducer,
   },
+  // middleware: getDefaultMiddleware =>
+  //   getDefaultMiddleware().concat(databaseSlice.middleware),
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(databaseSlice.middleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
