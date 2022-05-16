@@ -44,7 +44,9 @@ export const ItemComponent = ({item, children}: ItemProps) => {
                 flexDirection={'row'}
                 justifyContent={'flex-end'}
                 width={150}>
-                <Text color={theme.text}>Price: {item.price}</Text>
+                <Text color={theme.text}>
+                  Price: {item.price.toLocaleString()}
+                </Text>
               </Box>
             </HStack>
             {children.length > 1 && children.slice(1)}
