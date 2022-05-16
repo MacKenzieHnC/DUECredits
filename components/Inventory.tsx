@@ -47,7 +47,7 @@ export const Inventory = ({navigation}: any) => {
       )
     );
   });
-  return screens.some(x => x !== null) ? (
+  return screens.some(x => x) ? (
     <Drawer.Navigator
       detachInactiveScreens
       initialRouteName="Armor"
