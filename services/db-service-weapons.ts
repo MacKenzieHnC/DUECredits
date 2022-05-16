@@ -23,7 +23,7 @@ export const getWeaponEffects = async (db: SQLite.SQLiteDatabase) => {
           name: item.name,
           active: item.active,
           ranked: item.ranked,
-          desc: item.description,
+          desc: item.desc,
         });
       }
     });
