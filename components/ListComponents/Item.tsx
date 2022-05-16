@@ -20,6 +20,47 @@ export const ItemComponent = ({item, children}: ItemProps) => {
     return <></>;
   }
 
+  const getContent = (modal: boolean) => {
+    return (
+      <VStack space={5} flex={1}>
+        <HStack alignItems="center">
+          <VStack space={2} flex={1}>
+            {!modal && (
+              <Text color={theme.text} flexWrap={'wrap'}>
+                {isRestricted ? '(R) ' : ''}
+                {item.name}
+              </Text>
+            )}
+            {children.length > 1 ? children[0] : children}
+          </VStack>
+          <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
+            <Text color={theme.text}>Price: {item.price.toLocaleString()}</Text>
+          </Box>
+        </HStack>
+        {children.length > 1 && children.slice(1)}
+        {!!item.notes && (
+          <Text color={theme.text} width="100%">
+            Notes: {item.notes}
+          </Text>
+        )}
+        {modal && (
+          <View>
+            <Text underline color={theme.text}>
+              Sources:
+            </Text>
+            {item.rulebooks.map(source => (
+              <Text color={theme.text}>
+                {dbState.rulebooks.find(x => x.id === source.id).name + // Won't be undefined or should fail
+                  ': ' +
+                  source.modifier}
+              </Text>
+            ))}
+          </View>
+        )}
+      </VStack>
+    );
+  };
+
   return (
     <View key={item.id}>
       <TouchableOpacity onPress={() => setOpen(!open)}>
@@ -30,59 +71,17 @@ export const ItemComponent = ({item, children}: ItemProps) => {
           backgroundColor={theme.card}
           m={2}
           borderColor={theme.border}
-          borderWidth={1}>
-          <VStack space={5} flex={1}>
-            <HStack alignItems="center">
-              <VStack space={2} flex={1}>
-                <Text color={theme.text} flexWrap={'wrap'}>
-                  {isRestricted ? '(R) ' : ''}
-                  {item.name}
-                </Text>
-                {children.length > 1 ? children[0] : children}
-              </VStack>
-              <Box
-                flexDirection={'row'}
-                justifyContent={'flex-end'}
-                width={150}>
-                <Text color={theme.text}>
-                  Price: {item.price.toLocaleString()}
-                </Text>
-              </Box>
-            </HStack>
-            {children.length > 1 && children.slice(1)}
-            {!!item.notes && (
-              <Box>
-                <Text color={theme.text}>Notes: {item.notes}</Text>
-              </Box>
-            )}
-          </VStack>
+          borderWidth={1}
+          overflow={'hidden'}>
+          {getContent(false)}
         </Box>
       </TouchableOpacity>
-      <Modal isOpen={open} onClose={() => setOpen(false)} size="lg">
+      <Modal isOpen={open} onClose={() => setOpen(false)} size="xl">
         <Modal.Content maxWidth="350" backgroundColor={theme.bg}>
-          <Modal.CloseButton />
           <Modal.Header style={{backgroundColor: theme.card}}>
             <Text color={theme.text}>{item.name}</Text>
           </Modal.Header>
-          <Modal.Body>
-            <>
-              <Text
-                color={theme.text}
-                borderColor={theme.border}
-                borderLeftWidth={1}
-                paddingLeft={1}>
-                Sources
-              </Text>
-              <Divider />
-              {item.rulebooks.map(source => (
-                <Text color={theme.text}>
-                  {dbState.rulebooks.find(x => x.id === source.id).name + // Won't be undefined or should fail
-                    ': ' +
-                    source.modifier}
-                </Text>
-              ))}
-            </>
-          </Modal.Body>
+          <Modal.Body>{getContent(true)}</Modal.Body>
         </Modal.Content>
       </Modal>
     </View>
