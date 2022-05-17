@@ -1,37 +1,76 @@
 import {HStack, Text, VStack} from 'native-base';
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
+import {Alert, TouchableOpacity} from 'react-native';
+import {Special, WeaponEffect} from '../../models/ItemIndex';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
 export const VehicleWeaponItemComponent = memo(({item}) => {
   const {data: dbState, isLoading} = useGetDBStateQuery();
+  const [allowClickthrough, setAllowClickthrough] = useState(false);
   // Stylize
   const theme = useTheme();
   if (isLoading || !dbState) {
     return <></>;
   }
 
-  return (
-    <ItemComponent item={item}>
-      <HStack space={3}>
-        <Text color={theme.text}>Damage: {item.damage}</Text>
+  const top = (
+    <VStack>
+      <HStack>
+        <Text color={theme.text}>{'Category: '}</Text>
+        <Text color={theme.text}>
+          {dbState.weapons.categories[item.category].name}
+        </Text>
       </HStack>
-
-      {item.weapon_effects && (
-        <VStack flex={1}>
+      <HStack space={3}>
+        <VStack>
+          <Text color={theme.text}>Dam.: {item.damage}</Text>
+          <Text color={theme.text}>Crit.: {item.crit}</Text>
+        </VStack>
+        <VStack>
           <Text color={theme.text}>
-            {'Effects: ' +
-              item.weapon_effects
-                .map(
-                  effect =>
-                    dbState.weapon_effects.find(x => x.id === effect.id).name + // Won't be undefined or should fail
-                    (effect.modifier !== '' ? ': ' + effect.modifier : ''),
-                )
-                .join(', ')}
+            Range:{' '}
+            {dbState.vehicles.sensors.find(x => x.id === item.range).name}
+          </Text>
+          <Text color={theme.text}>
+            Silhouette: {item.compatible_silhouette}
           </Text>
         </VStack>
-      )}
-    </ItemComponent>
+      </HStack>
+    </VStack>
+  );
+
+  const mid = item.weapon_effects && (
+    <HStack>
+      <Text color={theme.text}>{'Effects: '}</Text>
+      <HStack flexWrap={'wrap'} flex={1}>
+        {item.weapon_effects.map((effect: Special, index: number) => {
+          const dbEffect = dbState.weapon_effects.find(
+            x => x.id === effect.id,
+          ) as WeaponEffect; // Won't be undefined or should fail
+          return (
+            <TouchableOpacity
+              disabled={!allowClickthrough}
+              onPress={() => Alert.alert(dbEffect.name, dbEffect.desc)}>
+              <Text color={theme.text}>
+                {dbEffect.name +
+                  (effect.modifier !== '' ? ': ' + effect.modifier : '')}
+                {index < item.weapon_effects.length - 1 && ', '}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </HStack>
+    </HStack>
+  );
+
+  return (
+    <ItemComponent
+      item={item}
+      top={top}
+      mid={mid}
+      setAllowClickthrough={setAllowClickthrough}
+    />
   );
 });

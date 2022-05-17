@@ -1,18 +1,31 @@
-import {HStack, Text} from 'native-base';
+import {HStack, Text, VStack} from 'native-base';
 import React, {memo} from 'react';
+import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
 export const AttachmentItemComponent = memo(({item}) => {
   // Stylize
   const theme = useTheme();
+  const {data: dbState, isLoading} = useGetDBStateQuery();
+  if (isLoading || !dbState) {
+    return <></>;
+  }
 
-  return (
-    <ItemComponent item={item}>
+  const top = (
+    <VStack>
+      <HStack>
+        <Text color={theme.text}>{'Category: '}</Text>
+        <Text color={theme.text}>
+          {dbState.attachments.categories[item.category].name}
+        </Text>
+      </HStack>
       <HStack space={3}>
         <Text color={theme.text}>HP: {item.hardpoints}</Text>
         <Text color={theme.text}>Encum: {item.encumbrance}</Text>
       </HStack>
-    </ItemComponent>
+    </VStack>
   );
+
+  return <ItemComponent item={item} top={top} />;
 });

@@ -7,11 +7,11 @@ export const VehicleAttachmentItemComponent = memo(({item}) => {
   // Stylize
   const theme = useTheme();
 
-  return (
-    <ItemComponent item={item}>
-      <HStack space={3}>
-        <Text color={theme.text}>HP: {item.hardpoints}</Text>
-      </HStack>
-    </ItemComponent>
+  const top = (
+    <HStack space={3}>
+      <Text color={theme.text}>HP: {item.hardpoints}</Text>
+    </HStack>
   );
+
+  return <ItemComponent item={item} top={top} />;
 });
