@@ -6,7 +6,7 @@ import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const StarshipItemComponent = memo(({item}) => {
+export const StarshipItemComponent = memo(({item}: any) => {
   // Stylize
   const theme = useTheme();
   const [allowClickthrough, setAllowClickthrough] = useState(false);

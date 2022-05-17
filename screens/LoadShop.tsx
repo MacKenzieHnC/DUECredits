@@ -10,7 +10,7 @@ import {
   currentShopChanged,
   selectCurrentShopID,
 } from '../store/slices/appSlice';
-import {TextInput, useColorScheme} from 'react-native';
+import {TextInput} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {LoadingScreen} from '../components/LoadingScreen';
 import {Shop} from '../models/InventoryOptionsIndex';

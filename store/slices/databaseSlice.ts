@@ -112,8 +112,6 @@ export const databaseSlice = createApi({
           return {data: Array(ITEM_TYPE.length).fill([])};
         }
         try {
-          console.log('Shop: ', props.shop.name);
-          console.log('Location: ', props.location.name);
           const db = await getDBConnection();
           const data = await getShopInventory(db, props.shop, props.location);
           return {data: data};

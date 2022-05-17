@@ -1,7 +1,7 @@
 import {Box, HStack, VStack, Text, Modal, View} from 'native-base';
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Special} from '../../models/ItemIndex';
+import {CategoryLike, Special} from '../../models/ItemIndex';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 
@@ -74,7 +74,11 @@ export const ItemComponent = ({
             </Text>
             {item.rulebooks.map((source: Special) => (
               <Text color={theme.text}>
-                {dbState.rulebooks.find(x => x.id === source.id).name + // Won't be undefined or should fail
+                {(
+                  dbState.rulebooks.find(
+                    x => x.id === source.id,
+                  ) as CategoryLike
+                ).name + // Won't be undefined or should fail
                   ': ' +
                   source.modifier}
               </Text>

@@ -4,7 +4,7 @@ import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const VehicleItemComponent = memo(({item}) => {
+export const VehicleItemComponent = memo(({item}: any) => {
   // Stylize
   const theme = useTheme();
   const {data: dbState, isLoading} = useGetDBStateQuery();

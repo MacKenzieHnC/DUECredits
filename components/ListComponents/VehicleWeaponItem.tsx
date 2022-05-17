@@ -6,7 +6,7 @@ import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const VehicleWeaponItemComponent = memo(({item}) => {
+export const VehicleWeaponItemComponent = memo(({item}: any) => {
   const {data: dbState, isLoading} = useGetDBStateQuery();
   const [allowClickthrough, setAllowClickthrough] = useState(false);
   // Stylize

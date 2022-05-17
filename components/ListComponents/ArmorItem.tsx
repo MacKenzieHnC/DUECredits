@@ -3,7 +3,7 @@ import React, {memo} from 'react';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const ArmorItemComponent = memo(({item}) => {
+export const ArmorItemComponent = memo(({item}: any) => {
   // Stylize
   const theme = useTheme();
 
