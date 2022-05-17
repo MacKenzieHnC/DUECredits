@@ -110,8 +110,13 @@ export const ItemComponent = ({
           setOpen(false);
           setAllowClickthrough && setAllowClickthrough(false);
         }}
-        size="xl">
-        <Modal.Content maxWidth="350" backgroundColor={theme.bg}>
+        size={'xl'}>
+        <Modal.Content
+          maxWidth="350"
+          backgroundColor={theme.bg}
+          borderColor={theme.border}
+          borderWidth={1}
+          rounded={'sm'}>
           <Modal.Header style={{backgroundColor: theme.card}}>
             <Text color={theme.text}>{item.name}</Text>
           </Modal.Header>
