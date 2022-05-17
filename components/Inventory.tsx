@@ -7,12 +7,12 @@ import {
 import {LoadingScreen} from './LoadingScreen';
 import {GenerateShopButton} from './GenerateInventoryButton';
 import {ItemScreen} from '../screens/ItemScreen';
-import {Shop} from '../models/InventoryOptionsIndex';
 import {useAppSelector} from '../hooks/redux';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {ITEM_TYPE} from '../models/ItemIndex';
 import {useTheme} from './Theme';
 import {Text, View} from 'native-base';
+import {useGetInventoryProps} from '../hooks/InventoryProps';
 
 const Drawer = createDrawerNavigator();
 
@@ -21,7 +21,9 @@ export const Inventory = ({navigation}: any) => {
   const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
     useAppSelector(selectCurrentShopID),
   );
-  const {data: inventory, isLoading} = useGetInventoryQuery(shop as Shop);
+  const {data: inventory, isLoading: isLoadingInventory} = useGetInventoryQuery(
+    useGetInventoryProps(),
+  );
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,7 +34,7 @@ export const Inventory = ({navigation}: any) => {
   // Stylize
   const theme = useTheme();
 
-  if (isLoading || !inventory || isLoadingShop || !shop) {
+  if (isLoadingInventory || !inventory || isLoadingShop || !shop) {
     return <LoadingScreen text="Loading shop" />;
   }
 

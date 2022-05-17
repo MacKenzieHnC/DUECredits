@@ -1,5 +1,5 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
-import {DBState} from '../../models/ItemIndex';
+import {DBState, ITEM_TYPE, Location} from '../../models/ItemIndex';
 import {
   getAllPossibleItems,
   getDBConnection,
@@ -103,11 +103,19 @@ export const databaseSlice = createApi({
       },
       invalidatesTags: ['Shops'],
     }),
-    getInventory: build.query<any[][], Shop>({
-      async queryFn(shop) {
+    getInventory: build.query<
+      any[][] | undefined,
+      {shop: Shop; location: Location} | undefined
+    >({
+      async queryFn(props) {
+        if (!props) {
+          return {data: Array(ITEM_TYPE.length).fill([])};
+        }
         try {
+          console.log('Shop: ', props.shop.name);
+          console.log('Location: ', props.location.name);
           const db = await getDBConnection();
-          const data = await getShopInventory(db, shop);
+          const data = await getShopInventory(db, props.shop, props.location);
           return {data: data};
         } catch (error) {
           return {error: {data: "Can't get Inventory", status: 500}};

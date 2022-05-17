@@ -11,19 +11,19 @@ import {WeaponItemComponent} from '../components/ListComponents/WeaponItem';
 import {LoadingScreen} from '../components/LoadingScreen';
 import {useTheme} from '../components/Theme';
 import {useAppSelector} from '../hooks/redux';
-import {Shop} from '../models/InventoryOptionsIndex';
 import {ITEM_TYPE} from '../models/ItemIndex';
 import {selectCurrentShopID} from '../store/slices/appSlice';
 import {
   useGetInventoryQuery,
   useGetShopQuery,
 } from '../store/slices/databaseSlice';
+import {useGetInventoryProps} from '../hooks/InventoryProps';
 
 export const ItemScreen = ({route}: any) => {
   const {data: shop, isLoading: isLoadingShop} = useGetShopQuery(
     useAppSelector(selectCurrentShopID),
   );
-  const {data, isLoading} = useGetInventoryQuery(shop as Shop);
+  const {data, isLoading} = useGetInventoryQuery(useGetInventoryProps());
 
   // Stylize
   const theme = useTheme();

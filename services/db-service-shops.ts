@@ -1,6 +1,6 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {Shop, ShopOptions} from '../models/InventoryOptionsIndex';
-import {ItemType, ITEM_TYPE} from '../models/ItemIndex';
+import {ItemType, ITEM_TYPE, Location} from '../models/ItemIndex';
 import {extractSpecialProp, JSONToString, StringToJSON} from './db-service';
 
 export const updateRules = async (
@@ -143,6 +143,7 @@ const isSpecial = (itemType: ItemType, prop: string) => {
 export const getShopInventory = async (
   db: SQLiteDatabase,
   shop: Shop,
+  location: Location,
 ): Promise<any[][]> => {
   const itemLists: any = [];
   try {
@@ -166,6 +167,13 @@ export const getShopInventory = async (
               item[prop] = extractSpecialProp(result.rows.item(index)[prop]);
             } else {
               item[prop] = result.rows.item(index)[prop];
+            }
+
+            // Location
+            if (prop === 'rarity') {
+              item[prop] += location.rarity_modifier;
+            } else if (prop === 'price') {
+              item[prop] *= location.price_modifier;
             }
           });
           items.push!(item);
