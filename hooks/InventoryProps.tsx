@@ -21,7 +21,7 @@ export const useGetInventoryProps = () => {
     if (!isLoadingShop && shop && !isLoadingDBState && dbState) {
       setInventoryProps({
         shop: shop,
-        location: dbState.locations.find(
+        location: dbState.location.find(
           x => x.id === shop.options.location,
         ) as Location,
       });

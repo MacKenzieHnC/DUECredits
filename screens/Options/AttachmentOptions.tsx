@@ -74,7 +74,7 @@ export const AttachmentOptionsScreen = ({navigation}: any) => {
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
-        items={dbState.attachments.categories}
+        items={dbState.attachments.category}
         features={['name']}
       />
       {/* Damage */}

@@ -75,10 +75,8 @@ export const ItemComponent = ({
             {item.rulebooks.map((source: Special) => (
               <Text color={theme.text}>
                 {(
-                  dbState.rulebooks.find(
-                    x => x.id === source.id,
-                  ) as CategoryLike
-                ).name + // Won't be undefined or should fail
+                  dbState.rulebook.find(x => x.id === source.id) as CategoryLike
+                ).name +
                   ': ' +
                   source.modifier}
               </Text>

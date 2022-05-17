@@ -4,7 +4,7 @@ import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const AttachmentItemComponent = memo(({item}: any) => {
+export const AttachmentItemComponent = memo(({item, groupBy}: any) => {
   // Stylize
   const theme = useTheme();
   const {data: dbState, isLoading} = useGetDBStateQuery();
@@ -17,7 +17,8 @@ export const AttachmentItemComponent = memo(({item}: any) => {
       <HStack>
         <Text color={theme.text}>{'Category: '}</Text>
         <Text color={theme.text}>
-          {dbState.attachments.categories[item.category].name}
+          {groupBy !== 'category' &&
+            dbState.attachments.category[item.category].name}
         </Text>
       </HStack>
       <HStack space={3}>

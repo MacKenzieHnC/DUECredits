@@ -78,7 +78,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
-        items={dbState.vehicles.categories}
+        items={dbState.vehicles.category}
         features={['name']}
       />
       {/* Manufacturer */}
@@ -89,7 +89,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(manufacturer: CategoryLike[] | 'any') =>
           passBack({...options, manufacturer: manufacturer})
         }
-        items={dbState.vehicles.manufacturers}
+        items={dbState.vehicles.manufacturer}
         features={['name']}
       />
       {/* Silhouette */}
@@ -150,7 +150,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(sensors: CategoryLike[] | 'any') =>
           passBack({...options, sensors: sensors})
         }
-        items={dbState.vehicles.sensors}
+        items={dbState.vehicles.sensor}
         features={['name']}
       />
       {/* Crew */}
@@ -206,7 +206,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(navicomputer: CategoryLike[] | 'any') =>
           passBack({...options, navicomputer: navicomputer})
         }
-        items={dbState.vehicles.sensors}
+        items={dbState.vehicles.sensor}
         features={['name']}
       />
       {/* Additional Rules */}
@@ -217,7 +217,7 @@ export const StarshipOptionsScreen = ({navigation}: any) => {
         passBack={(additionalRules: AdditionalRule[] | 'any') =>
           passBack({...options, additionalRules: additionalRules})
         }
-        items={dbState.additional_rules}
+        items={dbState.additional_rule}
         features={['name']}
       />
     </View>

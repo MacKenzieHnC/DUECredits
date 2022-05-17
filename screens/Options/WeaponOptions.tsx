@@ -78,7 +78,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
-        items={dbState.weapons.categories}
+        items={dbState.weapons.category}
         features={['name']}
       />
       {/* Skill */}
@@ -89,7 +89,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
         passBack={(skills: CategoryLike[] | 'any') =>
           passBack({...options, skills: skills})
         }
-        items={dbState.weapons.skills}
+        items={dbState.weapons.skill}
         features={['name']}
       />
       {/* Damage */}
@@ -118,7 +118,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
         passBack={(ranges: CategoryLike[] | 'any') =>
           passBack({...options, ranges: ranges})
         }
-        items={dbState.weapons.ranges}
+        items={dbState.weapons.range}
         features={['name']}
       />
       {/* Effect */}
@@ -129,7 +129,7 @@ export const WeaponOptionsScreen = ({navigation}: any) => {
         passBack={(effects: WeaponEffect[] | 'any') =>
           passBack({...options, effects: effects})
         }
-        items={dbState.weapon_effects}
+        items={dbState.weapon_effect}
         features={['name']}
       />
       {/* Encumbrance */}

@@ -13,7 +13,7 @@ export const getDBAttachmentsState = async (
     );
 
     return {
-      categories: categories,
+      category: categories,
     };
   } catch (error) {
     console.error(error);

@@ -202,10 +202,10 @@ export const getDBState = async (db: SQLiteDatabase): Promise<DBState> => {
     };
     const weapons = await getDBWeaponsState(db);
     return {
-      locations: locations,
-      rulebooks: rulebooks,
-      additional_rules: additional_rules,
-      weapon_effects: weapon_effects,
+      location: locations,
+      rulebook: rulebooks,
+      additional_rule: additional_rules,
+      weapon_effect: weapon_effects,
       attachments: attachments,
       gear: gear,
       starships: starships,

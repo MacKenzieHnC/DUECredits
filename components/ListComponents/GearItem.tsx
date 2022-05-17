@@ -4,7 +4,7 @@ import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const GearItemComponent = memo(({item}: any) => {
+export const GearItemComponent = memo(({item, groupBy}: any) => {
   // Stylize
   const theme = useTheme();
   const {data: dbState, isLoading} = useGetDBStateQuery();
@@ -17,7 +17,7 @@ export const GearItemComponent = memo(({item}: any) => {
       <HStack>
         <Text color={theme.text}>{'Category: '}</Text>
         <Text color={theme.text}>
-          {dbState.gear.categories[item.category].name}
+          {groupBy !== 'category' && dbState.gear.category[item.category].name}
         </Text>
       </HStack>
       <Text color={theme.text}>Encum: {item.encumbrance}</Text>

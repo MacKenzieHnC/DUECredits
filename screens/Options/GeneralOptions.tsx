@@ -76,7 +76,7 @@ export const GeneralOptionsScreen = ({navigation}: any) => {
         title="Location"
         state={options.location}
         passBack={(location: number) => passBackLocation(location)}
-        items={dbState.locations}
+        items={dbState.location}
         features={['name', 'price_modifier', 'rarity_modifier']}
         featureNames={['', 'Price Modifier', 'Rarity Modifier']}
       />

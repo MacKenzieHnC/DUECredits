@@ -55,9 +55,9 @@ export const getDBWeaponsState = async (
     );
 
     return {
-      categories: categories,
-      skills: skills,
-      ranges: ranges,
+      category: categories,
+      skill: skills,
+      range: ranges,
     };
   } catch (error) {
     console.error(error);

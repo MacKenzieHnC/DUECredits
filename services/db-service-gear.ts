@@ -13,7 +13,7 @@ export const getDBGearState = async (
     );
 
     return {
-      categories: categories,
+      category: categories,
     };
   } catch (error) {
     console.error(error);

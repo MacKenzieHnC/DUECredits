@@ -78,7 +78,7 @@ export const GearOptionsScreen = ({navigation}: any) => {
         passBack={(categories: CategoryLike[] | 'any') =>
           passBack({...options, categories: categories})
         }
-        items={dbState.vehicles.categories}
+        items={dbState.vehicles.category}
         features={['name']}
       />
       {/* Encumbrance */}
