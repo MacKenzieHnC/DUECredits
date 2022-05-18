@@ -1,4 +1,4 @@
-import {Box, HStack, VStack, Text, Modal, View} from 'native-base';
+import {Box, HStack, VStack, Text, Modal, View, Card} from 'native-base';
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CategoryLike, Special} from '../../models/ItemIndex';
@@ -36,75 +36,84 @@ export const ItemComponent = ({
     return <></>;
   }
 
+  ////////////////////////////////
+  //
+  //  Field components
+  //
+  ////////////////////////////////
+  const name_and_restricted = (
+    <Text color={theme.text} flexWrap={'wrap'}>
+      {isRestricted ? '(R) ' : ''}
+      {item.name}
+    </Text>
+  );
+  const price = (
+    <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
+      <Text color={theme.text}>Price: {item.price.toLocaleString()}</Text>
+    </Box>
+  );
+  const notes = (
+    <Text color={theme.text} width="100%">
+      Notes: {item.notes}
+    </Text>
+  );
+  const rarity = (
+    <Text color={theme.text} flexWrap={'wrap'}>
+      {'Rarity: ' + item.rarity}
+    </Text>
+  );
+  const rulebooks = (
+    <View>
+      <Text underline color={theme.text}>
+        Sources:
+      </Text>
+      {item.rulebooks.map((source: Special) => (
+        <Text color={theme.text}>
+          {(dbState.rulebook.find(x => x.id === source.id) as CategoryLike)
+            .name +
+            ': ' +
+            source.modifier}
+        </Text>
+      ))}
+    </View>
+  );
+
+  ////////////////////////////////
+  //
+  //  Card components
+  //
+  ////////////////////////////////
   const getContent = (modal: boolean) => {
     return (
-      <VStack space={5} flex={1}>
-        {modal && top_hidden}
-        <HStack alignItems="center">
-          <VStack space={2} flex={1}>
-            {!modal ? (
-              <Text color={theme.text} flexWrap={'wrap'}>
-                {isRestricted ? '(R) ' : ''}
-                {item.name}
-              </Text>
-            ) : (
-              <Text color={theme.text} flexWrap={'wrap'}>
-                {'Rarity: ' + item.rarity}
-              </Text>
-            )}
-            {top}
-          </VStack>
-          <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
-            <Text color={theme.text}>Price: {item.price.toLocaleString()}</Text>
-          </Box>
-        </HStack>
-        {mid}
-        {modal && mid_hidden}
-        {bottom}
-        {modal && bottom_hidden}
-        {!!item.notes && (
-          <Text color={theme.text} width="100%">
-            Notes: {item.notes}
-          </Text>
-        )}
-        {modal && (
-          <View>
-            <Text underline color={theme.text}>
-              Sources:
-            </Text>
-            {item.rulebooks.map((source: Special) => (
-              <Text color={theme.text}>
-                {(
-                  dbState.rulebook.find(x => x.id === source.id) as CategoryLike
-                ).name +
-                  ': ' +
-                  source.modifier}
-              </Text>
-            ))}
-          </View>
-        )}
-      </VStack>
+      <>
+        <VStack space={5} flex={1}>
+          {modal && top_hidden}
+          <HStack alignItems="center">
+            <VStack space={2} flex={1}>
+              {!modal ? name_and_restricted : rarity}
+              {top}
+            </VStack>
+            {price}
+          </HStack>
+          {mid}
+          {modal && mid_hidden}
+          {bottom}
+          {modal && bottom_hidden}
+          {!!item.notes && notes}
+          {modal && rulebooks}
+        </VStack>
+      </>
     );
   };
 
   return (
-    <View key={item.id}>
+    <Card key={item.id} bg={theme.card}>
       <TouchableOpacity
         onPress={() => {
           setOpen(!open);
           setAllowClickthrough && setAllowClickthrough(true);
         }}>
-        <Box
-          maxWidth="100%"
-          p={5}
-          rounded="md"
-          backgroundColor={theme.card}
-          m={2}
-          borderColor={theme.border}
-          borderWidth={1}
-          overflow={'hidden'}>
-          {getContent(false)}
-        </Box>
+        {getContent(false)}
       </TouchableOpacity>
       <Modal
         isOpen={open}
@@ -125,6 +134,6 @@ export const ItemComponent = ({
           <Modal.Body>{getContent(true)}</Modal.Body>
         </Modal.Content>
       </Modal>
-    </View>
+    </Card>
   );
 };
