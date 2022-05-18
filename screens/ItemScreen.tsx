@@ -1,4 +1,13 @@
-import {Center, FlatList, Heading, SectionList, Text, View} from 'native-base';
+import {
+  Center,
+  Divider,
+  FlatList,
+  Heading,
+  SectionList,
+  Spacer,
+  Text,
+  View,
+} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {ArmorItemComponent} from '../components/ListComponents/ArmorItem';
 import {AttachmentItemComponent} from '../components/ListComponents/AttachmentItem';
@@ -52,7 +61,7 @@ export const ItemScreen = ({route}: any) => {
     return <LoadingScreen text={'Loading ' + ITEM_TYPE[index].name + '...'} />;
   }
 
-  const RenderComponent = ({item, groupBy}) => {
+  const RenderComponent = ({item, groupBy}: any) => {
     switch (route.params.key) {
       case 'armor':
         return <ArmorItemComponent item={item} groupBy={groupBy} />;
@@ -95,6 +104,8 @@ export const ItemScreen = ({route}: any) => {
 
     return (
       <SectionList
+        ItemSeparatorComponent={() => <Spacer my="2" />}
+        SectionSeparatorComponent={() => <Spacer my="2" />}
         stickySectionHeadersEnabled={true}
         sections={data}
         renderItem={({item}) => {
