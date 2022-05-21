@@ -1,8 +1,9 @@
-import {HStack, Text, VStack} from 'native-base';
+import {HStack, Spacer, Text, VStack} from 'native-base';
 import React, {memo, useState} from 'react';
 import {Alert, TouchableOpacity} from 'react-native';
 import {Special, WeaponEffect} from '../../models/ItemIndex';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {TextField} from '../FieldComponents/TextField';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
@@ -11,6 +12,8 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
   const theme = useTheme();
   const [allowClickthrough, setAllowClickthrough] = useState(false);
   const {data: dbState, isLoading} = useGetDBStateQuery();
+  const [editMode, setEditMode] = useState(false);
+  const [editItem, setEditItem] = useState(item);
   if (isLoading || !dbState) {
     return <></>;
   }
@@ -20,22 +23,26 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
   //  Field components
   //
   ////////////////////////////////
-  const armor = <Text color={theme.text}>{'Armor: ' + item.armor}</Text>;
+  const armor = <Text color={theme.colors.text}>{'Armor: ' + item.armor}</Text>;
   const category = (
     <HStack>
-      <Text color={theme.text}>{'Category: '}</Text>
-      <Text color={theme.text}>
+      <Text color={theme.colors.text}>{'Category: '}</Text>
+      <Text color={theme.colors.text}>
         dbState.vehicles.category[item.category].name
       </Text>
     </HStack>
   );
   const crew = (
-    <Text color={theme.text}>{'Crew: ' + item.crew.toLocaleString()}</Text>
+    <Text color={theme.colors.text}>
+      {'Crew: ' + item.crew.toLocaleString()}
+    </Text>
   );
-  const defense = <Text color={theme.text}>{'Defense: ' + item.defense}</Text>;
+  const defense = (
+    <Text color={theme.colors.text}>{'Defense: ' + item.defense}</Text>
+  );
   const effects = item.additional_rules && (
     <HStack>
-      <Text color={theme.text}>{'Effects: '}</Text>
+      <Text color={theme.colors.text}>{'Effects: '}</Text>
       <HStack flexWrap={'wrap'} flex={1}>
         {item.additional_rules.map((rule: Special, index: number) => {
           const dbRule = dbState.additional_rule.find(
@@ -45,7 +52,7 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
             <TouchableOpacity
               disabled={!allowClickthrough}
               onPress={() => Alert.alert(dbRule.name, dbRule.desc)}>
-              <Text color={theme.text}>
+              <Text color={theme.colors.text}>
                 {dbRule.name +
                   (rule.modifier !== '' ? ': ' + rule.modifier : '')}
                 {index < item.additional_rules.length - 1 && ', '}
@@ -57,56 +64,55 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
     </HStack>
   );
   const encumbrance = (
-    <Text color={theme.text}>
+    <Text color={theme.colors.text}>
       {'Encum: ' + item.encumbrance.toLocaleString()}
     </Text>
   );
   const handling = (
-    <Text color={theme.text}>{'Handling: ' + item.handling}</Text>
+    <Text color={theme.colors.text}>{'Handling: ' + item.handling}</Text>
   );
-  const hardpoints = <Text color={theme.text}>{'HP: ' + item.hardpoints}</Text>;
-  const htt = <Text color={theme.text}>{'HTT: ' + item.htt}</Text>;
+  const hardpoints = (
+    <Text color={theme.colors.text}>{'HP: ' + item.hardpoints}</Text>
+  );
+  const htt = <Text color={theme.colors.text}>{'HTT: ' + item.htt}</Text>;
   const hyperdrive = (
-    <Text color={theme.text}>{'Hyperdrive: ' + item.hyperdrive}</Text>
+    <Text color={theme.colors.text}>{'Hyperdrive: ' + item.hyperdrive}</Text>
   );
   const manufacturer = (
     <HStack flex={1}>
-      <Text color={theme.text}>{'Manufacturer: '}</Text>
-      <Text color={theme.text} flexWrap={'wrap'} flex={1}>
+      <Text color={theme.colors.text}>{'Manufacturer: '}</Text>
+      <Text color={theme.colors.text} flexWrap={'wrap'} flex={1}>
         {dbState.vehicles.manufacturer[item.manufacturer].name}
       </Text>
     </HStack>
   );
-  const model = (
-    <HStack flex={1}>
-      <Text color={theme.text}>{'Model: '}</Text>
-      <Text color={theme.text} flexWrap={'wrap'} flex={1}>
-        {item.model}
-      </Text>
-    </HStack>
-  );
+  const model = <TextField title="Model" value={item.model} />;
   const navicomputer = (
-    <Text color={theme.text}>{'Navicomputer: ' + item.navicomputer}</Text>
+    <Text color={theme.colors.text}>
+      {'Navicomputer: ' + item.navicomputer}
+    </Text>
   );
   const passengers = (
-    <Text color={theme.text}>
+    <Text color={theme.colors.text}>
       {'Passengers: ' + item.passengers.toLocaleString()}
     </Text>
   );
   const sensors = (
     <HStack>
-      <Text color={theme.text}>{'Sensors: '}</Text>
-      <Text color={theme.text}>
+      <Text color={theme.colors.text}>{'Sensors: '}</Text>
+      <Text color={theme.colors.text}>
         {dbState.vehicles.sensor[item.sensors].name}
       </Text>
     </HStack>
   );
   const silhouette = (
-    <Text color={theme.text}>{'Silhouette: ' + item.silhouette}</Text>
+    <Text color={theme.colors.text}>{'Silhouette: ' + item.silhouette}</Text>
   );
-  const speed = <Text color={theme.text}>{'Speed: ' + item.speed}</Text>;
-  const sst = <Text color={theme.text}>{'SST: ' + item.sst}</Text>;
-  const weapons = <Text color={theme.text}>{'Weapons: ' + item.weapons}</Text>;
+  const speed = <Text color={theme.colors.text}>{'Speed: ' + item.speed}</Text>;
+  const sst = <Text color={theme.colors.text}>{'SST: ' + item.sst}</Text>;
+  const weapons = (
+    <Text color={theme.colors.text}>{'Weapons: ' + item.weapons}</Text>
+  );
 
   ////////////////////////////////
   //
@@ -143,6 +149,7 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
           {defense}
           {crew}
         </VStack>
+        <Spacer flex={1} />
         <VStack>
           {htt}
           {armor}

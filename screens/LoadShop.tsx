@@ -41,7 +41,7 @@ export const LoadShop = ({navigation}: any) => {
       flex={1}
       justifyContent="center"
       alignItems="center"
-      backgroundColor={theme.bg}>
+      backgroundColor={theme.colors.background}>
       <Center>
         <Button onPress={() => setSaveVisible(true)}>
           Load or Create Shop
@@ -50,10 +50,12 @@ export const LoadShop = ({navigation}: any) => {
           isOpen={saveVisible}
           onClose={() => setSaveVisible(false)}
           size="lg">
-          <Modal.Content maxWidth="350" backgroundColor={theme.bg}>
+          <Modal.Content
+            maxWidth="350"
+            backgroundColor={theme.colors.background}>
             <Modal.CloseButton />
-            <Modal.Header style={{backgroundColor: theme.card}}>
-              <Text color={theme.text}>Load Shop</Text>
+            <Modal.Header style={{backgroundColor: theme.colors.card}}>
+              <Text color={theme.colors.text}>Load Shop</Text>
             </Modal.Header>
             <Modal.Body>
               <VStack space={3}>
@@ -61,12 +63,12 @@ export const LoadShop = ({navigation}: any) => {
                   selectedValue={selectedShop}
                   onValueChange={itemValue => setSelectedShop(itemValue)}
                   numberOfLines={50}
-                  dropdownIconColor={theme.text}
-                  dropdownIconRippleColor={theme.primary}>
+                  dropdownIconColor={theme.colors.text}
+                  dropdownIconRippleColor={theme.colors.primary}>
                   {shops?.map((shop: Shop) => {
                     return (
                       <Picker.Item
-                        color={theme.text}
+                        color={theme.colors.text}
                         label={shop.name}
                         value={shop.id}
                       />
@@ -85,7 +87,7 @@ export const LoadShop = ({navigation}: any) => {
                 )}
               </VStack>
             </Modal.Body>
-            <Modal.Footer style={{backgroundColor: theme.card}}>
+            <Modal.Footer style={{backgroundColor: theme.colors.card}}>
               <Button
                 flex={1}
                 onPress={() => {

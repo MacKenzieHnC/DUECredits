@@ -15,15 +15,15 @@ export const AttachmentItemComponent = memo(({item, groupBy}: any) => {
   const top = (
     <VStack>
       <HStack>
-        <Text color={theme.text}>{'Category: '}</Text>
-        <Text color={theme.text}>
+        <Text color={theme.colors.text}>{'Category: '}</Text>
+        <Text color={theme.colors.text}>
           {groupBy !== 'category' &&
             dbState.attachments.category[item.category].name}
         </Text>
       </HStack>
       <HStack space={3}>
-        <Text color={theme.text}>HP: {item.hardpoints}</Text>
-        <Text color={theme.text}>Encum: {item.encumbrance}</Text>
+        <Text color={theme.colors.text}>HP: {item.hardpoints}</Text>
+        <Text color={theme.colors.text}>Encum: {item.encumbrance}</Text>
       </HStack>
     </VStack>
   );

@@ -28,7 +28,7 @@ export const BooleanOption = ({
       rounded="md"
       mb={2}
       borderWidth={1}
-      borderColor={theme.border}>
+      borderColor={theme.colors.border}>
       <Picker
         selectedValue={state}
         onValueChange={itemValue => passBack(itemValue)}>

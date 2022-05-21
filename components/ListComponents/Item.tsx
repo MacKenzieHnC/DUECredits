@@ -42,33 +42,35 @@ export const ItemComponent = ({
   //
   ////////////////////////////////
   const name_and_restricted = (
-    <Text color={theme.text} flexWrap={'wrap'}>
+    <Text color={theme.colors.text} flexWrap={'wrap'}>
       {isRestricted ? '(R) ' : ''}
       {item.name}
     </Text>
   );
   const price = (
     <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
-      <Text color={theme.text}>Price: {item.price.toLocaleString()}</Text>
+      <Text color={theme.colors.text}>
+        Price: {item.price.toLocaleString()}
+      </Text>
     </Box>
   );
   const notes = (
-    <Text color={theme.text} width="100%">
+    <Text color={theme.colors.text} width="100%">
       Notes: {item.notes}
     </Text>
   );
   const rarity = (
-    <Text color={theme.text} flexWrap={'wrap'}>
+    <Text color={theme.colors.text} flexWrap={'wrap'}>
       {'Rarity: ' + item.rarity}
     </Text>
   );
   const rulebooks = (
     <View>
-      <Text underline color={theme.text}>
+      <Text underline color={theme.colors.text}>
         Sources:
       </Text>
       {item.rulebooks.map((source: Special) => (
-        <Text color={theme.text}>
+        <Text color={theme.colors.text}>
           {(dbState.rulebook.find(x => x.id === source.id) as CategoryLike)
             .name +
             ': ' +
@@ -107,7 +109,7 @@ export const ItemComponent = ({
   };
 
   return (
-    <Card key={item.id} bg={theme.card}>
+    <Card key={item.id} bg={theme.colors.card}>
       <TouchableOpacity
         onPress={() => {
           setOpen(!open);
@@ -124,12 +126,12 @@ export const ItemComponent = ({
         size={'xl'}>
         <Modal.Content
           maxWidth="350"
-          backgroundColor={theme.bg}
-          borderColor={theme.border}
+          backgroundColor={theme.colors.background}
+          borderColor={theme.colors.border}
           borderWidth={1}
           rounded={'sm'}>
-          <Modal.Header style={{backgroundColor: theme.card}}>
-            <Text color={theme.text}>{item.name}</Text>
+          <Modal.Header style={{backgroundColor: theme.colors.card}}>
+            <Text color={theme.colors.text}>{item.name}</Text>
           </Modal.Header>
           <Modal.Body>{getContent(true)}</Modal.Body>
         </Modal.Content>

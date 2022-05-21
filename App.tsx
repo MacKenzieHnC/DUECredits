@@ -10,18 +10,7 @@ const App = () => {
   // Stylize
   const theme = useTheme();
   return (
-    <NavigationContainer
-      theme={{
-        dark: theme.isDark,
-        colors: {
-          text: theme.text,
-          background: theme.bg,
-          primary: theme.highlight,
-          card: theme.card,
-          border: theme.border,
-          notification: theme.notification,
-        },
-      }}>
+    <NavigationContainer theme={theme}>
       <Provider store={store}>
         <NativeBaseProvider>
           <View p={1} flex="1">

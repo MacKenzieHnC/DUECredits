@@ -32,7 +32,7 @@ export const MultiSelectOption = ({
   const theme = useTheme();
 
   const childComponent = (
-    <View borderColor={theme.border}>
+    <View borderColor={theme.colors.border}>
       <MultiPicker
         items={items}
         placeholder={title}

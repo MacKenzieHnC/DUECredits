@@ -22,33 +22,39 @@ export const WeaponItemComponent = memo(({item, groupBy}: any) => {
   ////////////////////////////////
   const category = (
     <HStack>
-      <Text color={theme.text}>{'Category: '}</Text>
-      <Text color={theme.text}>
+      <Text color={theme.colors.text}>{'Category: '}</Text>
+      <Text color={theme.colors.text}>
         {dbState.weapons.category[item.category].name}
       </Text>
     </HStack>
   );
-  const crit = <Text color={theme.text}>Crit: {item.crit}</Text>;
-  const damage = <Text color={theme.text}>Dam: {item.damage}</Text>;
+  const crit = <Text color={theme.colors.text}>Crit: {item.crit}</Text>;
+  const damage = <Text color={theme.colors.text}>Dam: {item.damage}</Text>;
   const encumbrance = (
-    <Text color={theme.text}>Encum.: {item.encumbrance}</Text>
+    <Text color={theme.colors.text}>Encum.: {item.encumbrance}</Text>
   );
-  const hardpoints = <Text color={theme.text}>HP: {item.hardpoints}</Text>;
+  const hardpoints = (
+    <Text color={theme.colors.text}>HP: {item.hardpoints}</Text>
+  );
   const range = (
     <HStack>
-      <Text color={theme.text}>{'Range: '}</Text>
-      <Text color={theme.text}>{dbState.weapons.range[item.range].name}</Text>
+      <Text color={theme.colors.text}>{'Range: '}</Text>
+      <Text color={theme.colors.text}>
+        {dbState.weapons.range[item.range].name}
+      </Text>
     </HStack>
   );
   const skill = (
     <HStack>
-      <Text color={theme.text}>{'Skill: '}</Text>
-      <Text color={theme.text}>{dbState.weapons.skill[item.skill].name}</Text>
+      <Text color={theme.colors.text}>{'Skill: '}</Text>
+      <Text color={theme.colors.text}>
+        {dbState.weapons.skill[item.skill].name}
+      </Text>
     </HStack>
   );
   const weapon_effects = item.weapon_effects && (
     <HStack>
-      <Text color={theme.text}>{'Effects: '}</Text>
+      <Text color={theme.colors.text}>{'Effects: '}</Text>
       <HStack flexWrap={'wrap'} flex={1}>
         {item.weapon_effects.map((effect: Special, index: number) => {
           const dbEffect = dbState.weapon_effect.find(
@@ -58,7 +64,7 @@ export const WeaponItemComponent = memo(({item, groupBy}: any) => {
             <TouchableOpacity
               disabled={!allowClickthrough}
               onPress={() => Alert.alert(dbEffect.name, dbEffect.desc)}>
-              <Text color={theme.text}>
+              <Text color={theme.colors.text}>
                 {dbEffect.name +
                   (effect.modifier !== '' ? ': ' + effect.modifier : '')}
                 {index < item.weapon_effects.length - 1 && ', '}

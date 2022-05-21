@@ -47,13 +47,13 @@ export const SelectOption = ({
       width="100%"
       p={5}
       rounded="md"
-      backgroundColor={theme.card}
+      backgroundColor={theme.colors.card}
       mb={2}
       borderWidth={1}
-      borderColor={theme.border}>
+      borderColor={theme.colors.border}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.optionTitle}>
-          <Text color={theme.text}>{title}:</Text>
+          <Text color={theme.colors.text}>{title}:</Text>
         </View>
         <Box
           flex={1}
@@ -61,7 +61,7 @@ export const SelectOption = ({
           rounded="md"
           mb={2}
           borderWidth={1}
-          borderColor={theme.border}>
+          borderColor={theme.colors.border}>
           <Picker
             selectedValue={state}
             onValueChange={itemValue => passBack(itemValue)}

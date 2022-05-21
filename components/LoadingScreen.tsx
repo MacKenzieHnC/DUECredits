@@ -10,11 +10,11 @@ export const LoadingScreen: React.FC<{text: string}> = ({text}) => {
   return (
     <View
       flex={1}
-      backgroundColor={theme.bg}
+      backgroundColor={theme.colors.background}
       alignItems={'center'}
       justifyContent={'center'}>
       <ActivityIndicator />
-      <Text color={theme.text}>{text}</Text>
+      <Text color={theme.colors.text}>{text}</Text>
     </View>
   );
 };

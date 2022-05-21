@@ -17,64 +17,72 @@ export const VehicleItemComponent = memo(({item, groupBy}: any) => {
   //  Field components
   //
   ////////////////////////////////
-  const armor = <Text color={theme.text}>{'Armor: ' + item.armor}</Text>;
+  const armor = <Text color={theme.colors.text}>{'Armor: ' + item.armor}</Text>;
   const category = (
     <HStack>
-      <Text color={theme.text}>{'Category: '}</Text>
-      <Text color={theme.text}>
+      <Text color={theme.colors.text}>{'Category: '}</Text>
+      <Text color={theme.colors.text}>
         dbState.vehicles.category[item.category].name
       </Text>
     </HStack>
   );
   const crew = (
-    <Text color={theme.text}>{'Crew: ' + item.crew.toLocaleString()}</Text>
+    <Text color={theme.colors.text}>
+      {'Crew: ' + item.crew.toLocaleString()}
+    </Text>
   );
-  const defense = <Text color={theme.text}>{'Defense: ' + item.defense}</Text>;
+  const defense = (
+    <Text color={theme.colors.text}>{'Defense: ' + item.defense}</Text>
+  );
   const encumbrance = (
-    <Text color={theme.text}>
+    <Text color={theme.colors.text}>
       {'Encum: ' + item.encumbrance.toLocaleString()}
     </Text>
   );
   const handling = (
-    <Text color={theme.text}>{'Handling: ' + item.handling}</Text>
+    <Text color={theme.colors.text}>{'Handling: ' + item.handling}</Text>
   );
-  const hardpoints = <Text color={theme.text}>{'HP: ' + item.hardpoints}</Text>;
-  const htt = <Text color={theme.text}>{'HTT: ' + item.htt}</Text>;
+  const hardpoints = (
+    <Text color={theme.colors.text}>{'HP: ' + item.hardpoints}</Text>
+  );
+  const htt = <Text color={theme.colors.text}>{'HTT: ' + item.htt}</Text>;
   const manufacturer = (
     <HStack flex={1}>
-      <Text color={theme.text}>{'Manufacturer: '}</Text>
-      <Text color={theme.text} flexWrap={'wrap'} flex={1}>
+      <Text color={theme.colors.text}>{'Manufacturer: '}</Text>
+      <Text color={theme.colors.text} flexWrap={'wrap'} flex={1}>
         {dbState.vehicles.manufacturer[item.manufacturer].name}
       </Text>
     </HStack>
   );
   const model = (
     <HStack flex={1}>
-      <Text color={theme.text}>{'Model: '}</Text>
-      <Text color={theme.text} flexWrap={'wrap'} flex={1}>
+      <Text color={theme.colors.text}>{'Model: '}</Text>
+      <Text color={theme.colors.text} flexWrap={'wrap'} flex={1}>
         {item.model}
       </Text>
     </HStack>
   );
   const passengers = (
-    <Text color={theme.text}>
+    <Text color={theme.colors.text}>
       {'Passengers: ' + item.passengers.toLocaleString()}
     </Text>
   );
   const sensors = (
     <HStack>
-      <Text color={theme.text}>{'Sensors: '}</Text>
-      <Text color={theme.text}>
+      <Text color={theme.colors.text}>{'Sensors: '}</Text>
+      <Text color={theme.colors.text}>
         {dbState.vehicles.sensor[item.sensors].name}
       </Text>
     </HStack>
   );
   const silhouette = (
-    <Text color={theme.text}>{'Silhouette: ' + item.silhouette}</Text>
+    <Text color={theme.colors.text}>{'Silhouette: ' + item.silhouette}</Text>
   );
-  const speed = <Text color={theme.text}>{'Speed: ' + item.speed}</Text>;
-  const sst = <Text color={theme.text}>{'SST: ' + item.sst}</Text>;
-  const weapons = <Text color={theme.text}>{'Weapons: ' + item.weapons}</Text>;
+  const speed = <Text color={theme.colors.text}>{'Speed: ' + item.speed}</Text>;
+  const sst = <Text color={theme.colors.text}>{'SST: ' + item.sst}</Text>;
+  const weapons = (
+    <Text color={theme.colors.text}>{'Weapons: ' + item.weapons}</Text>
+  );
 
   ////////////////////////////////
   //

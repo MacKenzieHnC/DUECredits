@@ -35,10 +35,10 @@ export const Option = ({
       width="100%"
       p={5}
       rounded="md"
-      backgroundColor={theme.card}
+      backgroundColor={theme.colors.card}
       mb={2}
       borderWidth={1}
-      borderColor={theme.border}>
+      borderColor={theme.colors.border}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.optionTitle}>
           <Text>{title}:</Text>
@@ -49,7 +49,7 @@ export const Option = ({
           rounded="md"
           mb={2}
           borderWidth={1}
-          borderColor={theme.border}>
+          borderColor={theme.colors.border}>
           <Picker
             style={styles.picker}
             selectedValue={limitedState}

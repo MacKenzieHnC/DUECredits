@@ -23,7 +23,7 @@ export const ShopScreen = ({navigation}: any) => {
   }
 
   return (
-    <ScrollView backgroundColor={theme.bg}>
+    <ScrollView backgroundColor={theme.colors.background}>
       <HStack space={5}>
         <Button onPress={() => navigation.navigate('Inventory')}>
           Go To Inventory!

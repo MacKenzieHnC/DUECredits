@@ -55,16 +55,16 @@ export const Inventory = ({navigation}: any) => {
       initialRouteName="Armor"
       defaultStatus="closed"
       useLegacyImplementation={true}
-      screenOptions={{headerTintColor: theme.text}}>
+      screenOptions={{headerTintColor: theme.colors.text}}>
       {screens}
     </Drawer.Navigator>
   ) : (
     <View
       flex={1}
-      backgroundColor={theme.bg}
+      backgroundColor={theme.colors.background}
       alignItems={'center'}
       justifyContent={'center'}>
-      <Text color={theme.text}>No items yet!</Text>
+      <Text color={theme.colors.text}>No items yet!</Text>
     </View>
   );
 };

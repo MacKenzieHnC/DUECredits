@@ -114,10 +114,10 @@ export const ShopOptionsScreen = ({navigation, route}: any) => {
 
   const Drawer = createDrawerNavigator();
   return (
-    <View backgroundColor={theme.bg} flex={1}>
+    <View backgroundColor={theme.colors.background} flex={1}>
       <Drawer.Navigator
         useLegacyImplementation={true}
-        screenOptions={{headerTintColor: theme.text}}>
+        screenOptions={{headerTintColor: theme.colors.text}}>
         <Drawer.Screen name="General" component={GeneralOptionsScreen} />
         <Drawer.Screen name="Armor" component={ArmorOptionsScreen} />
         <Drawer.Screen name="Attachments" component={AttachmentOptionsScreen} />

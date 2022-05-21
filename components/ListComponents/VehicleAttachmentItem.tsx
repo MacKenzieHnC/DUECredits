@@ -9,7 +9,7 @@ export const VehicleAttachmentItemComponent = memo(({item}: any) => {
 
   const top = (
     <HStack space={3}>
-      <Text color={theme.text}>HP: {item.hardpoints}</Text>
+      <Text color={theme.colors.text}>HP: {item.hardpoints}</Text>
     </HStack>
   );
 

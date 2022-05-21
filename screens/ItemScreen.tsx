@@ -113,10 +113,10 @@ export const ItemScreen = ({route}: any) => {
         }}
         renderSectionHeader={({section: {title}}) => (
           <Center
-            backgroundColor={theme.card.toString()}
-            borderColor={theme.border.toString()}
+            backgroundColor={theme.colors.card.toString()}
+            borderColor={theme.colors.border.toString()}
             borderBottomWidth={1}>
-            <Heading fontSize="xl" mt="8" pb="4" color={theme.text}>
+            <Heading fontSize="xl" mt="8" pb="4" color={theme.colors.text}>
               {title}
             </Heading>
           </Center>

@@ -49,7 +49,7 @@ export const NumericOption = ({
           minHeight={75}
           rounded="md"
           borderWidth={1}
-          borderColor={theme.border}>
+          borderColor={theme.colors.border}>
           <TextInput
             style={{flex: 1}}
             keyboardType="numeric"
@@ -69,7 +69,7 @@ export const NumericOption = ({
           minHeight={75}
           rounded="md"
           borderWidth={1}
-          borderColor={theme.border}>
+          borderColor={theme.colors.border}>
           <TextInput
             style={{flex: 1}}
             keyboardType="numeric"

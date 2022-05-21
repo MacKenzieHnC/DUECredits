@@ -15,12 +15,12 @@ export const GearItemComponent = memo(({item, groupBy}: any) => {
   const top = (
     <VStack>
       <HStack>
-        <Text color={theme.text}>{'Category: '}</Text>
-        <Text color={theme.text}>
+        <Text color={theme.colors.text}>{'Category: '}</Text>
+        <Text color={theme.colors.text}>
           {groupBy !== 'category' && dbState.gear.category[item.category].name}
         </Text>
       </HStack>
-      <Text color={theme.text}>Encum: {item.encumbrance}</Text>
+      <Text color={theme.colors.text}>Encum: {item.encumbrance}</Text>
     </VStack>
   );
 

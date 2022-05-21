@@ -10,12 +10,12 @@ export const ArmorItemComponent = memo(({item, groupBy}: any) => {
   const mid = (
     <HStack space={3}>
       <VStack>
-        <Text color={theme.text}>Def: {item.defense}</Text>
-        <Text color={theme.text}>HP: {item.hardpoints}</Text>
+        <Text color={theme.colors.text}>Def: {item.defense}</Text>
+        <Text color={theme.colors.text}>HP: {item.hardpoints}</Text>
       </VStack>
       <VStack>
-        <Text color={theme.text}>Soak: {item.soak}</Text>
-        <Text color={theme.text}>Encum: {item.encumbrance}</Text>
+        <Text color={theme.colors.text}>Soak: {item.soak}</Text>
+        <Text color={theme.colors.text}>Encum: {item.encumbrance}</Text>
       </VStack>
     </HStack>
   );
