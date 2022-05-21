@@ -1,4 +1,14 @@
-import {Box, HStack, VStack, Text, Modal, View, Card} from 'native-base';
+import {
+  Box,
+  HStack,
+  VStack,
+  Text,
+  Modal,
+  View,
+  Card,
+  Spacer,
+  Button,
+} from 'native-base';
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CategoryLike, Special} from '../../models/ItemIndex';
@@ -14,6 +24,9 @@ interface ItemProps {
   bottom?: React.ReactNode;
   bottom_hidden?: React.ReactNode;
   setAllowClickthrough?: Function;
+  editMode: boolean;
+  setEditMode: Function;
+  setEditItem: Function;
 }
 
 export const ItemComponent = ({
@@ -25,6 +38,9 @@ export const ItemComponent = ({
   bottom,
   bottom_hidden,
   setAllowClickthrough,
+  setEditItem,
+  editMode,
+  setEditMode,
 }: ItemProps) => {
   const isRestricted = item.restricted;
 
@@ -35,6 +51,16 @@ export const ItemComponent = ({
   if (isLoading || !dbState) {
     return <></>;
   }
+
+  const beginEditMode = () => {
+    setEditMode(true);
+    setEditItem(item);
+  };
+
+  const endEditMode = () => {
+    setEditMode(false);
+    setEditItem({});
+  };
 
   ////////////////////////////////
   //
@@ -122,6 +148,7 @@ export const ItemComponent = ({
         onClose={() => {
           setOpen(false);
           setAllowClickthrough && setAllowClickthrough(false);
+          endEditMode();
         }}
         size={'xl'}>
         <Modal.Content
@@ -131,7 +158,13 @@ export const ItemComponent = ({
           borderWidth={1}
           rounded={'sm'}>
           <Modal.Header style={{backgroundColor: theme.colors.card}}>
-            <Text color={theme.colors.text}>{item.name}</Text>
+            <HStack>
+              <Text color={theme.colors.text}>{item.name}</Text>
+              <Spacer />
+              {!editMode && (
+                <Button onPress={() => beginEditMode()}>Edit</Button>
+              )}
+            </HStack>
           </Modal.Header>
           <Modal.Body>{getContent(true)}</Modal.Body>
         </Modal.Content>

@@ -1,6 +1,5 @@
 import {
   Center,
-  Divider,
   FlatList,
   Heading,
   SectionList,
@@ -45,6 +44,7 @@ export const ItemScreen = ({route}: any) => {
       setGroup(ITEM_TYPE[index].categories[0]);
     }
   }, [group, index]);
+  const [editMode, setEditMode] = useState(false);
 
   // Stylize
   const theme = useTheme();
@@ -72,7 +72,14 @@ export const ItemScreen = ({route}: any) => {
       case 'planetaryVehicles':
         return <VehicleItemComponent item={item} groupBy={groupBy} />;
       case 'starships':
-        return <StarshipItemComponent item={item} groupBy={groupBy} />;
+        return (
+          <StarshipItemComponent
+            item={item}
+            groupBy={groupBy}
+            editMode={editMode}
+            setEditMode={bool => setEditMode(bool)}
+          />
+        );
       case 'vehicleAttachments':
         return <VehicleAttachmentItemComponent item={item} groupBy={groupBy} />;
       case 'vehicleWeapons':

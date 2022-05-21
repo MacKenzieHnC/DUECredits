@@ -7,13 +7,18 @@ import {TextField} from '../FieldComponents/TextField';
 import {useTheme} from '../Theme';
 import {ItemComponent} from './Item';
 
-export const StarshipItemComponent = memo(({item, groupBy}: any) => {
+interface ItemProps {
+  item: any;
+  groupBy: any;
+}
+
+export const StarshipItemComponent = memo(({item, groupBy}: ItemProps) => {
   // Stylize
   const theme = useTheme();
   const [allowClickthrough, setAllowClickthrough] = useState(false);
   const {data: dbState, isLoading} = useGetDBStateQuery();
+  const [editItem, setEditItem] = useState({});
   const [editMode, setEditMode] = useState(false);
-  const [editItem, setEditItem] = useState(item);
   if (isLoading || !dbState) {
     return <></>;
   }
@@ -86,7 +91,14 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
       </Text>
     </HStack>
   );
-  const model = <TextField title="Model" value={item.model} />;
+  const model = (
+    <TextField
+      title="Model"
+      value={item.model}
+      editMode={editMode}
+      setValue={(value: string) => setEditItem({...editItem, model: value})}
+    />
+  );
   const navicomputer = (
     <Text color={theme.colors.text}>
       {'Navicomputer: ' + item.navicomputer}
@@ -171,6 +183,9 @@ export const StarshipItemComponent = memo(({item, groupBy}: any) => {
       mid_hidden={mid_hidden}
       bottom={bottom}
       setAllowClickthrough={setAllowClickthrough}
+      editMode={editMode}
+      setEditMode={setEditMode}
+      setEditItem={setEditItem}
     />
   );
 });
