@@ -22,7 +22,7 @@ export const useTheme = (): Theme => {
       colors: {
         text: 'white',
         placeholder: 'white',
-        background: 'muted.900',
+        background: 'rgb(20,20,20)',
         highlight: 'white',
         primary: 'indigo',
         card: 'rgb(20,10,40)',
