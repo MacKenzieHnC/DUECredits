@@ -9,14 +9,18 @@ import {
   Spacer,
   Button,
 } from 'native-base';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CategoryLike, Special} from '../../models/ItemIndex';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
 import {useTheme} from '../Theme';
 
-interface ItemProps {
+export type ItemTypeProps = {
   item: any;
+  groupBy?: any;
+};
+
+type ItemProps = ItemTypeProps & {
   top?: React.ReactNode;
   top_hidden?: React.ReactNode;
   mid?: React.ReactNode;
@@ -27,7 +31,7 @@ interface ItemProps {
   editMode: boolean;
   setEditMode: Function;
   setEditItem: Function;
-}
+};
 
 export const ItemComponent = ({
   item,
@@ -48,70 +52,74 @@ export const ItemComponent = ({
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const {data: dbState, isLoading} = useGetDBStateQuery();
-  if (isLoading || !dbState) {
-    return <></>;
-  }
-
-  const beginEditMode = () => {
-    setEditMode(true);
-    setEditItem(item);
-  };
-
-  const endEditMode = () => {
-    setEditMode(false);
-    setEditItem({});
-  };
 
   ////////////////////////////////
   //
   //  Field components
   //
   ////////////////////////////////
-  const name_and_restricted = (
-    <Text color={theme.colors.text} flexWrap={'wrap'}>
-      {isRestricted ? '(R) ' : ''}
-      {item.name}
-    </Text>
-  );
-  const price = (
-    <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
-      <Text color={theme.colors.text}>
-        Price: {item.price.toLocaleString()}
+  const name_and_restricted = useMemo(() => {
+    return (
+      <Text color={theme.colors.text} flexWrap={'wrap'}>
+        {isRestricted ? '(R) ' : ''}
+        {item.name}
       </Text>
-    </Box>
-  );
-  const notes = (
-    <Text color={theme.colors.text} width="100%">
-      Notes: {item.notes}
-    </Text>
-  );
-  const rarity = (
-    <Text color={theme.colors.text} flexWrap={'wrap'}>
-      {'Rarity: ' + item.rarity}
-    </Text>
-  );
-  const rulebooks = (
-    <View>
-      <Text underline color={theme.colors.text}>
-        Sources:
-      </Text>
-      {item.rulebooks.map((source: Special) => (
+    );
+  }, [isRestricted, item.name, theme.colors.text]);
+
+  const price = useMemo(() => {
+    return (
+      <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
         <Text color={theme.colors.text}>
-          {(dbState.rulebook.find(x => x.id === source.id) as CategoryLike)
-            .name +
-            ': ' +
-            source.modifier}
+          Price: {item.price.toLocaleString()}
         </Text>
-      ))}
-    </View>
-  );
+      </Box>
+    );
+  }, [item.price, theme.colors.text]);
+
+  const notes = useMemo(() => {
+    return (
+      <Text color={theme.colors.text} width="100%">
+        Notes: {item.notes}
+      </Text>
+    );
+  }, [item.notes, theme.colors.text]);
+
+  const rarity = useMemo(() => {
+    return (
+      <Text color={theme.colors.text} flexWrap={'wrap'}>
+        {'Rarity: ' + item.rarity}
+      </Text>
+    );
+  }, [item.rarity, theme.colors.text]);
+
+  const rulebooks = useMemo(() => {
+    return (
+      dbState && (
+        <View>
+          <Text underline color={theme.colors.text}>
+            Sources:
+          </Text>
+          {item.rulebooks.map((source: Special) => (
+            <Text color={theme.colors.text}>
+              {(dbState.rulebook.find(x => x.id === source.id) as CategoryLike)
+                .name +
+                ': ' +
+                source.modifier}
+            </Text>
+          ))}
+        </View>
+      )
+    );
+  }, [dbState, item.rulebooks, theme.colors.text]);
 
   ////////////////////////////////
   //
   //  Card components
   //
   ////////////////////////////////
-  const getContent = (modal: boolean) => {
+  const modal = false;
+  const getContent = useMemo(() => {
     return (
       <>
         <VStack space={5} flex={1}>
@@ -132,6 +140,34 @@ export const ItemComponent = ({
         </VStack>
       </>
     );
+  }, [
+    bottom,
+    bottom_hidden,
+    item,
+    mid,
+    mid_hidden,
+    modal,
+    name_and_restricted,
+    notes,
+    price,
+    rarity,
+    rulebooks,
+    top,
+    top_hidden,
+  ]);
+
+  if (isLoading || !dbState) {
+    return <></>;
+  }
+
+  const beginEditMode = () => {
+    setEditMode(true);
+    setEditItem(item);
+  };
+
+  const endEditMode = () => {
+    setEditMode(false);
+    setEditItem({});
   };
 
   return (
@@ -141,7 +177,7 @@ export const ItemComponent = ({
           setOpen(!open);
           setAllowClickthrough && setAllowClickthrough(true);
         }}>
-        {getContent(false)}
+        {getContent}
       </TouchableOpacity>
       <Modal
         isOpen={open}
@@ -166,7 +202,7 @@ export const ItemComponent = ({
               )}
             </HStack>
           </Modal.Header>
-          <Modal.Body>{getContent(true)}</Modal.Body>
+          <Modal.Body>{getContent}</Modal.Body>
         </Modal.Content>
       </Modal>
     </Card>
