@@ -1,5 +1,4 @@
 import {
-  Box,
   HStack,
   VStack,
   Text,
@@ -76,6 +75,8 @@ export const ItemComponent = ({
         value={item.price}
         editMode={editMode}
         setValue={(value: number) => setEditItem({...item, price: value})}
+        alignContent="center"
+        justifyContent="flex-end"
       />
     );
   }, [editMode, item, setEditItem]);
@@ -127,18 +128,18 @@ export const ItemComponent = ({
   //  Card components
   //
   ////////////////////////////////
-  const modal = false;
-  const getContent = useMemo(() => {
+  const getContent = (modal: boolean) => {
+    console.log(item.name + ' updated');
     return (
       <VStack space={5} flex={1}>
         {modal && top_hidden}
         <HStack alignItems="center">
           <VStack space={2} flex={1}>
             {!modal ? name_and_restricted : rarity}
-            {top}
           </VStack>
           {price}
         </HStack>
+        {top}
         {mid}
         {modal && mid_hidden}
         {bottom}
@@ -147,13 +148,16 @@ export const ItemComponent = ({
         {modal && rulebooks}
       </VStack>
     );
+  };
+  const content = useMemo(() => {
+    return getContent(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     bottom,
     bottom_hidden,
     item,
     mid,
     mid_hidden,
-    modal,
     name_and_restricted,
     notes,
     price,
@@ -184,7 +188,7 @@ export const ItemComponent = ({
           setOpen(!open);
           setAllowClickthrough && setAllowClickthrough(true);
         }}>
-        {getContent}
+        {content}
       </TouchableOpacity>
       <Modal
         isOpen={open}
@@ -209,7 +213,7 @@ export const ItemComponent = ({
               )}
             </HStack>
           </Modal.Header>
-          <Modal.Body>{getContent}</Modal.Body>
+          <Modal.Body>{open && getContent(true)}</Modal.Body>
         </Modal.Content>
       </Modal>
     </Card>

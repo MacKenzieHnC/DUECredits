@@ -35,8 +35,8 @@ export const TextField = ({title, value, editMode, setValue}: TextProps) => {
           outlineColor={theme.colors.border}
         />
       ) : (
-        <HStack width="100%">
-          <Text theme={theme}>{title + ': '}</Text>
+        <HStack>
+          {title !== '' && <Text theme={theme}>{title + ': '}</Text>}
           <Text theme={theme} style={styles.info}>
             {value}
           </Text>
