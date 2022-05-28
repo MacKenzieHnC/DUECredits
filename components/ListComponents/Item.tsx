@@ -13,6 +13,8 @@ import React, {useMemo, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CategoryLike, Special} from '../../models/ItemIndex';
 import {useGetDBStateQuery} from '../../store/slices/databaseSlice';
+import {NumericField} from '../FieldComponents/NumericField';
+import {TextField} from '../FieldComponents/TextField';
 import {useTheme} from '../Theme';
 
 export type ItemTypeProps = {
@@ -69,29 +71,36 @@ export const ItemComponent = ({
 
   const price = useMemo(() => {
     return (
-      <Box flexDirection={'row'} justifyContent={'flex-end'} width={150}>
-        <Text color={theme.colors.text}>
-          Price: {item.price.toLocaleString()}
-        </Text>
-      </Box>
+      <NumericField
+        title={'Price'}
+        value={item.price}
+        editMode={editMode}
+        setValue={(value: number) => setEditItem({...item, price: value})}
+      />
     );
-  }, [item.price, theme.colors.text]);
+  }, [editMode, item, setEditItem]);
 
   const notes = useMemo(() => {
     return (
-      <Text color={theme.colors.text} width="100%">
-        Notes: {item.notes}
-      </Text>
+      <TextField
+        title={'Notes'}
+        value={item.notes}
+        editMode={editMode}
+        setValue={(value: string) => setEditItem({...item, notes: value})}
+      />
     );
-  }, [item.notes, theme.colors.text]);
+  }, [editMode, item, setEditItem]);
 
   const rarity = useMemo(() => {
     return (
-      <Text color={theme.colors.text} flexWrap={'wrap'}>
-        {'Rarity: ' + item.rarity}
-      </Text>
+      <NumericField
+        title={'Rarity'}
+        value={item.rarity}
+        editMode={editMode}
+        setValue={(value: number) => setEditItem({...item, rarity: value})}
+      />
     );
-  }, [item.rarity, theme.colors.text]);
+  }, [editMode, item, setEditItem]);
 
   const rulebooks = useMemo(() => {
     return (
@@ -121,24 +130,22 @@ export const ItemComponent = ({
   const modal = false;
   const getContent = useMemo(() => {
     return (
-      <>
-        <VStack space={5} flex={1}>
-          {modal && top_hidden}
-          <HStack alignItems="center">
-            <VStack space={2} flex={1}>
-              {!modal ? name_and_restricted : rarity}
-              {top}
-            </VStack>
-            {price}
-          </HStack>
-          {mid}
-          {modal && mid_hidden}
-          {bottom}
-          {modal && bottom_hidden}
-          {!!item.notes && notes}
-          {modal && rulebooks}
-        </VStack>
-      </>
+      <VStack space={5} flex={1}>
+        {modal && top_hidden}
+        <HStack alignItems="center">
+          <VStack space={2} flex={1}>
+            {!modal ? name_and_restricted : rarity}
+            {top}
+          </VStack>
+          {price}
+        </HStack>
+        {mid}
+        {modal && mid_hidden}
+        {bottom}
+        {modal && bottom_hidden}
+        {!!item.notes && notes}
+        {modal && rulebooks}
+      </VStack>
     );
   }, [
     bottom,
